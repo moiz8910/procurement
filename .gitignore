@@ -1,0 +1,32 @@
+# PROCURA root .gitignore
+
+# Node Modules
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Python Environment
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Local Database
+procura.db
+procura.db-journal
+
+# Build / Dist
+frontend/dist/
+frontend/build/
+
+# Temporary / Log files
+*.log
+out.txt
+tmp/
+.gemini/
+.agent/
+.agents/
+
+# OS Specific
+.DS_Store
+Thumbs.db
