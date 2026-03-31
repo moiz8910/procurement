@@ -1,7 +1,7 @@
 import datetime
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from backend.app.db.models import PurchaseRequisition, Vendor, Category
+from backend.app.db.models import PurchaseRequisition, Vendor, Category, PurchaseOrder, MaterialServiceMaster, SavingsTracker
 
 # Threshold definitions: if value exceeds these, flag as warning/critical
 KPI_THRESHOLDS = {
@@ -49,13 +49,57 @@ class KPIService:
         pending_prs = query.filter(PurchaseRequisition.status != "PO_CREATED").count()
 
         risky_vendors = 0
+        avg_esg_score = 0
+        avg_risk_score = 0
+        
+        vendor_query = db.query(Vendor)
+        if category_id:
+            vendor_query = vendor_query.filter(Vendor.category_id == category_id)
+
         if not requester_id:
-            vendor_query = db.query(Vendor)
-            if category_id:
-                vendor_query = vendor_query.filter(Vendor.category_id == category_id)
             risky_vendors = vendor_query.filter(Vendor.risk_score > 0.7).count()
 
+        # Compute averages gracefully
+        vendors_count = vendor_query.count()
+        if vendors_count > 0:
+            avg_esg = vendor_query.with_entities(func.avg(Vendor.esg_score)).scalar() or 0
+            avg_risk = vendor_query.with_entities(func.avg(Vendor.risk_score)).scalar() or 0
+            avg_esg_score = round(avg_esg * 100, 1)  # Scale to 100 if stored 0-1
+            avg_risk_score = round(avg_risk * 100, 1)
+
         delayed_pct = round((pending_prs / total_prs * 100), 1) if total_prs > 0 else 0
+        
+        # New KPIs
+        # 1. YTD Spend (Current Year total POs)
+        curr_year = datetime.datetime.now().year
+        ytd_spend = db.query(func.sum(PurchaseOrder.amount)).filter(func.extract('year', PurchaseOrder.created_at) == curr_year).scalar() or 0
+
+        # 2. Maverick Spend (PO mode_of_purchase not in Rate Contract)
+        maverick_spend = db.query(func.sum(PurchaseOrder.amount)).filter(PurchaseOrder.mode_of_purchase != 'Rate Contract').scalar() or 0
+
+        # 3. MTD Spend (Last 30 days POs)
+        now = datetime.datetime.now()
+        last_30_days = now - datetime.timedelta(days=30)
+        mtd_spend = db.query(func.sum(PurchaseOrder.amount)).filter(PurchaseOrder.created_at >= last_30_days).scalar() or 0
+
+        # 4. Total SKUs
+        total_skus = db.query(MaterialServiceMaster).count()
+
+        # 5. YTD Savings
+        ytd_savings = db.query(func.sum(SavingsTracker.realized_savings)).scalar() or 0
+
+        # 6. Supplier concentration (% spend of top 5 vendors)
+        total_po_spend = db.query(func.sum(PurchaseOrder.amount)).scalar() or 0
+        concentration_pct = 0
+        if total_po_spend > 0:
+            top_vendors = db.query(
+                PurchaseOrder.vendor_id, 
+                func.sum(PurchaseOrder.amount).label('total_amount')
+            ).group_by(PurchaseOrder.vendor_id).order_by(func.sum(PurchaseOrder.amount).desc()).limit(5).all()
+            
+            top_spend = sum([v.total_amount for v in top_vendors]) if top_vendors else 0
+            concentration_pct = round((top_spend / total_po_spend) * 100, 1)
+
         return {
             "total_prs": total_prs,
             "pending_prs": pending_prs,
@@ -63,6 +107,16 @@ class KPIService:
             "risky_vendors": risky_vendors,
             "avg_cycle_time": 5.4,  # Mocked; replace with real avg once PREvent data is reliable
             "delayed_percentage": delayed_pct,
+            
+            # New KPIs for CPO Dashboard
+            "ytd_spend": round(ytd_spend, 2),
+            "maverick_spend": round(maverick_spend, 2),
+            "mtd_spend": round(mtd_spend, 2),
+            "total_skus": total_skus,
+            "ytd_savings": round(ytd_savings, 2),
+            "supplier_concentration": concentration_pct,
+            "avg_esg_score": avg_esg_score,
+            "avg_risk_score": avg_risk_score,
         }
 
     @staticmethod
@@ -93,6 +147,13 @@ class KPIService:
             "risky_vendors": KPIService._delta(current["risky_vendors"], prior["risky_vendors"]),
             "delayed_percentage": KPIService._delta(current["delayed_percentage"], prior["delayed_percentage"]),
             "avg_cycle_time": KPIService._delta(current["avg_cycle_time"], prior["avg_cycle_time"]),
+            "ytd_spend": KPIService._delta(current["ytd_spend"], prior["ytd_spend"]),
+            "maverick_spend": KPIService._delta(current["maverick_spend"], prior["maverick_spend"]),
+            "mtd_spend": KPIService._delta(current["mtd_spend"], prior["mtd_spend"]),
+            "ytd_savings": KPIService._delta(current["ytd_savings"], prior["ytd_savings"]),
+            "supplier_concentration": KPIService._delta(current["supplier_concentration"], prior["supplier_concentration"]),
+            "avg_esg_score": KPIService._delta(current["avg_esg_score"], prior["avg_esg_score"]),
+            "avg_risk_score": KPIService._delta(current["avg_risk_score"], prior["avg_risk_score"]),
         }
 
         # Threshold statuses

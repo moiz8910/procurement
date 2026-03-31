@@ -22,7 +22,8 @@ const MainLayout = ({ children }) => {
         <main className="flex-1 overflow-y-auto relative custom-scrollbar">
           {/* Global KPI Strip - Sticky below Topbar */}
           <div className="sticky top-0 z-20 bg-white/60 backdrop-blur-lg border-b border-slate-100/60">
-            {activeTab === 'categories' ? <CategoryKPIBanner /> : <KPIBar />}
+            {activeTab === 'categories' && <CategoryKPIBanner />}
+            {['transactions', 'vendors'].includes(activeTab) && <KPIBar />}
           </div>
 
           {/* Page Content */}

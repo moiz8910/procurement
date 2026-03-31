@@ -5,7 +5,7 @@ WITHOUT dropping other tables.
 """
 import openpyxl
 import sys, os
-sys.path.insert(0, r'c:\Users\Moiz\Desktop\Procurement')
+sys.path.insert(0, r'c:\Users\Yogendran\Desktop\Procurement\procurement')
 
 from backend.app.db.session import SessionLocal, engine
 from backend.app.db.models import Base, MasterContractClause
@@ -13,7 +13,7 @@ from backend.app.db.models import Base, MasterContractClause
 # Ensure the table exists
 Base.metadata.create_all(bind=engine)
 
-path = r"c:\Users\Moiz\Desktop\Procurement\backend\Database\Database for Procurement.xlsx"
+path = r"c:\Users\Yogendran\Desktop\Procurement\procurement\backend\Database\Database for Procurement.xlsx"
 wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
 db = SessionLocal()
 
