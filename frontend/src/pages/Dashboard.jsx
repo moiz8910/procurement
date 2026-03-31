@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
+import { getKpis } from '../api';
 import { 
   TrendingUp, 
   AlertTriangle, 
@@ -11,12 +12,27 @@ import {
   CheckCircle2,
   PieChart,
   BarChart4,
-  LayoutDashboard
+  LayoutDashboard,
+  DollarSign,
+  Package,
+  Activity,
+  Award,
+  ShieldAlert,
+  CalendarDays
 } from 'lucide-react';
 import Filters from '../components/Filters';
 
 const Dashboard = () => {
   const { prs, vendors, currentUser } = useApp();
+  
+  const [kpis, setKpis] = useState(null);
+  const [kpiDateRange, setKpiDateRange] = useState('30d');
+  
+  useEffect(() => {
+    getKpis({ time_range: kpiDateRange }).then(res => {
+      setKpis(res.data);
+    }).catch(err => console.error("Error fetching KPIs", err));
+  }, [kpiDateRange]);
 
   return (
     <div className="p-6 space-y-6 animate-in slide-in-from-bottom-4 duration-700">
@@ -35,6 +51,106 @@ const Dashboard = () => {
         <div className="flex items-center gap-3">
           <Button variant="outline" size="sm" className="h-10 px-4 font-bold border-slate-200">Export Report</Button>
           <Button className="h-10 px-6 font-bold bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-600/20">Analyze Spend</Button>
+        </div>
+      </div>
+
+      {/* KPI Section with Dedicated Filter */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+          <div className="flex items-center gap-2 text-slate-800 font-bold px-2">
+            <Activity className="h-5 w-5 text-indigo-500" />
+            Executive KPIs
+          </div>
+          <div className="flex items-center gap-2">
+            <CalendarDays className="h-4 w-4 text-slate-400" />
+            <select 
+              className="bg-slate-50 border border-slate-200 text-slate-700 text-sm font-bold rounded-lg px-3 py-1.5 outline-none cursor-pointer"
+              value={kpiDateRange}
+              onChange={(e) => setKpiDateRange(e.target.value)}
+            >
+              <option value="7d">Last 7 Days</option>
+              <option value="30d">Last 30 Days</option>
+              <option value="90d">Last 90 Days</option>
+              <option value="YTD">Year to Date</option>
+            </select>
+          </div>
+        </div>
+
+        {/* 8 Metric KPI Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                YTD Spend <DollarSign className="h-4 w-4 text-emerald-500"/>
+              </span>
+              <div className="text-2xl font-black text-slate-900">${(kpis?.ytd_spend || 0).toLocaleString()}</div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                Maverick Spend <AlertTriangle className="h-4 w-4 text-rose-500"/>
+              </span>
+              <div className="text-2xl font-black text-rose-600">${(kpis?.maverick_spend || 0).toLocaleString()}</div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                MTD Spend <CalendarDays className="h-4 w-4 text-indigo-500"/>
+              </span>
+              <div className="text-2xl font-black text-slate-900">${(kpis?.mtd_spend || 0).toLocaleString()}</div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                YTD Savings <TrendingUp className="h-4 w-4 text-emerald-500"/>
+              </span>
+              <div className="text-2xl font-black text-emerald-600">${(kpis?.ytd_savings || 0).toLocaleString()}</div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                Total SKUs <Package className="h-4 w-4 text-blue-500"/>
+              </span>
+              <div className="text-2xl font-black text-slate-900">{(kpis?.total_skus || 0).toLocaleString()}</div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                Supplier Conc. <PieChart className="h-4 w-4 text-purple-500"/>
+              </span>
+              <div className="text-2xl font-black text-slate-900">{kpis?.supplier_concentration || 0}%</div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow bg-emerald-50 border-emerald-100">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider flex items-center justify-between">
+                Avg ESG Score <Award className="h-4 w-4 text-emerald-600"/>
+              </span>
+              <div className="text-2xl font-black text-emerald-800">{kpis?.avg_esg_score || 0}<span className="text-sm">/100</span></div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow bg-rose-50 border-rose-100">
+            <CardContent className="p-5 flex flex-col gap-1">
+              <span className="text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center justify-between">
+                Avg Risk Score <ShieldAlert className="h-4 w-4 text-rose-600"/>
+              </span>
+              <div className="text-2xl font-black text-rose-800">{kpis?.avg_risk_score || 0}<span className="text-sm">/100</span></div>
+            </CardContent>
+          </Card>
+
         </div>
       </div>
 

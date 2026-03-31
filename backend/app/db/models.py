@@ -104,6 +104,7 @@ class PurchaseOrder(Base):
     amount = Column(Float)
     currency = Column(String, default="USD")
     status = Column(String) # Issued, Partial, Closed
+    mode_of_purchase = Column(String, nullable=True) # Rate Contract, RFX, LOI
     created_at = Column(DateTime, default=datetime.utcnow)
     
     # Relationships

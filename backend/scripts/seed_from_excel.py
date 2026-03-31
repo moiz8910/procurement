@@ -12,7 +12,7 @@ from backend.app.db.models import Category, CategoryStrategy, CategoryStrategyCh
 def seed():
     db = SessionLocal()
     try:
-        excel_path = r"c:\Users\Moiz\Desktop\Procurement\backend\Database\Database for Procurement.xlsx"
+        excel_path = r"c:\Users\Yogendran\Desktop\Procurement\procurement\backend\Database\Database for Procurement.xlsx"
         print(f"Loading '{excel_path}'...")
         xls = pd.ExcelFile(excel_path)
         print("Sheets found:", xls.sheet_names)

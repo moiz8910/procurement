@@ -7,13 +7,15 @@ import {
   Settings,
   LogOut,
   Layers,
+  LayoutDashboard,
 } from 'lucide-react';
 
 const Sidebar = () => {
   const { activeTab, setActiveTab, currentUser, switchUser, MOCK_USERS } = useApp();
 
-  // Role-based Access Rules for the 3 main modules
+  // Role-based Access Rules for the main modules
   const mainModules = [
+    { id: 'dashboard', label: 'Control Center', icon: LayoutDashboard, allowedRoles: ['CPO'] },
     { id: 'categories', label: 'Category Module', icon: Layers, allowedRoles: ['CPO', 'CATEGORY_MANAGER'] },
     { id: 'transactions', label: 'Transaction Procurement', icon: ShoppingCart, allowedRoles: ['CPO', 'CATEGORY_MANAGER', 'SOURCING_ANALYST', 'REQUESTER'] },
     { id: 'vendors', label: 'Vendor Module', icon: Users, allowedRoles: ['CPO', 'CATEGORY_MANAGER'] },

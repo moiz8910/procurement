@@ -18,7 +18,7 @@ def migrate_full():
     Base.metadata.drop_all(bind=engine) # Start fresh for clean migration
     Base.metadata.create_all(bind=engine)
     
-    path = r"c:\Users\Moiz\Desktop\Procurement\backend\Database\Database for Procurement.xlsx"
+    path = r"c:\Users\Yogendran\Desktop\Procurement\procurement\backend\Database\Database for Procurement.xlsx"
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
     db = SessionLocal()
     

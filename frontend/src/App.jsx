@@ -11,14 +11,15 @@ import TransactionModule from './pages/TransactionModule';
 import VendorModule from './pages/VendorModule';
 
 const AppContent = () => {
-  const { activeTab } = useApp();
+  const { activeTab, currentUser } = useApp();
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'dashboard': return <Dashboard />;
       case 'categories': return <CategoryModule />;
       case 'transactions': return <TransactionModule />;
       case 'vendors': return <VendorModule />;
-      default: return <CategoryModule />;
+      default: return currentUser?.roleType === 'CPO' ? <Dashboard /> : <CategoryModule />;
     }
   };
 
