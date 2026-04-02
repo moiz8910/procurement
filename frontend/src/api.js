@@ -56,6 +56,8 @@ export const getVendorPerformance = (params) => api.get('/vendors/dashboard/perf
 export const getVendorIntelligenceDash = (params) => api.get('/vendors/dashboard/intelligence', { params });
 export const getVendorRegistration = () => api.get('/vendors/dashboard/registration');
 export const getVendorSlaAging = () => api.get('/vendors/dashboard/sla-aging');
+export const getVendorDiscovery = () => api.get('/vendors/dashboard/discovery');
+export const getVendorTasks = () => api.get('/vendors/dashboard/tasks');
 
 // Notifications & Tasks
 export const getNotifications = (params = {}) => api.get('/notifications', { params });

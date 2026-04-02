@@ -24,3 +24,11 @@ def get_registration(user: User = Depends(deps.get_current_user)):
 @router.get("/dashboard/sla-aging")
 def get_sla_aging(user: User = Depends(deps.get_current_user)):
     return VendorService.get_sla_aging()
+
+@router.get("/dashboard/discovery")
+def get_discovery(user: User = Depends(deps.get_current_user)):
+    return VendorService.get_vendor_discovery()
+
+@router.get("/dashboard/tasks")
+def get_tasks(user: User = Depends(deps.get_current_user)):
+    return VendorService.get_pending_tasks()
