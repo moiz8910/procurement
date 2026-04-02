@@ -122,20 +122,40 @@ class CategoryService:
 
         # ── 6. Avg Vendor Performance Score ──────────────────────────────────
         avg_vendor_performance = 0.0
+        vendor_score_factors = []
         if not vr_df.empty and "Category_Name" in vr_df.columns and "Overall_Vendor_Score" in vr_df.columns:
             cat_vr = vr_df[vr_df["Category_Name"] == cat_name]
             if not cat_vr.empty:
                 avg_vendor_performance = round(pd.to_numeric(cat_vr["Overall_Vendor_Score"], errors="coerce").mean(), 1)
+                vendor_score_factors = [
+                    {"name": "Quality", "weight": 25, "score": round(pd.to_numeric(cat_vr["Quality_Score"], errors="coerce").mean(), 1)},
+                    {"name": "Delivery", "weight": 25, "score": round(pd.to_numeric(cat_vr["Delivery_Score"], errors="coerce").mean(), 1)},
+                    {"name": "Price", "weight": 20, "score": round(pd.to_numeric(cat_vr["Price_Competitiveness_Score"], errors="coerce").mean(), 1)},
+                    {"name": "Documentation", "weight": 10, "score": round(pd.to_numeric(cat_vr["Documentation_Score"], errors="coerce").mean(), 1)},
+                    {"name": "Responsiveness", "weight": 10, "score": round(pd.to_numeric(cat_vr["Responsiveness_Score"], errors="coerce").mean(), 1)},
+                    {"name": "HSE/Compliance", "weight": 10, "score": round(pd.to_numeric(cat_vr["HSE_Compliance_Score"], errors="coerce").mean(), 1)},
+                ]
 
         # ── 7. PR-to-PO Cycle Time ────────────────────────────────────────────
-        pr_to_po_cycle_days = 0
-        if not sla_df.empty and "Category_Name" in sla_df.columns and "Cumulative_Days_Standard" in sla_df.columns:
+        pr_to_po_cycle_days = 0.0
+        if not po_df.empty and not pr_df.empty and "PR_ID" in po_df.columns and "PR_ID" in pr_df.columns:
+            cat_pos = po_df[po_df["Category_Name"] == cat_name].copy() if "Category_Name" in po_df.columns else pd.DataFrame()
+            if not cat_pos.empty:
+                cat_prs = pr_df[["PR_ID", "PR_Date"]].copy()
+                merged = pd.merge(cat_pos, cat_prs, on="PR_ID", how="inner")
+                if not merged.empty and "PO_Date" in merged.columns and "PR_Date" in merged.columns:
+                    merged["PO_Date"] = pd.to_datetime(merged["PO_Date"], errors="coerce")
+                    merged["PR_Date"] = pd.to_datetime(merged["PR_Date"], errors="coerce")
+                    merged["cycle_days"] = (merged["PO_Date"] - merged["PR_Date"]).dt.days
+                    avg_days = merged["cycle_days"].mean()
+                    if pd.notna(avg_days):
+                        pr_to_po_cycle_days = round(avg_days, 1)
+
+        if pr_to_po_cycle_days == 0.0 and not sla_df.empty and "Cumulative_Days_Standard" in sla_df.columns:
+            # Fallback to SLA limits if no direct data
             cat_sla = sla_df[sla_df["Category_Name"] == cat_name]
             if not cat_sla.empty:
-                pr_to_po_cycle_days = int(pd.to_numeric(cat_sla["Cumulative_Days_Standard"], errors="coerce").max())
-        if pr_to_po_cycle_days == 0 and not sla_df.empty and "Cumulative_Days_Standard" in sla_df.columns:
-            # Use overall average as fallback
-            pr_to_po_cycle_days = int(pd.to_numeric(sla_df["Cumulative_Days_Standard"], errors="coerce").max())
+                pr_to_po_cycle_days = round(pd.to_numeric(cat_sla["Cumulative_Days_Standard"], errors="coerce").max(), 1)
 
         return {
             "category_name":             cat_name,
@@ -153,14 +173,26 @@ class CategoryService:
             "avg_risk_score":            avg_risk_score,
             "pr_to_po_cycle_days":       pr_to_po_cycle_days,
             "avg_vendor_performance_score": avg_vendor_performance,
+            "vendor_score_max":          10.0,
+            "vendor_score_factors":      vendor_score_factors,
         }
 
     @staticmethod
     def get_category_meta_filters():
-        """Returns all Parent Groups with their Categories and owners for the filter bar."""
+        """Returns all Parent Groups with their Categories, Sub-categories, and owners for the filter bar."""
         cat_df = CategoryService._get_excel_df("Category Master")
         if cat_df.empty or "Category_Name" not in cat_df.columns:
             return []
+
+        ms_df = CategoryService._get_excel_df("Material Service Master")
+        subcat_map = {}
+        if not ms_df.empty and "Category_Name" in ms_df.columns and "Subcategory_Name" in ms_df.columns:
+            for _, row in ms_df.iterrows():
+                cn = str(row["Category_Name"])
+                scn = str(row["Subcategory_Name"])
+                if cn not in subcat_map: subcat_map[cn] = set()
+                if scn and scn.lower() != 'nan':
+                    subcat_map[cn].add(scn)
 
         result = {}
         for _, row in cat_df.iterrows():
@@ -168,11 +200,70 @@ class CategoryService:
             cat = str(row.get("Category_Name", ""))
             owner = str(row.get("Category_Owner", "N/A"))
             cat_id_val = row.get("Category_ID", None)
+            
+            subcats = list(subcat_map.get(cat, []))
+
             if pg not in result:
                 result[pg] = []
-            result[pg].append({"name": cat, "owner": owner, "excel_id": str(cat_id_val) if cat_id_val else None})
+            result[pg].append({
+                "name": cat, 
+                "owner": owner, 
+                "excel_id": str(cat_id_val) if cat_id_val else None,
+                "subcategories": subcats
+            })
 
         return [{"parent_group": k, "categories": v} for k, v in result.items()]
+
+    @staticmethod
+    def get_category_spend_analysis_time_series(db: Session, category_id: int, time_filter: str):
+        """Returns time series spend data and vendor split based on 'weekly', 'monthly', or 'quarterly'."""
+        category = db.query(Category).filter(Category.id == category_id).first()
+        cat_name = category.name if category else "External Alumina"
+
+        po_df = CategoryService._get_excel_df("Purchase Order")
+        if po_df.empty or "Category_Name" not in po_df.columns or "PO_Date" not in po_df.columns:
+            return {"trend": [], "vendors": [], "total_cr": 0}
+
+        cat_pos = po_df[po_df["Category_Name"] == cat_name].copy()
+        if cat_pos.empty:
+            return {"trend": [], "vendors": [], "total_cr": 0}
+
+        cat_pos["PO_Date"] = pd.to_datetime(cat_pos["PO_Date"], errors="coerce")
+        cat_pos = cat_pos.dropna(subset=["PO_Date"])
+
+        # Time aggregations
+        if time_filter == "weekly":
+            cat_pos["Period"] = cat_pos["PO_Date"].dt.to_period("W").apply(lambda r: r.start_time.strftime("%Y-%m-%d"))
+        elif time_filter == "quarterly":
+            cat_pos["Period"] = cat_pos["PO_Date"].dt.to_period("Q").astype(str)
+        else: # default monthly
+            cat_pos["Period"] = cat_pos["PO_Date"].dt.to_period("M").astype(str)
+
+        trend_df = cat_pos.groupby("Period")["PO_Amount_INR"].sum().reset_index()
+        trend_df["Spend_Cr"] = (trend_df["PO_Amount_INR"] / 1e7).round(2)
+        trend = [{"period": str(row["Period"]), "spend": row["Spend_Cr"]} for _, row in trend_df.iterrows()]
+
+        # Vendor split
+        total_cat_spend = cat_pos["PO_Amount_INR"].sum()
+        vendors = []
+        if total_cat_spend > 0 and "Vendor_Name" in cat_pos.columns:
+            vendor_df = cat_pos.groupby("Vendor_Name")["PO_Amount_INR"].sum().reset_index()
+            vendor_df = vendor_df.sort_values(by="PO_Amount_INR", ascending=False).head(5)
+            vendors = [{"name": str(row["Vendor_Name"]), "value": round((row["PO_Amount_INR"] / total_cat_spend) * 100, 1)} for _, row in vendor_df.iterrows()]
+
+        # Provide dynamic insights
+        insights = [
+            f"Spend trend is highest in {trend_df.sort_values('Spend_Cr', ascending=False).iloc[0]['Period'] if not trend_df.empty else 'N/A'}.",
+            f"Top vendor accounts for {vendors[0]['value'] if vendors else 0}% of the category spend.",
+            "Consider negotiating volume discounts for the upcoming quarters."
+        ]
+
+        return {
+            "total_cr": round(total_cat_spend / 1e7, 2),
+            "trend": trend,
+            "vendors": vendors,
+            "insights": insights
+        }
 
     @staticmethod
     def get_strategy(db: Session, category_id: int):

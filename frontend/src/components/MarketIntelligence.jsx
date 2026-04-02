@@ -3,7 +3,7 @@ import { getMarketIntelligence } from '../api';
 import { useApp } from '../context/AppContext';
 import { Globe, AlertTriangle, Activity, TrendingUp } from 'lucide-react';
 
-const MarketIntelligence = () => {
+const MarketIntelligence = ({ onItemClick }) => {
   const { filters } = useApp();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,11 @@ const MarketIntelligence = () => {
   return (
     <div className="space-y-4">
       {data.map((item, idx) => (
-        <div key={idx} className="group p-5 bg-white border border-slate-200 rounded-2xl hover:shadow-lg transition-all cursor-pointer relative overflow-hidden">
+        <div 
+          key={idx} 
+          className="group p-5 bg-white border border-slate-200 rounded-2xl hover:shadow-lg transition-all cursor-pointer relative overflow-hidden"
+          onClick={() => onItemClick && onItemClick(item)}
+        >
           <div className="absolute top-0 right-0 w-1.5 h-full" style={{
             backgroundColor: item.impact === 'High' ? '#ef4444' : item.impact === 'Medium' ? '#f59e0b' : '#3b82f6'
           }} />

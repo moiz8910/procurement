@@ -32,6 +32,9 @@ def get_category_meta_filters():
 def get_category_kpis(category_id: int, db: Session = Depends(get_db)):
     return CategoryService.get_category_kpis(db, category_id)
 
+@router.get("/{category_id}/spend-analysis")
+def get_spend_analysis(category_id: int, time_filter: str = "monthly", db: Session = Depends(get_db)):
+    return CategoryService.get_category_spend_analysis_time_series(db, category_id, time_filter)
 
 @router.get("/{category_id}/strategy")
 def get_category_strategy(category_id: int, db: Session = Depends(get_db)):

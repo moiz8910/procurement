@@ -3,7 +3,7 @@ import { ListChecks, User, Calendar, CheckSquare, Activity, AlertTriangle, Squar
 import { getCategoryTasks, toggleCategoryTask } from '../api';
 import { useApp } from '../context/AppContext';
 
-const PendingTasks = ({ selectedCategory }) => {
+const PendingTasks = ({ selectedCategory, onItemClick }) => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,13 +45,12 @@ const PendingTasks = ({ selectedCategory }) => {
     return (
       <div 
         key={t.id || i} 
-        className={`flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer ${isResolved ? 'bg-slate-50 border-transparent opacity-60' : 'bg-white border-slate-200 hover:shadow-md hover:border-indigo-200'}`} 
-        onClick={() => handleToggle(t.id)}
+        className={`flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer ${isResolved ? 'bg-slate-50 border-transparent opacity-60' : 'bg-white border-slate-200 hover:shadow-md hover:border-teal-200'}`} 
       >
-        <div className="mt-0.5 shrink-0 text-indigo-500">
-          {isResolved ? <CheckSquare size={18} className="text-emerald-500" /> : <Square size={18} className="text-slate-300 hover:text-indigo-400" />}
+        <div className="mt-0.5 shrink-0 text-teal-500 cursor-pointer" onClick={(e) => { e.stopPropagation(); handleToggle(t.id); }}>
+          {isResolved ? <CheckSquare size={18} className="text-emerald-500" /> : <Square size={18} className="text-slate-300 hover:text-teal-400" />}
         </div>
-        <div className="flex-1">
+        <div className="flex-1" onClick={() => onItemClick && onItemClick(t)}>
           <p className={`text-sm font-medium leading-relaxed mb-2 ${isResolved ? 'line-through text-slate-400' : 'text-slate-700'}`}>{t.desc}</p>
           <div className="flex flex-wrap items-center gap-4">
             <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
@@ -61,7 +60,7 @@ const PendingTasks = ({ selectedCategory }) => {
               <Calendar size={12} className="text-slate-400" /> {t.due}
             </span>
             <span className={`ml-auto text-xs px-2.5 py-0.5 rounded font-medium ${
-              t.status === 'In Progress' ? 'bg-blue-50 text-blue-700' :
+              t.status === 'In Progress' ? 'bg-emerald-50 text-emerald-700' :
               t.status === 'Pending' ? 'bg-amber-50 text-amber-700' :
               'bg-slate-100 text-slate-500'
             }`}>
@@ -98,7 +97,7 @@ const PendingTasks = ({ selectedCategory }) => {
         <div className="mt-4 pt-4 border-t border-slate-100 text-center">
           <button 
             onClick={() => setAllTasksModal(true)}
-            className="text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-colors"
+            className="text-sm font-bold text-teal-600 hover:text-teal-700 transition-colors"
           >
             View All Tasks ({tasks.length})
           </button>
@@ -110,7 +109,7 @@ const PendingTasks = ({ selectedCategory }) => {
         <div className="fixed inset-0 z-[60] bg-black/40 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6 flex flex-col max-h-[80vh]">
             <div className="flex justify-between items-center mb-6">
-               <h3 className="text-xl font-bold flex items-center gap-2"><ListChecks className="text-indigo-600" size={24}/> All Pending Actions</h3>
+               <h3 className="text-xl font-bold flex items-center gap-2"><ListChecks className="text-teal-600" size={24}/> All Pending Actions</h3>
                <button onClick={() => setAllTasksModal(false)} className="text-slate-400 hover:text-slate-600 font-bold text-xl">&times;</button>
             </div>
             
@@ -119,7 +118,7 @@ const PendingTasks = ({ selectedCategory }) => {
             </div>
             
             <div className="mt-6 pt-4 border-t border-slate-100 flex justify-end">
-              <button className="px-6 py-2 bg-slate-800 text-white font-bold rounded-lg hover:bg-slate-900 text-xs" onClick={() => setAllTasksModal(false)}>Close</button>
+              <button className="px-6 py-2 bg-slate-800 text-white font-bold rounded-lg hover:bg-emerald-900 text-xs" onClick={() => setAllTasksModal(false)}>Close</button>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ export const uploadCategoryStrategyFile = (id, file) => {
 export const summarizeCategoryStrategy = (id) => api.post(`/categories/${id}/strategy/summarize`);
 export const copilotEditCategoryStrategy = (id, prompt) => api.post(`/categories/${id}/strategy/copilot-edit`, { prompt });
 
-export const getSpendAnalysis = (id) => api.get(`/categories/${id}/spend-analysis`);
+export const getSpendAnalysis = (id, timeFilter = 'monthly') => api.get(`/categories/${id}/spend-analysis?time_filter=${timeFilter}`);
 export const analyzeSpendInsights = (id) => api.post(`/categories/${id}/spend-analysis/analyze`);
 
 export const copilotQuery = (query, context = {}) => api.post('/copilot/query', { query, context });
