@@ -12,7 +12,7 @@ import {
 import { useApp } from '../context/AppContext';
 import { 
   BrainCircuit, Calendar, User as UserIcon, Upload, FileText,   
-  TrendingUp, MapPin, Zap, AlertTriangle, Sparkles, PieChartIcon, Key, Edit3
+  TrendingUp, MapPin, Zap, AlertTriangle, Sparkles, PieChartIcon, Key, Edit3, Activity, FileSignature
 } from 'lucide-react';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import MarketIntelligence from '../components/MarketIntelligence';
@@ -21,7 +21,7 @@ import PendingTasks from '../components/PendingTasks';
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
 
 const CategoryModule = () => {
-  const { currentUser, updateFilters } = useApp();
+  const { currentUser, updateFilters, setActiveTab } = useApp();
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   
@@ -179,42 +179,26 @@ const CategoryModule = () => {
         {/* Left Column (Span 2) */}
         <div className="xl:col-span-2 space-y-6">
           
-          {/* Strategy Workbook */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <div className="border-b border-slate-100 p-6 flex flex-wrap justify-between items-center bg-slate-50">
-              <div className="flex items-center gap-3">
-                <div className="bg-blue-100 p-2 rounded-lg text-blue-600"><FileText size={20} /></div>
-                <h2 className="text-lg font-bold text-slate-800 transition-colors">Category Strategy Workbook</h2>
-              </div>
-              <div className="flex items-center gap-4 text-xs text-slate-500 font-bold">
-                <span className="flex items-center gap-1"><Calendar size={14}/> Next Review: {strategy?.next_review_date}</span>
-                <span className="flex items-center gap-1"><UserIcon size={14}/> Owner: {strategy?.owner}</span>
-              </div>
+          {/* Define Strategy Entry Point */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl relative overflow-hidden group cursor-pointer transition-all hover:shadow-2xl" onClick={() => setActiveTab('strategy_definition')}>
+            <div className="absolute -top-10 -right-10 p-8 opacity-10 group-hover:scale-110 group-hover:opacity-20 transition-all duration-500">
+              <BrainCircuit size={180} />
             </div>
-            
-            <div className="p-6">
-              <ul className="space-y-2 mb-6 ml-1">
-                {strategy?.content_blocks?.slice(0,4)?.map((block, i) => (
-                  <li key={i} className="text-sm font-medium text-slate-600 flex items-start gap-2">
-                    <span className="text-blue-400 mt-1">•</span> <span>{block}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100">
-                <button onClick={handleReadSummary} className="px-4 py-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg transition-colors leading-none">Read Summary</button>
-                <button onClick={() => setCommentModalOpen(true)} className="px-4 py-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg transition-colors leading-none">Add Comment</button>
-                <button onClick={handleGenerateInsights} disabled={insightsLoading} className="px-4 py-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg transition-colors leading-none disabled:opacity-50">
-                  {insightsLoading ? 'Generating...' : 'Generate Insights'}
-                </button>
-                
-                <button onClick={() => setEditModalOpen(true)} className="px-4 py-2 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg transition-colors ml-auto flex items-center gap-2 leading-none">
-                   <Edit3 size={14} /> Edit content with the help of copilot
-                </button>
-                <button onClick={() => fileInputRef.current?.click()} className="px-4 py-2 bg-slate-800 border border-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-2 leading-none">
-                  <Upload size={14}/> Upload
-                </button>
+            <div className="p-8 relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="bg-white/20 p-2 rounded-lg text-white backdrop-blur-sm"><FileSignature size={24} /></div>
+                  <h2 className="text-2xl font-black text-white tracking-tight">Define Strategy</h2>
+                </div>
+                <p className="text-blue-100 font-medium max-w-lg mb-4 text-sm leading-relaxed">Collaboratively build, refine, and generate your comprehensive Category Strategy Workbook with our intelligent AI Copilot.</p>
+                <div className="flex items-center gap-4 text-xs font-bold text-blue-50/90">
+                  <span className="flex items-center gap-1 bg-black/20 px-3 py-1.5 rounded-full"><Calendar size={14}/> Next Review: {strategy?.next_review_date || 'N/A'}</span>
+                  <span className="flex items-center gap-1 bg-black/20 px-3 py-1.5 rounded-full"><UserIcon size={14}/> Owner: {strategy?.owner || 'Unassigned'}</span>
+                </div>
               </div>
+              <button className="bg-white text-blue-700 hover:bg-slate-50 px-6 py-3 rounded-xl font-bold transition-all shadow-lg active:scale-95 flex items-center gap-2 whitespace-nowrap">
+                <Zap size={18} className="text-blue-500" /> Start Building
+              </button>
             </div>
           </div>
 

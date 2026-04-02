@@ -10,20 +10,21 @@ import ProcurementExecution from './pages/ProcurementExecution';
 import TransactionModule from './pages/TransactionModule';
 import VendorModule from './pages/VendorModule';
 import LoginPage from './pages/LoginPage';
+import StrategyDefinitionModule from './pages/StrategyDefinitionModule';
 
 // ─── Role-Based Permission Map ───────────────────────────────────────────────
 // Defines which tabs each roleType may access, and their landing page.
 const ROLE_PERMISSIONS = {
   CPO: {
-    allowed: ['dashboard', 'categories', 'transactions', 'vendors'],
+    allowed: ['dashboard', 'categories', 'transactions', 'vendors', 'strategy_definition'],
     defaultTab: 'dashboard',
   },
   CATEGORY_MANAGER: {
-    allowed: ['categories', 'transactions', 'vendors'],
+    allowed: ['categories', 'transactions', 'vendors', 'strategy_definition'],
     defaultTab: 'categories',
   },
   SOURCING_ANALYST: {
-    allowed: ['transactions', 'categories'],
+    allowed: ['transactions', 'categories', 'strategy_definition'],
     defaultTab: 'transactions',
   },
   REQUESTER: {
@@ -56,6 +57,7 @@ const AppContent = () => {
       case 'categories':   return <CategoryModule />;
       case 'transactions': return <TransactionModule />;
       case 'vendors':      return <VendorModule />;
+      case 'strategy_definition': return <StrategyDefinitionModule />;
       default:             return <TransactionModule />;
     }
   };
