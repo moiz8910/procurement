@@ -124,34 +124,34 @@ const StrategyDefinitionModule = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)] max-h-screen bg-slate-50 relative text-[13px]">
+    <div className="flex flex-col h-[calc(100vh-64px)] max-h-screen bg-white relative text-[13px]">
       {/* Header with the prominent Category Filter */}
-      <div className="flex-none bg-white border-b border-slate-200 px-5 py-3 flex justify-between items-center z-10 shadow-sm">
+      <div className="flex-none bg-white border-b border-emerald-100 px-5 py-3 flex justify-between items-center z-10 shadow-sm">
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setActiveTab('categories')}
-            className="p-1.5 -ml-1 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors"
+            className="p-1.5 -ml-1 rounded-md hover:bg-emerald-50 text-emerald-600 hover:text-emerald-800 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
             <h1 className="text-lg font-black text-slate-800 flex items-center gap-2 tracking-tight">
-              <FileSignature className="text-blue-600 w-4 h-4" />
+              <FileSignature className="text-emerald-600 w-4 h-4" />
               Strategy Builder
             </h1>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Category Strategy Workbook</p>
+            <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Category Strategy Workbook</p>
           </div>
         </div>
         
         <div className="flex items-center gap-4">
           {/* Main Select Category Filter Database Link */}
-          <div className="flex flex-col items-start bg-slate-50 px-3 py-1 rounded-lg border border-slate-200">
-             <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider pt-0.5">Filter Scope (Database)</label>
+          <div className="flex flex-col items-start bg-emerald-50/50 px-3 py-1 rounded-lg border border-emerald-100 hover:bg-emerald-50 transition-colors">
+             <label className="text-[9px] font-bold text-emerald-600 uppercase tracking-wider pt-0.5">Filter Scope (Database)</label>
              {fetchingCategories ? (
-               <span className="text-blue-600 font-bold text-xs py-1">Loading...</span>
+               <span className="text-emerald-600 font-bold text-xs py-1">Loading...</span>
              ) : (
                <select 
-                 className="bg-transparent font-bold text-blue-700 outline-none cursor-pointer text-[13px] w-48 -ml-1"
+                 className="bg-transparent font-bold text-emerald-800 outline-none cursor-pointer text-[13px] w-48 -ml-1"
                  value={activeCategoryId || ''}
                  onChange={(e) => {
                    const catId = parseInt(e.target.value);
@@ -164,7 +164,7 @@ const StrategyDefinitionModule = () => {
              )}
           </div>
 
-          <button className="flex items-center gap-1.5 bg-slate-800 text-white px-3 py-2 rounded-md text-xs font-bold hover:bg-slate-900 transition-all shadow-sm">
+          <button className="flex items-center gap-1.5 bg-emerald-600 text-white px-3 py-2 rounded-md text-xs font-bold hover:bg-emerald-700 transition-all shadow-sm">
             <FileDown className="w-3 h-3" />
             Export PDF
           </button>
@@ -175,46 +175,46 @@ const StrategyDefinitionModule = () => {
       <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
         
         {/* Left Pane - Copilot Chat */}
-        <div className="w-full md:w-[320px] bg-white border-r border-slate-200 flex flex-col relative z-0 shadow-sm">
-          <div className="p-3 border-b border-slate-100 flex items-center gap-2 bg-blue-50/50">
-            <div className="bg-blue-100 p-1.5 rounded-md text-blue-700">
+        <div className="w-full md:w-[320px] bg-white border-r border-emerald-100 flex flex-col relative z-0 shadow-sm">
+          <div className="p-3 border-b border-emerald-50 flex items-center gap-2 bg-emerald-50/50">
+            <div className="bg-emerald-100 p-1.5 rounded-md text-emerald-700">
               <BrainCircuit className="w-4 h-4" />
             </div>
             <div>
               <h2 className="text-xs font-bold text-slate-800">Strategy Copilot</h2>
-              <p className="text-[10px] font-medium text-slate-500 hover:text-blue-600 cursor-pointer">View Instructions</p>
+              <p className="text-[10px] font-medium text-emerald-600 hover:text-emerald-800 cursor-pointer">View Instructions</p>
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-3 space-y-4 bg-slate-50/50 text-xs" ref={scrollRef}>
+          <div className="flex-1 overflow-y-auto p-3 space-y-4 bg-white text-xs" ref={scrollRef}>
             {chatHistory.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'ai' ? 'justify-start' : 'justify-end'}`}>
                 <div className={`max-w-[90%] rounded-xl p-2.5 flex gap-2.5 ${
                   msg.role === 'ai' 
-                    ? 'bg-white border border-slate-200 text-slate-700 rounded-tl-none shadow-sm' 
-                    : 'bg-blue-600 text-white rounded-tr-none shadow-sm'
+                    ? 'bg-emerald-50 border border-emerald-100 text-slate-800 rounded-tl-none shadow-sm' 
+                    : 'bg-emerald-600 text-white rounded-tr-none shadow-sm'
                 }`}>
-                  {msg.role === 'ai' && <div className="mt-0.5"><Zap className="w-3 h-3 text-blue-500" /></div>}
+                  {msg.role === 'ai' && <div className="mt-0.5"><Zap className="w-3 h-3 text-emerald-500" /></div>}
                   <div className="leading-relaxed whitespace-pre-wrap">{msg.text}</div>
                 </div>
               </div>
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="max-w-[85%] rounded-xl p-3 bg-white border border-slate-200 rounded-tl-none flex items-center gap-1.5 shadow-sm">
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"></div>
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce delay-75"></div>
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce delay-150"></div>
+                <div className="max-w-[85%] rounded-xl p-3 bg-emerald-50 border border-emerald-100 rounded-tl-none flex items-center gap-1.5 shadow-sm">
+                  <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce delay-75"></div>
+                  <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce delay-150"></div>
                 </div>
               </div>
             )}
           </div>
 
           {/* Chat Input */}
-          <div className="p-3 bg-white border-t border-slate-100">
+          <div className="p-3 bg-white border-t border-emerald-100">
             <div className="relative flex items-center">
               <textarea
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-3 pr-10 py-2.5 text-xs focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 transition-all resize-none h-[42px]"
+                className="w-full bg-slate-50 border border-emerald-200 rounded-lg pl-3 pr-10 py-2.5 text-xs focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-100 transition-all resize-none h-[42px]"
                 placeholder="Instruct Copilot..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
@@ -228,7 +228,7 @@ const StrategyDefinitionModule = () => {
               <button 
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isTyping}
-                className="absolute right-1.5 p-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute right-1.5 p-1.5 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-3 h-3" />
               </button>
@@ -236,53 +236,53 @@ const StrategyDefinitionModule = () => {
             
             {/* Suggestions */}
             <div className="mt-2 flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1">
-               <button className="text-[9px] font-bold text-blue-600 hover:text-blue-800 bg-blue-50 border border-blue-100 px-2 py-1 rounded-md flex-shrink-0" onClick={() => setInputValue("Generate summary")}>Generate Summary</button>
-               <button className="text-[9px] font-bold text-blue-600 hover:text-blue-800 bg-blue-50 border border-blue-100 px-2 py-1 rounded-md flex-shrink-0" onClick={() => setInputValue("Expand Risk")}>Expand Risk</button>
+               <button className="text-[9px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md flex-shrink-0" onClick={() => setInputValue("Generate summary")}>Generate Summary</button>
+               <button className="text-[9px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md flex-shrink-0" onClick={() => setInputValue("Expand Risk")}>Expand Risk</button>
             </div>
           </div>
         </div>
 
-        {/* Right Pane - Strict Clean Document Viewer (Zoomed Out) */}
-        <div className="flex-1 bg-slate-200 overflow-y-auto p-4 md:p-8 flex justify-center custom-scrollbar shadow-inner relative relative">
+        {/* Right Pane - Strict Clean Document Viewer (Light Theme) */}
+        <div className="flex-1 bg-slate-50 overflow-y-auto p-4 md:p-8 flex justify-center custom-scrollbar shadow-inner relative relative">
            
-           <div className={`bg-white w-full max-w-[700px] shadow-sm border border-slate-300 min-h-[1000px] mb-12 overflow-hidden transition-opacity ${loadingStrategy ? 'opacity-50' : 'opacity-100'}`}>
+           <div className={`bg-white w-full max-w-[700px] shadow-sm border border-emerald-100 min-h-[1000px] mb-12 overflow-hidden transition-opacity ${loadingStrategy ? 'opacity-50' : 'opacity-100'}`}>
               
-              {/* Document Header */}
-              <div className="px-8 py-10 bg-slate-900 border-b-4 border-blue-500 text-white">
-                 <h1 className="text-2xl font-black mb-3 tracking-tight">Category Strategy</h1>
-                 <p className="text-sm font-medium text-slate-400 border-b border-slate-800 pb-4 mb-4 uppercase tracking-widest">Confidential Strategy Workbook</p>
+              {/* Document Header (Light/White background instead of Dark Slate) */}
+              <div className="px-8 py-10 bg-white border-b border-emerald-100 shadow-sm">
+                 <h1 className="text-2xl font-black mb-3 text-emerald-900 tracking-tight">Category Strategy</h1>
+                 <p className="text-sm font-bold text-emerald-600 border-b border-emerald-100 pb-4 mb-4 uppercase tracking-widest">Confidential Strategy Workbook</p>
                  
                  <div className="grid grid-cols-4 gap-4 text-xs">
                     <div>
-                      <p className="text-slate-500 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Target Category</p>
-                      <p className="font-bold text-slate-100">{selectedCategory?.name || 'Loading...'}</p>
+                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Target Category</p>
+                      <p className="font-bold text-slate-800">{selectedCategory?.name || 'Loading...'}</p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-slate-500 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Prepared By</p>
-                      <p className="font-bold text-slate-100">{currentUser?.name}</p>
+                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Prepared By</p>
+                      <p className="font-bold text-slate-800">{currentUser?.name}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-slate-500 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Date Configured</p>
-                      <p className="font-bold text-slate-100">{new Date().toLocaleDateString()}</p>
+                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Date Configured</p>
+                      <p className="font-bold text-slate-800">{new Date().toLocaleDateString()}</p>
                     </div>
                  </div>
               </div>
 
               {/* Document Body Sections */}
               <div className="p-8 space-y-8">
-                 {loadingStrategy && <div className="text-center text-sm font-bold text-blue-600 animate-pulse">Synchronizing Database Blocks...</div>}
+                 {loadingStrategy && <div className="text-center text-sm font-bold text-emerald-600 animate-pulse">Synchronizing Database Blocks...</div>}
                  
                  {!loadingStrategy && documentSections.map((sec, index) => (
                     <div key={sec.id} className="group relative">
                        <h2 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-1.5 mb-3 flex items-center gap-2">
-                         <span className="text-blue-500/30 font-black text-lg">{String(index + 1).padStart(2, '0')}</span> 
+                         <span className="text-emerald-500/40 font-black text-lg">{String(index + 1).padStart(2, '0')}</span> 
                          {sec.title}
                        </h2>
-                       <div className="text-slate-600 text-xs leading-relaxed whitespace-pre-wrap pl-6 border-l-2 border-transparent group-hover:border-blue-100 transition-colors">
+                       <div className="text-slate-600 text-xs leading-relaxed whitespace-pre-wrap pl-6 border-l-2 border-transparent group-hover:border-emerald-200 transition-colors">
                           {sec.content.split('\n').map((para, i) => (
                              <p key={i} className={i !== 0 ? 'mt-2' : ''}>
                                 {para.includes('[Copilot Update]') ? (
-                                   <span className="bg-blue-50 text-blue-800 font-medium px-1.5 py-0.5 rounded border border-blue-100 block my-1 shadow-sm">
+                                   <span className="bg-emerald-50 text-emerald-800 font-medium px-1.5 py-0.5 rounded border border-emerald-200 block my-1 shadow-sm">
                                       {para}
                                    </span>
                                 ) : para}
@@ -293,7 +293,7 @@ const StrategyDefinitionModule = () => {
                  ))}
                  
                  <div className="mt-12 pt-6 border-t border-slate-100 text-center text-slate-400 flex flex-col items-center">
-                    <Layers className="mb-1.5 w-4 h-4 opacity-30" />
+                    <Layers className="mb-1.5 w-4 h-4 opacity-30 text-emerald-600" />
                     <p className="uppercase tracking-widest text-[9px] font-bold">End of Document - Page 1 of 15</p>
                  </div>
               </div>
