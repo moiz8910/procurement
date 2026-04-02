@@ -4,7 +4,7 @@ import { getCategories, getVendors, getPRs } from '../api';
 const AppContext = createContext();
 
 export const MOCK_USERS = [
-  { id: 1, name: 'Mohan', role: 'CPO', roleType: 'CPO' },
+  { id: 1, name: 'Arun', role: 'CPO', roleType: 'CPO' },
   { id: 2, name: 'Sarah Category', role: 'Category Manager', roleType: 'CATEGORY_MANAGER' },
   { id: 3, name: 'John Doe', role: 'Sourcing Analyst', roleType: 'SOURCING_ANALYST' },
   { id: 4, name: 'Alice Requester', role: 'PR Requester', roleType: 'REQUESTER' }
