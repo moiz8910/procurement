@@ -27,36 +27,152 @@ class CategoryService:
     def get_category_kpis(db: Session, category_id: int):
         category = db.query(Category).filter(Category.id == category_id).first()
         cat_name = category.name if category else "External Alumina"
-        
-        # Calculate On-Contract Spend from Purchase Order sheet
-        po_df = CategoryService._get_excel_df("Purchase Order")
-        if not po_df.empty and "Category_Name" in po_df.columns:
-            cat_pos = po_df[po_df["Category_Name"] == cat_name]
-            total_pos = len(cat_pos)
-            if total_pos > 0:
-                on_contract_count = len(cat_pos[cat_pos["Procurement_Route"] == "On Contract"])
-                on_contract_pct = (on_contract_count / total_pos * 100)
-            else:
-                on_contract_pct = 72.0
-        else:
-            on_contract_pct = 72.0
-            
-        # OTD calculation - placeholder benchmark
-        otd = 85.0
-        unit_cost_reduction = 8.0
-        
-        # Cost Savings from Summary Sheet if possible
-        summary_df = CategoryService._get_excel_df("Summary sheet")
-        cost_savings = 42000000 # Default ₹ 4.2 Cr
-        
-        kpis = {
-            "unit_cost_reduction": unit_cost_reduction,
-            "on_contract_spend": round(on_contract_pct, 1),
-            "on_time_delivery": otd,
-            "cost_savings": cost_savings,
-            "invoice_accuracy": 96.0
+
+        # ── Load all required sheets ──────────────────────────────────────────
+        po_df   = CategoryService._get_excel_df("Purchase Order")
+        pr_df   = CategoryService._get_excel_df("Purchase Requisition")
+        neg_df  = CategoryService._get_excel_df("Negotiation and Offers")
+        rc_df   = CategoryService._get_excel_df("Rate contract")
+        vr_df   = CategoryService._get_excel_df("Vendor Rating")
+        risk_df = CategoryService._get_excel_df("Supplier Risk Assessment")
+        sla_df  = CategoryService._get_excel_df("PR to PO SLAs")
+        cat_df  = CategoryService._get_excel_df("Category Master")
+        vm_df   = CategoryService._get_excel_df("Vendor Master")
+
+        # ── Category Meta (owner, parent group) ───────────────────────────────
+        parent_group = "N/A"
+        category_owner = "N/A"
+        if not cat_df.empty and "Category_Name" in cat_df.columns:
+            cat_row = cat_df[cat_df["Category_Name"] == cat_name]
+            if not cat_row.empty:
+                parent_group = str(cat_row["Parent_Group"].iloc[0]) if "Parent_Group" in cat_row.columns else "N/A"
+                category_owner = str(cat_row["Category_Owner"].iloc[0]) if "Category_Owner" in cat_row.columns else "N/A"
+
+        # ── 1. Total Spend & 2. Spend Contribution ────────────────────────────
+        total_spend_cr = 0.0
+        spend_contribution_pct = 0.0
+        on_contract_pct = 0.0
+        off_contract_pct = 0.0
+        rfx_pct = 0.0
+        spot_pct = 0.0
+        supplier_concentration_pct = 0.0
+        top3_vendors = []
+
+        if not po_df.empty and "Category_Name" in po_df.columns and "PO_Amount_INR" in po_df.columns:
+            cat_pos = po_df[po_df["Category_Name"] == cat_name].copy()
+            grand_total = po_df["PO_Amount_INR"].sum()
+
+            if not cat_pos.empty:
+                cat_total = cat_pos["PO_Amount_INR"].sum()
+                total_spend_cr = round(cat_total / 1e7, 2)  # convert to Crores
+                spend_contribution_pct = round((cat_total / grand_total * 100), 1) if grand_total > 0 else 0.0
+
+                # On/Off contract split
+                if "Procurement_Route" in cat_pos.columns:
+                    on_rows = cat_pos[cat_pos["Procurement_Route"] == "On Contract"]
+                    off_rows = cat_pos[cat_pos["Procurement_Route"] != "On Contract"]
+                    on_contract_pct = round(len(on_rows) / len(cat_pos) * 100, 1)
+                    off_contract_pct = round(100 - on_contract_pct, 1)
+                    if not off_rows.empty:
+                        rfx_rows = off_rows[off_rows["Procurement_Route"].str.contains("RFX|RFx|rfx|Tender|Bid", na=False)]
+                        spot_rows = off_rows[off_rows["Procurement_Route"].str.contains("Spot|spot", na=False)]
+                        total_off = len(off_rows)
+                        rfx_pct  = round(len(rfx_rows)  / total_off * 100, 1) if total_off else round(off_contract_pct * 0.6, 1)
+                        spot_pct = round(len(spot_rows) / total_off * 100, 1) if total_off else round(off_contract_pct * 0.4, 1)
+                        if rfx_pct + spot_pct == 0:
+                            rfx_pct  = round(off_contract_pct * 0.65, 1)
+                            spot_pct = round(off_contract_pct * 0.35, 1)
+
+                # Supplier concentration: top-3 vendors' spend / total category spend
+                if "Vendor_Name" in cat_pos.columns:
+                    vendor_spend = cat_pos.groupby("Vendor_Name")["PO_Amount_INR"].sum().sort_values(ascending=False)
+                    top3_vendors = vendor_spend.head(3).index.tolist()
+                    top3_total   = vendor_spend.head(3).sum()
+                    supplier_concentration_pct = round(top3_total / cat_total * 100, 1) if cat_total > 0 else 0.0
+
+        # ── 3. Savings from Negotiation ───────────────────────────────────────
+        savings_cr = 0.0
+        if not neg_df.empty and "Category_Name" in neg_df.columns:
+            cat_neg = neg_df[neg_df["Category_Name"] == cat_name].copy()
+            if not cat_neg.empty and "Final_Agreed_Value_INR" in cat_neg.columns and "Savings_Achieved_Pct" in cat_neg.columns:
+                cat_neg["savings_inr"] = (
+                    pd.to_numeric(cat_neg["Final_Agreed_Value_INR"], errors="coerce").fillna(0)
+                    * pd.to_numeric(cat_neg["Savings_Achieved_Pct"], errors="coerce").fillna(0) / 100
+                )
+                savings_cr = round(cat_neg["savings_inr"].sum() / 1e7, 2)
+
+        # ── 4. Contract Coverage % ────────────────────────────────────────────
+        contract_coverage_pct = 0.0
+        if not rc_df.empty and "Category_Name" in rc_df.columns:
+            cat_rc = rc_df[rc_df["Category_Name"] == cat_name]
+            active_rc = cat_rc[cat_rc["Status"].str.lower() == "active"] if "Status" in cat_rc.columns else cat_rc
+            total_vendors_in_cat = len(cat_rc["Vendor_ID"].unique()) if "Vendor_ID" in cat_rc.columns else 1
+            active_vendors = len(active_rc["Vendor_ID"].unique()) if "Vendor_ID" in active_rc.columns else 0
+            contract_coverage_pct = round(active_vendors / total_vendors_in_cat * 100, 1) if total_vendors_in_cat > 0 else 0.0
+            # Fallback: if 0 (all same status), derive from PO procurement route
+            if contract_coverage_pct == 0 and total_spend_cr > 0:
+                contract_coverage_pct = on_contract_pct  # proxy
+
+        # ── 5. Avg Risk Score ─────────────────────────────────────────────────
+        avg_risk_score = 0.0
+        if not risk_df.empty and "Category_Served" in risk_df.columns and "Overall_Risk_Score" in risk_df.columns:
+            cat_risk = risk_df[risk_df["Category_Served"] == cat_name]
+            if not cat_risk.empty:
+                avg_risk_score = round(pd.to_numeric(cat_risk["Overall_Risk_Score"], errors="coerce").mean(), 1)
+
+        # ── 6. Avg Vendor Performance Score ──────────────────────────────────
+        avg_vendor_performance = 0.0
+        if not vr_df.empty and "Category_Name" in vr_df.columns and "Overall_Vendor_Score" in vr_df.columns:
+            cat_vr = vr_df[vr_df["Category_Name"] == cat_name]
+            if not cat_vr.empty:
+                avg_vendor_performance = round(pd.to_numeric(cat_vr["Overall_Vendor_Score"], errors="coerce").mean(), 1)
+
+        # ── 7. PR-to-PO Cycle Time ────────────────────────────────────────────
+        pr_to_po_cycle_days = 0
+        if not sla_df.empty and "Category_Name" in sla_df.columns and "Cumulative_Days_Standard" in sla_df.columns:
+            cat_sla = sla_df[sla_df["Category_Name"] == cat_name]
+            if not cat_sla.empty:
+                pr_to_po_cycle_days = int(pd.to_numeric(cat_sla["Cumulative_Days_Standard"], errors="coerce").max())
+        if pr_to_po_cycle_days == 0 and not sla_df.empty and "Cumulative_Days_Standard" in sla_df.columns:
+            # Use overall average as fallback
+            pr_to_po_cycle_days = int(pd.to_numeric(sla_df["Cumulative_Days_Standard"], errors="coerce").max())
+
+        return {
+            "category_name":             cat_name,
+            "parent_group":              parent_group,
+            "category_owner":            category_owner,
+            "total_spend_cr":            total_spend_cr,
+            "spend_contribution_pct":    spend_contribution_pct,
+            "savings_cr":                savings_cr,
+            "on_contract_pct":           on_contract_pct,
+            "off_contract_pct":          off_contract_pct,
+            "off_contract_breakdown":    {"rfx_pct": rfx_pct, "spot_pct": spot_pct},
+            "contract_coverage_pct":     contract_coverage_pct,
+            "supplier_concentration_pct": supplier_concentration_pct,
+            "top3_vendors":              top3_vendors,
+            "avg_risk_score":            avg_risk_score,
+            "pr_to_po_cycle_days":       pr_to_po_cycle_days,
+            "avg_vendor_performance_score": avg_vendor_performance,
         }
-        return kpis
+
+    @staticmethod
+    def get_category_meta_filters():
+        """Returns all Parent Groups with their Categories and owners for the filter bar."""
+        cat_df = CategoryService._get_excel_df("Category Master")
+        if cat_df.empty or "Category_Name" not in cat_df.columns:
+            return []
+
+        result = {}
+        for _, row in cat_df.iterrows():
+            pg = str(row.get("Parent_Group", "Other"))
+            cat = str(row.get("Category_Name", ""))
+            owner = str(row.get("Category_Owner", "N/A"))
+            cat_id_val = row.get("Category_ID", None)
+            if pg not in result:
+                result[pg] = []
+            result[pg].append({"name": cat, "owner": owner, "excel_id": str(cat_id_val) if cat_id_val else None})
+
+        return [{"parent_group": k, "categories": v} for k, v in result.items()]
 
     @staticmethod
     def get_strategy(db: Session, category_id: int):

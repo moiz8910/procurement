@@ -23,10 +23,15 @@ from typing import List
 class StrategyUpdate(BaseModel):
     content_blocks: List[str]
 
+@router.get("/meta/filters")
+def get_category_meta_filters():
+    """Returns Parent Group → Category → Owner hierarchy for the filter bar."""
+    return CategoryService.get_category_meta_filters()
+
 @router.get("/{category_id}/kpis")
 def get_category_kpis(category_id: int, db: Session = Depends(get_db)):
-    # Assuming RBAC is checked at UI or via deps
     return CategoryService.get_category_kpis(db, category_id)
+
 
 @router.get("/{category_id}/strategy")
 def get_category_strategy(category_id: int, db: Session = Depends(get_db)):

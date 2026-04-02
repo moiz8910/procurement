@@ -14,6 +14,7 @@ api.interceptors.request.use((config) => {
 // Global & Category
 export const getKpis = (params) => api.get('/kpis', { params });
 export const getCategories = () => api.get('/categories');
+export const getCategoryMetaFilters = () => api.get('/categories/meta/filters');
 export const getCategorySpend = (id) => api.get(`/categories/${id}/spend`);
 export const getCategoryKpis = (id) => api.get(`/categories/${id}/kpis`);
 export const getCategoryStrategy = (id) => api.get(`/categories/${id}/strategy`);
