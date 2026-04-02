@@ -347,23 +347,41 @@ const CategoryModule = () => {
                 value={kpiData ? `${kpiData.on_contract_pct}%` : '—'}
                 sub={`Off-Contract: ${kpiData?.off_contract_pct ?? '—'}%`}
               />
-              <KpiTile
-                icon={BarChart3} label="Off-Contract Breakdown" accent="teal"
-                value={kpiData ? `${kpiData.off_contract_pct}%` : '—'}
-                sub="Click to see RFX vs Spot split"
-                expandable
-              >
-                <div className="space-y-1.5">
-                  <div className="flex justify-between">
-                    <span>RFX / Tender Route</span>
-                    <span className="font-bold">{kpiData?.off_contract_breakdown?.rfx_pct ?? 0}%</span>
+              <div className="rounded-xl border bg-teal-50 border-teal-100 text-teal-700 p-4 flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="bg-teal-100 text-teal-600 p-2 rounded-lg"><BarChart3 size={16} /></div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider opacity-60">Off-Contract Breakdown</p>
+                </div>
+                <p className="text-2xl font-black tracking-tight leading-none">{kpiData ? `${kpiData.off_contract_pct}%` : '—'}</p>
+                <div className="border-t border-teal-200 pt-2 space-y-2">
+                  {/* RFX bar */}
+                  <div>
+                    <div className="flex justify-between text-[11px] font-bold mb-1">
+                      <span>RFX / Tender Route</span>
+                      <span>{kpiData?.off_contract_breakdown?.rfx_pct ?? 0}%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-teal-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-teal-500 rounded-full transition-all duration-500"
+                        style={{ width: `${kpiData?.off_contract_breakdown?.rfx_pct ?? 0}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Spot Purchase</span>
-                    <span className="font-bold">{kpiData?.off_contract_breakdown?.spot_pct ?? 0}%</span>
+                  {/* Spot bar */}
+                  <div>
+                    <div className="flex justify-between text-[11px] font-bold mb-1">
+                      <span>Spot Purchase</span>
+                      <span>{kpiData?.off_contract_breakdown?.spot_pct ?? 0}%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-teal-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-teal-300 rounded-full transition-all duration-500"
+                        style={{ width: `${kpiData?.off_contract_breakdown?.spot_pct ?? 0}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </KpiTile>
+              </div>
               <KpiTile
                 icon={Target} label="Contract Coverage %" accent="teal"
                 value={kpiData ? `${kpiData.contract_coverage_pct}%` : '—'}
