@@ -160,17 +160,7 @@ const CategoryModule = () => {
         <div>
           <h1 className="text-2xl font-black text-slate-800 tracking-tight">Category Module</h1>
         </div>
-        <select 
-          className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 font-bold text-blue-600 outline-none cursor-pointer"
-          value={selectedCategory?.id || ''}
-          onChange={(e) => {
-            const cat = categories.find(c => c.id === parseInt(e.target.value));
-            setSelectedCategory(cat);
-            updateFilters({ categoryId: cat.id });
-          }}
-        >
-          {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </select>
+
       </div>
 
       {/* Grid Layout Start */}

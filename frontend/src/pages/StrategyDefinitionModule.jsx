@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, BrainCircuit, Zap, Send, FileText, FileDown,
-  Layers, Lightbulb, CheckCircle2, FileSignature, ChevronRight,
-  Sparkles, CheckCircle, ArrowRight
+  Layers, Lightbulb, CheckCircle2, FileSignature
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getCategories, getCategoryStrategy } from '../api';
 
-// Mockup of a Strategy Document
+// Simple mockup of a long 10-15 page strategy document
 const INITIAL_DOCUMENT_SECTIONS = [
   { id: 'sec1', title: 'Executive Summary', content: 'Our category strategy focuses on optimizing Total Cost of Ownership (TCO), mitigating supply chain risks, and enhancing sustainability across our supplier network.' },
   { id: 'sec2', title: 'Market Analysis & Intelligence', content: 'The global market is experiencing significant volatility due to geopolitical tensions and logistical constraints. We are observing a shift towards regional sourcing models.' },
@@ -19,33 +19,73 @@ const INITIAL_DOCUMENT_SECTIONS = [
 ];
 
 const StrategyDefinitionModule = () => {
-  const { categories, setActiveTab, currentUser, filters, updateFilters } = useApp();
+  const { setActiveTab, currentUser, filters, updateFilters } = useApp();
   
-  // Setup Flow State
-  const [setupComplete, setSetupComplete] = useState(false);
-  const [targetCategory, setTargetCategory] = useState(null);
+  const [localCategories, setLocalCategories] = useState([]);
+  const [fetchingCategories, setFetchingCategories] = useState(true);
+
+  // Directly pull the category mapped to the global app filter
+  const activeCategoryId = parseInt(filters.categoryId) || (localCategories.length > 0 ? localCategories[0].id : null);
+  const selectedCategory = localCategories.find(c => c.id === activeCategoryId) || localCategories[0] || null;
   
-  // Workspace State
   const [documentSections, setDocumentSections] = useState(INITIAL_DOCUMENT_SECTIONS);
+  const [loadingStrategy, setLoadingStrategy] = useState(false);
+
   const [chatHistory, setChatHistory] = useState([
-    { role: 'ai', text: 'Welcome to the Strategy Workspace! I am your Copilot. I have prepared an initial 10-page draft framework. How would you like to refine the Executive Summary or Market Assessment?' }
+    { role: 'ai', text: 'Hello! I am your Procura Strategy Copilot. Together we can build and refine a comprehensive 10-15 page Category Strategy Workbook.' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef(null);
 
-  // Re-scroll chat when it updates
+  // 1. Fetch Categories explicitly from the Database on mount
   useEffect(() => {
-    if (scrollRef.current && setupComplete) {
+    let active = true;
+    getCategories()
+      .then(res => {
+        if (!active) return;
+        setLocalCategories(res.data || []);
+        setFetchingCategories(false);
+        // If there's no filter set yet, just set it to the first category from the DB
+        if (!filters.categoryId && res.data?.length > 0) {
+          updateFilters({ categoryId: res.data[0].id });
+        }
+      })
+      .catch(err => {
+        console.error("Failed to fetch categories:", err);
+        setFetchingCategories(false);
+      });
+    return () => { active = false; };
+  }, []);
+
+  // 2. Fetch the specific Strategy Database Content when the Category changes
+  useEffect(() => {
+    if (activeCategoryId) {
+      setLoadingStrategy(true);
+      getCategoryStrategy(activeCategoryId)
+        .then(res => {
+          if (res.data?.content_blocks && res.data.content_blocks.length > 0) {
+            setDocumentSections(res.data.content_blocks);
+          } else {
+            // Fallback to placeholder if no DB strategy exists
+            setDocumentSections(INITIAL_DOCUMENT_SECTIONS);
+          }
+        })
+        .catch(() => {
+           setDocumentSections(INITIAL_DOCUMENT_SECTIONS);
+        })
+        .finally(() => {
+          setLoadingStrategy(false);
+        });
+    }
+  }, [activeCategoryId]);
+
+  useEffect(() => {
+    // Scroll to bottom of chat
+    if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [chatHistory, isTyping, setupComplete]);
-
-  const handleInitialize = () => {
-    if(!targetCategory) return;
-    updateFilters({ categoryId: targetCategory.id });
-    setSetupComplete(true);
-  };
+  }, [chatHistory, isTyping]);
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
@@ -55,174 +95,118 @@ const StrategyDefinitionModule = () => {
     setInputValue('');
     setIsTyping(true);
 
+    // Simulate AI thinking and building the document
     setTimeout(() => {
       setIsTyping(false);
       setChatHistory(prev => [
         ...prev, 
-        { role: 'ai', text: 'I have successfully generated new insights and updated the Market Analysis section in the document preview. Let me know if you need to adjust the tone or details.' }
+        { role: 'ai', text: 'I have generated new insights based on your request. I updated the document preview on the right.' }
       ]);
       
+      // Update the document to reflect copilot action
       setDocumentSections(prev => {
         const newSecs = [...prev];
-        newSecs[1].content += '\n\n[Copilot Update]: Integrated recent supply chain index metrics demonstrating a 4% ease in freight costs and 12% drop in raw material inflation over the next 2 quarters.';
+        if(newSecs[1]) {
+           newSecs[1].content += '\n\n[Copilot Update]: Integrated recent supply chain index metrics demonstrating a 4% ease in freight costs over the next 2 quarters.';
+        }
         return newSecs;
       });
     }, 2000);
   };
 
-  // ─── SETUP SCREEN ─────────────────────────────────────────────────────────────
-  if (!setupComplete) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-64px)] relative bg-slate-900 overflow-hidden">
-        {/* Dynamic Background */}
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/30 blur-[150px] rounded-full mix-blend-screen animate-pulse pointer-events-none" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/20 blur-[130px] rounded-full mix-blend-screen pointer-events-none" />
-        
-        <button 
-          onClick={() => setActiveTab('categories')}
-          className="absolute top-8 left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all shadow-lg flex items-center gap-2 group"
-        >
-          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm font-bold pr-2">Back</span>
-        </button>
-
-        <div className="relative z-10 w-full max-w-2xl bg-white/10 backdrop-blur-2xl border border-white/20 p-12 rounded-3xl shadow-2xl flex flex-col items-center transform transition-all">
-          <div className="bg-gradient-to-br from-blue-400 to-indigo-600 p-4 rounded-2xl shadow-xl shadow-blue-500/20 mb-8 border border-white/20">
-             <BrainCircuit className="w-12 h-12 text-white" />
-          </div>
-          
-          <h1 className="text-4xl font-black text-white tracking-tight text-center mb-4">Initialize Workstream</h1>
-          <p className="text-slate-300 text-center mb-10 text-lg leading-relaxed max-w-lg">
-            Select a target category to enter the Copilot-assisted Strategy Workspace. We'll pre-load your data assets.
-          </p>
-
-          <div className="w-full max-w-md bg-white/5 p-2 rounded-2xl border border-white/10 mb-8">
-            <select 
-              className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-5 py-4 font-bold text-white outline-none cursor-pointer text-lg appearance-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-inner"
-              value={targetCategory?.id || ''}
-              onChange={(e) => {
-                const cat = categories.find(c => c.id === parseInt(e.target.value));
-                setTargetCategory(cat);
-              }}
-            >
-              <option value="" disabled>Select Category...</option>
-              {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-            </select>
-          </div>
-
-          <button 
-            disabled={!targetCategory}
-            onClick={handleInitialize}
-            className="w-full max-w-md bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed flex justify-center items-center gap-3 group"
-          >
-            Launch Builder <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // ─── PREMIUM WORKSPACE SCREEN ──────────────────────────────────────────────────
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)] max-h-screen relative overflow-hidden bg-[#F8FAFC]">
-      {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[800px] h-[500px] bg-blue-100/50 blur-[100px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-100px] left-[-100px] w-[500px] h-[500px] bg-indigo-100/40 blur-[120px] rounded-full pointer-events-none" />
-
-      {/* Glass Header */}
-      <div className="flex-none bg-white/70 backdrop-blur-xl border-b border-white shadow-sm px-6 py-4 flex justify-between items-center z-20 relative">
-        <div className="flex items-center gap-5">
+    <div className="flex flex-col h-[calc(100vh-64px)] max-h-screen bg-slate-50 relative text-[13px]">
+      {/* Header with the prominent Category Filter */}
+      <div className="flex-none bg-white border-b border-slate-200 px-5 py-3 flex justify-between items-center z-10 shadow-sm">
+        <div className="flex items-center gap-3">
           <button 
-            onClick={() => setSetupComplete(false)}
-            className="p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition-all shadow-sm active:scale-95 group"
+            onClick={() => setActiveTab('categories')}
+            className="p-1.5 -ml-1 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+            <ArrowLeft className="w-4 h-4" />
           </button>
-          <div className="flex flex-col">
-            <h1 className="text-xl font-black text-slate-800 flex items-center gap-2.5 tracking-tight">
-              <span className="bg-blue-600 text-white p-1 rounded-md"><FileSignature size={18} /></span>
+          <div>
+            <h1 className="text-lg font-black text-slate-800 flex items-center gap-2 tracking-tight">
+              <FileSignature className="text-blue-600 w-4 h-4" />
               Strategy Builder
             </h1>
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider mt-0.5">
-              <span>{targetCategory?.name}</span>
-              <span className="w-1 h-1 bg-slate-300 rounded-full" />
-              <span className="text-blue-600 flex items-center gap-1"><Sparkles size={12}/> Copilot Active</span>
-            </div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Category Strategy Workbook</p>
           </div>
         </div>
         
         <div className="flex items-center gap-4">
-           {/* Visual Pill for the current category context */}
-           <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-blue-50/80 border border-blue-100/80 rounded-full text-blue-700 font-bold text-sm shadow-inner">
-             <Layers size={16} className="text-blue-500" />
-             {targetCategory?.name}
-           </div>
+          {/* Main Select Category Filter Database Link */}
+          <div className="flex flex-col items-start bg-slate-50 px-3 py-1 rounded-lg border border-slate-200">
+             <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider pt-0.5">Filter Scope (Database)</label>
+             {fetchingCategories ? (
+               <span className="text-blue-600 font-bold text-xs py-1">Loading...</span>
+             ) : (
+               <select 
+                 className="bg-transparent font-bold text-blue-700 outline-none cursor-pointer text-[13px] w-48 -ml-1"
+                 value={activeCategoryId || ''}
+                 onChange={(e) => {
+                   const catId = parseInt(e.target.value);
+                   const cat = localCategories.find(c => c.id === catId);
+                   if (cat) updateFilters({ categoryId: cat.id });
+                 }}
+               >
+                 {localCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+               </select>
+             )}
+          </div>
 
-          <button className="flex items-center gap-2 bg-slate-800 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-700 transition-all shadow-md active:scale-95 group">
-            <FileDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
-            Publish PDF
+          <button className="flex items-center gap-1.5 bg-slate-800 text-white px-3 py-2 rounded-md text-xs font-bold hover:bg-slate-900 transition-all shadow-sm">
+            <FileDown className="w-3 h-3" />
+            Export PDF
           </button>
         </div>
       </div>
 
-      {/* Main Content Split */}
-      <div className="flex-1 overflow-hidden flex flex-col md:flex-row relative z-10 w-full max-w-[1700px] mx-auto p-4 gap-4">
+      {/* Main Content Workspace Split */}
+      <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
         
-        {/* Left Pane - Premium Chat */}
-        <div className="w-full md:w-[400px] flex-shrink-0 bg-white/60 backdrop-blur-2xl border border-white shadow-xl rounded-3xl flex flex-col relative overflow-hidden">
-          {/* Header */}
-          <div className="p-5 border-b border-slate-100 bg-gradient-to-r from-blue-50/[0.8] to-indigo-50/[0.8] flex items-center gap-4 drop-shadow-sm">
-            <div className="relative">
-              <div className="absolute inset-0 bg-blue-400 blur-sm rounded-full opacity-50 animate-pulse"></div>
-              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2.5 rounded-full text-white relative z-10 shadow-lg">
-                <BrainCircuit className="w-6 h-6" />
-              </div>
+        {/* Left Pane - Copilot Chat */}
+        <div className="w-full md:w-[320px] bg-white border-r border-slate-200 flex flex-col relative z-0 shadow-sm">
+          <div className="p-3 border-b border-slate-100 flex items-center gap-2 bg-blue-50/50">
+            <div className="bg-blue-100 p-1.5 rounded-md text-blue-700">
+              <BrainCircuit className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-black text-slate-800 tracking-tight">Procura AI</h2>
-              <p className="text-xs font-bold text-blue-600 flex items-center gap-1"><span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"/> Writing Assistant</p>
+              <h2 className="text-xs font-bold text-slate-800">Strategy Copilot</h2>
+              <p className="text-[10px] font-medium text-slate-500 hover:text-blue-600 cursor-pointer">View Instructions</p>
             </div>
           </div>
 
-          {/* Chat Transcript */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-6 custom-scrollbar" ref={scrollRef}>
+          <div className="flex-1 overflow-y-auto p-3 space-y-4 bg-slate-50/50 text-xs" ref={scrollRef}>
             {chatHistory.map((msg, idx) => (
-              <div key={idx} className={`flex w-full ${msg.role === 'ai' ? 'justify-start' : 'justify-end'}`}>
-                {msg.role === 'ai' && (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex flex-shrink-0 items-center justify-center text-white mr-3 shadow-md mt-1">
-                    <Sparkles size={14} />
-                  </div>
-                )}
-                <div className={`max-w-[75%] px-4 py-3 text-sm font-medium leading-relaxed shadow-sm ${
+              <div key={idx} className={`flex ${msg.role === 'ai' ? 'justify-start' : 'justify-end'}`}>
+                <div className={`max-w-[90%] rounded-xl p-2.5 flex gap-2.5 ${
                   msg.role === 'ai' 
-                    ? 'bg-white border border-slate-100 text-slate-700 rounded-2xl rounded-tl-sm' 
-                    : 'bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-2xl rounded-tr-sm'
+                    ? 'bg-white border border-slate-200 text-slate-700 rounded-tl-none shadow-sm' 
+                    : 'bg-blue-600 text-white rounded-tr-none shadow-sm'
                 }`}>
-                  <div className="whitespace-pre-wrap">{msg.text}</div>
+                  {msg.role === 'ai' && <div className="mt-0.5"><Zap className="w-3 h-3 text-blue-500" /></div>}
+                  <div className="leading-relaxed whitespace-pre-wrap">{msg.text}</div>
                 </div>
               </div>
             ))}
-
             {isTyping && (
-              <div className="flex w-full justify-start">
-                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex flex-shrink-0 items-center justify-center text-white mr-3 shadow-md mt-1">
-                    <Sparkles size={14} />
-                 </div>
-                 <div className="max-w-[75%] px-4 py-4 bg-white border border-slate-100 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce delay-75"></div>
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-150"></div>
-                 </div>
+              <div className="flex justify-start">
+                <div className="max-w-[85%] rounded-xl p-3 bg-white border border-slate-200 rounded-tl-none flex items-center gap-1.5 shadow-sm">
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce delay-75"></div>
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce delay-150"></div>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Input Area */}
-          <div className="p-4 bg-white/80 border-t border-slate-100 backdrop-blur-md">
-            <div className="relative flex items-end bg-slate-50 border border-slate-200 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 rounded-2xl p-2 transition-all shadow-inner">
+          {/* Chat Input */}
+          <div className="p-3 bg-white border-t border-slate-100">
+            <div className="relative flex items-center">
               <textarea
-                className="w-full bg-transparent pl-3 pr-12 py-2 text-sm text-slate-800 focus:outline-none resize-none h-[60px] custom-scrollbar"
-                placeholder="Ask Copilot to generate sections, edit data, or refine tone..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-3 pr-10 py-2.5 text-xs focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 transition-all resize-none h-[42px]"
+                placeholder="Instruct Copilot..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => {
@@ -235,81 +219,61 @@ const StrategyDefinitionModule = () => {
               <button 
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isTyping}
-                className="absolute right-3 bottom-3 p-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
+                className="absolute right-1.5 p-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-4 h-4 ml-0.5" />
+                <Send className="w-3 h-3" />
               </button>
             </div>
             
-            {/* Quick Actions */}
-            <div className="mt-3 flex overflow-x-auto gap-2 custom-scrollbar pb-1">
-               <button onClick={() => setInputValue("Generate summary")} className="flex-shrink-0 text-[11px] font-bold text-slate-600 hover:text-blue-700 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm hover:shadow transition-all whitespace-nowrap">
-                  Summarize Risk
-               </button>
-               <button onClick={() => setInputValue("Assess market constraints")} className="flex-shrink-0 text-[11px] font-bold text-slate-600 hover:text-blue-700 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm hover:shadow transition-all whitespace-nowrap">
-                  Expand Market Setup
-               </button>
-               <button onClick={() => setInputValue("Make the tone more formal")} className="flex-shrink-0 text-[11px] font-bold text-slate-600 hover:text-blue-700 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm hover:shadow transition-all whitespace-nowrap">
-                  Formalize Tone
-               </button>
+            {/* Suggestions */}
+            <div className="mt-2 flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1">
+               <button className="text-[9px] font-bold text-blue-600 hover:text-blue-800 bg-blue-50 border border-blue-100 px-2 py-1 rounded-md flex-shrink-0" onClick={() => setInputValue("Generate summary")}>Generate Summary</button>
+               <button className="text-[9px] font-bold text-blue-600 hover:text-blue-800 bg-blue-50 border border-blue-100 px-2 py-1 rounded-md flex-shrink-0" onClick={() => setInputValue("Expand Risk")}>Expand Risk</button>
             </div>
           </div>
         </div>
 
-        {/* Right Pane - Elegant Document Viewer */}
-        <div className="flex-1 bg-white/40 backdrop-blur-3xl shadow-xl rounded-3xl border border-white overflow-y-auto relative p-6 md:p-10 custom-scrollbar flex justify-center">
-           {/* Document Mockup Canvas */}
-           <div className="bg-white w-full max-w-[900px] shadow-2xl rounded-2xl border border-slate-100 min-h-[1400px] mb-20 overflow-hidden transform transition-all">
+        {/* Right Pane - Strict Clean Document Viewer (Zoomed Out) */}
+        <div className="flex-1 bg-slate-200 overflow-y-auto p-4 md:p-8 flex justify-center custom-scrollbar shadow-inner relative relative">
+           
+           <div className={`bg-white w-full max-w-[700px] shadow-sm border border-slate-300 min-h-[1000px] mb-12 overflow-hidden transition-opacity ${loadingStrategy ? 'opacity-50' : 'opacity-100'}`}>
               
-              {/* Premium Document Header */}
-              <div className="relative px-16 py-20 bg-slate-50 border-b border-slate-100 overflow-hidden">
-                 {/* Top graphic accent */}
-                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
+              {/* Document Header */}
+              <div className="px-8 py-10 bg-slate-900 border-b-4 border-blue-500 text-white">
+                 <h1 className="text-2xl font-black mb-3 tracking-tight">Category Strategy</h1>
+                 <p className="text-sm font-medium text-slate-400 border-b border-slate-800 pb-4 mb-4 uppercase tracking-widest">Confidential Strategy Workbook</p>
                  
-                 <div className="flex justify-between items-start mb-10">
+                 <div className="grid grid-cols-4 gap-4 text-xs">
                     <div>
-                      <div className="text-blue-600 font-bold uppercase tracking-widest text-xs mb-4 flex items-center gap-2">
-                        <CheckCircle size={14} /> Official Record
-                      </div>
-                      <h1 className="text-5xl font-black text-slate-900 tracking-tighter mb-4 leading-tight">
-                        Category Strategy <br/> <span className="text-slate-400">Workbook</span>
-                      </h1>
+                      <p className="text-slate-500 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Target Category</p>
+                      <p className="font-bold text-slate-100">{selectedCategory?.name || 'Loading...'}</p>
                     </div>
-                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-right">
-                       <p className="text-slate-400 font-bold uppercase tracking-wider text-[10px] mb-1">Status</p>
-                       <p className="text-emerald-500 font-black text-sm uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full">Drafted</p>
+                    <div className="col-span-2">
+                      <p className="text-slate-500 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Prepared By</p>
+                      <p className="font-bold text-slate-100">{currentUser?.name}</p>
                     </div>
-                 </div>
-
-                 <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-200">
-                    <div>
-                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-1 text-[10px]">Target Category</p>
-                      <p className="font-bold text-slate-800 text-base">{targetCategory?.name || 'N/A'}</p>
-                    </div>
-                    <div>
-                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-1 text-[10px]">Strategy Lead</p>
-                      <p className="font-bold text-slate-800 text-base">{currentUser?.name}</p>
-                    </div>
-                    <div>
-                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-1 text-[10px]">Last Compiled</p>
-                      <p className="font-bold text-slate-800 text-base">{new Date().toLocaleDateString()}</p>
+                    <div className="text-right">
+                      <p className="text-slate-500 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Date Configured</p>
+                      <p className="font-bold text-slate-100">{new Date().toLocaleDateString()}</p>
                     </div>
                  </div>
               </div>
 
-              {/* Document Body Sections (Rich Typography) */}
-              <div className="px-16 py-12 space-y-16">
-                 {documentSections.map((sec, index) => (
+              {/* Document Body Sections */}
+              <div className="p-8 space-y-8">
+                 {loadingStrategy && <div className="text-center text-sm font-bold text-blue-600 animate-pulse">Synchronizing Database Blocks...</div>}
+                 
+                 {!loadingStrategy && documentSections.map((sec, index) => (
                     <div key={sec.id} className="group relative">
-                       <h2 className="text-2xl font-black text-slate-800 mb-6 flex items-baseline gap-4 tracking-tight">
-                         <span className="text-blue-600/30 font-black text-3xl font-serif italic">{String(index + 1).padStart(2, '0')}</span> 
+                       <h2 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-1.5 mb-3 flex items-center gap-2">
+                         <span className="text-blue-500/30 font-black text-lg">{String(index + 1).padStart(2, '0')}</span> 
                          {sec.title}
                        </h2>
-                       <div className="text-slate-600 text-[15px] leading-loose whitespace-pre-wrap pl-12 border-l-[3px] border-slate-100 group-hover:border-blue-400 transition-colors">
+                       <div className="text-slate-600 text-xs leading-relaxed whitespace-pre-wrap pl-6 border-l-2 border-transparent group-hover:border-blue-100 transition-colors">
                           {sec.content.split('\n').map((para, i) => (
-                             <p key={i} className={i !== 0 ? 'mt-4' : ''}>
+                             <p key={i} className={i !== 0 ? 'mt-2' : ''}>
                                 {para.includes('[Copilot Update]') ? (
-                                   <span className="bg-blue-50 text-blue-800 font-medium px-2 py-1 rounded-md border border-blue-100 shadow-sm">
+                                   <span className="bg-blue-50 text-blue-800 font-medium px-1.5 py-0.5 rounded border border-blue-100 block my-1 shadow-sm">
                                       {para}
                                    </span>
                                 ) : para}
@@ -319,11 +283,9 @@ const StrategyDefinitionModule = () => {
                     </div>
                  ))}
                  
-                 {/* Footer Watermark */}
-                 <div className="mt-20 pt-10 border-t border-slate-100 flex flex-col items-center opacity-40">
-                    <Layers className="mb-3 w-8 h-8 text-slate-400" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Procura Technologies</p>
-                    <p className="text-[10px] font-bold text-slate-400 mt-1">Page 1 of 15</p>
+                 <div className="mt-12 pt-6 border-t border-slate-100 text-center text-slate-400 flex flex-col items-center">
+                    <Layers className="mb-1.5 w-4 h-4 opacity-30" />
+                    <p className="uppercase tracking-widest text-[9px] font-bold">End of Document - Page 1 of 15</p>
                  </div>
               </div>
            </div>
