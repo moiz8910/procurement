@@ -65,7 +65,16 @@ const StrategyDefinitionModule = () => {
       getCategoryStrategy(activeCategoryId)
         .then(res => {
           if (res.data?.content_blocks && res.data.content_blocks.length > 0) {
-            setDocumentSections(res.data.content_blocks);
+            const blocks = res.data.content_blocks;
+            if (typeof blocks[0] === 'string') {
+              setDocumentSections(blocks.map((b, i) => ({
+                id: `sec${i}`,
+                title: `Strategy Initiative ${i + 1}`,
+                content: b
+              })));
+            } else {
+              setDocumentSections(blocks);
+            }
           } else {
             // Fallback to placeholder if no DB strategy exists
             setDocumentSections(INITIAL_DOCUMENT_SECTIONS);
