@@ -40,17 +40,17 @@ const Topbar = () => {
         <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
           <span className="font-bold tracking-tight">PROCURA</span>
           <ChevronRight className="h-4 w-4 text-slate-300" />
-          <span className="text-slate-900 font-bold">{getBreadcrumb()}</span>
+          <span className="text-emerald-900 font-bold">{getBreadcrumb()}</span>
         </div>
       </div>
 
       {/* Centre: search */}
       <div className="flex items-center gap-4 flex-1 max-w-xl mx-8">
         <div className="relative w-full group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-indigo-600 transition-colors" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-teal-600 transition-colors" />
           <Input
             placeholder="Search records, categories, or insights..."
-            className="pl-10 h-10 bg-slate-50 border-slate-200 focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all rounded-full text-sm"
+            className="pl-10 h-10 bg-slate-50 border-slate-200 focus:bg-white focus:ring-2 focus:ring-teal-100 transition-all rounded-full text-sm"
             value={filters.searchQuery || ''}
             onChange={(e) => updateFilters({ searchQuery: e.target.value })}
           />
@@ -59,7 +59,7 @@ const Topbar = () => {
 
       {/* Right: actions + user */}
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-indigo-600">
+        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-teal-600">
           <HelpCircle className="h-5 w-5" />
         </Button>
         <NotificationBell />
@@ -67,8 +67,8 @@ const Topbar = () => {
 
         {/* User info */}
         <div className="hidden sm:flex flex-col items-end">
-          <span className="text-xs font-bold text-slate-900">{currentUser?.name}</span>
-          <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">{currentUser?.role}</span>
+          <span className="text-xs font-bold text-emerald-900">{currentUser?.name}</span>
+          <span className="text-[10px] font-bold text-teal-600 uppercase tracking-widest">{currentUser?.role}</span>
         </div>
         <div className="h-9 w-9 rounded-full bg-slate-800 flex items-center justify-center text-white font-black text-sm shadow-sm ring-2 ring-slate-100">
           {currentUser?.name?.[0]}

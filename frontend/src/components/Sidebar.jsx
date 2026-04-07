@@ -12,7 +12,7 @@ import {
 // Role → badge colour
 const ROLE_BADGE = {
   CPO:               { label: 'CPO',              bg: 'bg-violet-100', text: 'text-violet-700' },
-  CATEGORY_MANAGER:  { label: 'Cat. Manager',     bg: 'bg-blue-100',   text: 'text-blue-700'   },
+  CATEGORY_MANAGER:  { label: 'Cat. Manager',     bg: 'bg-emerald-100',   text: 'text-emerald-700'   },
   SOURCING_ANALYST:  { label: 'Sourcing Analyst',  bg: 'bg-sky-100',    text: 'text-sky-700'    },
   REQUESTER:         { label: 'PR Requester',      bg: 'bg-emerald-100',text: 'text-emerald-700'},
 };
@@ -67,7 +67,7 @@ const Sidebar = () => {
     <aside className="w-64 bg-slate-50 border-r border-slate-200 h-screen flex flex-col fixed left-0 top-0 z-40">
       {/* Brand Header */}
       <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-200 bg-white">
-        <div className="bg-blue-600 text-white p-1.5 rounded flex items-center justify-center">
+        <div className="bg-emerald-600 text-white p-1.5 rounded flex items-center justify-center">
           <Building2 size={20} />
         </div>
         <div>
@@ -91,17 +91,17 @@ const Sidebar = () => {
               title={item.description}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === item.id
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-emerald-50 text-emerald-700'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-emerald-900'
               }`}
             >
               <item.icon
                 size={18}
-                className={activeTab === item.id ? 'text-blue-600' : 'text-slate-400'}
+                className={activeTab === item.id ? 'text-emerald-600' : 'text-slate-400'}
               />
               <span className="flex-1 text-left">{item.label}</span>
               {activeTab === item.id && (
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               )}
             </button>
           ))}
@@ -115,8 +115,8 @@ const Sidebar = () => {
             {currentUser?.name?.[0]}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-slate-900 truncate">{currentUser?.name}</p>
-            <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest truncate">{currentUser?.role}</p>
+            <p className="text-sm font-bold text-emerald-900 truncate">{currentUser?.name}</p>
+            <p className="text-[10px] font-bold text-teal-600 uppercase tracking-widest truncate">{currentUser?.role}</p>
           </div>
         </div>
         <button

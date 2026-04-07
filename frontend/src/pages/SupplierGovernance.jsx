@@ -34,18 +34,18 @@ const SupplierGovernance = () => {
     <div className="p-6 space-y-6 animate-in slide-in-from-right-4 duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-indigo-600 font-bold text-[10px] uppercase tracking-widest mb-1">
+          <div className="flex items-center gap-2 text-teal-600 font-bold text-[10px] uppercase tracking-widest mb-1">
             <ShieldCheck className="h-3 w-3" />
             Supplier Risk & Governance
           </div>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">Vendor Ecosystem</h1>
+          <h1 className="text-3xl font-black tracking-tight text-emerald-900">Vendor Ecosystem</h1>
           <p className="text-sm text-slate-500 font-medium">Monitor compliance, ESG scores, and performance health.</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" className="h-10 border-slate-200">
             <Filter className="h-4 w-4 mr-2" /> Compliance Filter
           </Button>
-          <Button className="h-10 bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/20">
+          <Button className="h-10 bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-600/20">
             Assess New Vendor
           </Button>
         </div>
@@ -95,7 +95,7 @@ const SupplierGovernance = () => {
                 <tbody className="divide-y divide-slate-100">
                   {filteredVendors.slice(0, 10).map((vendor) => (
                     <tr key={vendor.id} className="group hover:bg-slate-50 transition-colors">
-                      <td className="p-4 pl-6 font-black text-slate-900">{vendor.name}</td>
+                      <td className="p-4 pl-6 font-black text-emerald-900">{vendor.name}</td>
                       <td className="p-4 text-slate-600 font-medium">Bauxite Mining</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ const SupplierGovernance = () => {
                       </td>
                       <td className="p-4">{getRiskBadge(85 - (vendor.id * 2))}</td>
                       <td className="p-4 text-right pr-6">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-300 group-hover:text-indigo-600 transition-colors">
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-300 group-hover:text-teal-600 transition-colors">
                           <ArrowUpRight className="h-4 w-4" />
                         </Button>
                       </td>

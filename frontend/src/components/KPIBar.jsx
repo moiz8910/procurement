@@ -20,10 +20,10 @@ const KPIBar = () => {
   const riskIndex = 12; // Sample
 
   const kpis = [
-    { label: 'YTD Managed Spend', value: `$${(totalSpend / 1000000).toFixed(1)}M`, trend: '+4.2%', icon: DollarSign, color: 'text-indigo-600' },
+    { label: 'YTD Managed Spend', value: `$${(totalSpend / 1000000).toFixed(1)}M`, trend: '+4.2%', icon: DollarSign, color: 'text-teal-600' },
     { label: 'PR-to-PO Velocity', value: '4.8 Days', trend: '-0.5d', icon: Zap, color: 'text-amber-600' },
     { label: 'Sourcing Savings', value: '12.4%', trend: '+1.1%', icon: Target, color: 'text-emerald-600' },
-    { label: 'Active Pipeline', value: prs.length, trend: 'Normal', icon: Package, color: 'text-blue-600' },
+    { label: 'Active Pipeline', value: prs.length, trend: 'Normal', icon: Package, color: 'text-emerald-600' },
   ];
 
   return (
@@ -36,7 +36,7 @@ const KPIBar = () => {
           <div className="flex flex-col">
             <span className="text-[10px] font-bold uppercase tracking-tight text-slate-500">{kpi.label}</span>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-black text-slate-900">{kpi.value}</span>
+              <span className="text-sm font-black text-emerald-900">{kpi.value}</span>
               <span className={`text-[10px] font-bold ${kpi.trend.startsWith('+') ? 'text-emerald-600' : 'text-slate-400'}`}>
                 {kpi.trend}
               </span>

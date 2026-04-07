@@ -21,7 +21,7 @@ const NotificationPanel = ({ notifications, onMarkRead, onResolve, onClose }) =>
           notifications.slice(0, 8).map((n) => (
             <div 
               key={n.id} 
-              className={`p-4 border-bottom hover:bg-gray-50 transition-colors cursor-pointer group ${n.status === 'UNREAD' ? 'bg-blue-50/30' : ''}`}
+              className={`p-4 border-bottom hover:bg-gray-50 transition-colors cursor-pointer group ${n.status === 'UNREAD' ? 'bg-emerald-50/30' : ''}`}
             >
               <div className="flex gap-3">
                 <div className={`mt-1 h-2 w-2 rounded-full shrink-0 ${

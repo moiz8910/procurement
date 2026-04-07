@@ -29,8 +29,13 @@ def get_category_meta_filters():
     return CategoryService.get_category_meta_filters()
 
 @router.get("/{category_id}/kpis")
-def get_category_kpis(category_id: int, db: Session = Depends(get_db)):
-    return CategoryService.get_category_kpis(db, category_id)
+def get_category_kpis(
+    category_id: int, 
+    start_date: str = None, 
+    end_date: str = None, 
+    db: Session = Depends(get_db)
+):
+    return CategoryService.get_category_kpis(db, category_id, start_date, end_date)
 
 @router.get("/{category_id}/spend-analysis")
 def get_spend_analysis(category_id: int, time_filter: str = "monthly", db: Session = Depends(get_db)):
@@ -67,10 +72,6 @@ class CopilotEditRequest(BaseModel):
 @router.post("/{category_id}/strategy/copilot-edit")
 def copilot_edit_strategy(category_id: int, payload: CopilotEditRequest, db: Session = Depends(get_db), current_user = Depends(deps.get_current_user)):
     return CategoryService.copilot_edit_strategy(db, category_id, payload.prompt, current_user.name)
-
-@router.get("/{category_id}/spend-analysis")
-def get_spend_analysis(category_id: int, db: Session = Depends(get_db)):
-    return CategoryService.get_spend_analysis(db, category_id)
 
 @router.post("/{category_id}/spend-analysis/analyze")
 def trigger_spend_analysis(category_id: int, db: Session = Depends(get_db)):

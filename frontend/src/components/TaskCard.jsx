@@ -12,7 +12,7 @@ const TaskCard = ({ task, onMarkRead, onResolve }) => {
 
   const getTypeIcon = (type) => {
     switch (type) {
-      case 'APPROVAL': return <CheckCircle size={16} className="text-blue-500" />;
+      case 'APPROVAL': return <CheckCircle size={16} className="text-emerald-500" />;
       case 'ALERT': return <AlertCircle size={16} className="text-red-500" />;
       default: return <Tag size={16} className="text-gray-400" />;
     }
@@ -64,7 +64,7 @@ const TaskCard = ({ task, onMarkRead, onResolve }) => {
           )}
           <button 
             onClick={() => onResolve(task.id)}
-            className="bg-primary text-white text-xs px-4 py-1.5 rounded-lg font-bold hover:bg-blue-700 transition-colors flex items-center gap-2"
+            className="bg-primary text-white text-xs px-4 py-1.5 rounded-lg font-bold hover:bg-emerald-700 transition-colors flex items-center gap-2"
           >
             Resolve <ArrowRight size={14} />
           </button>

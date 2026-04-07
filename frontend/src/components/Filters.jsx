@@ -26,7 +26,7 @@ const Filters = () => {
         <div className="flex items-center gap-2 min-w-[160px]">
           <Tag className="h-3.5 w-3.5 text-slate-400" />
           <Select>
-            <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-indigo-200">
+            <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-teal-200">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -43,7 +43,7 @@ const Filters = () => {
       <div className="flex items-center gap-2 min-w-[160px]">
         <Users className="h-3.5 w-3.5 text-slate-400" />
         <Select>
-          <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-indigo-200">
+          <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-teal-200">
             <SelectValue placeholder="All Suppliers" />
           </SelectTrigger>
           <SelectContent>
@@ -59,7 +59,7 @@ const Filters = () => {
       <div className="flex items-center gap-2 min-w-[160px]">
         <Calendar className="h-3.5 w-3.5 text-slate-400" />
         <Select defaultValue="ytd">
-          <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-indigo-200">
+          <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-teal-200">
             <SelectValue placeholder="Time Period" />
           </SelectTrigger>
           <SelectContent>

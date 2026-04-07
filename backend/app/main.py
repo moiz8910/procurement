@@ -25,23 +25,20 @@ app.include_router(vendors.router)
 app.include_router(categories.router)
 app.include_router(copilot.router)
 
-from backend.app.services.kpi_service import KPIService
+from backend.app.services.category_service import CategoryService
 
 @app.get("/kpis")
 def get_kpis(
-    time_range: str = None, 
-    category_id: int = None, 
-    vendor_id: int = None, 
+    start_date: str = None,
+    end_date: str = None,
+    category_id: int = None,
     user=Depends(deps.get_current_user),
     db: Session = Depends(get_db)
 ):
-    # Only CPO and CM/Analyst see full filtered KPIs
-    from backend.app.db.models import UserRole
-    if user.role == UserRole.REQUESTER:
-        # Limited view for Requesters - maybe only their own spend?
-        # For now, let's just use the service but we might need to filter by requester_id
-        return KPIService.get_filtered_kpis(db, time_range, category_id, vendor_id, requester_id=user.id)
-    return KPIService.get_filtered_kpis(db, time_range, category_id, vendor_id)
+    # If category_id is provided, route to category KPIs, else Global
+    if category_id:
+        return CategoryService.get_category_kpis(db, category_id, start_date, end_date)
+    return CategoryService.get_global_kpis(db, start_date, end_date)
 
 from backend.app.services.notification_service import NotificationService
 from backend.app.db.models import NotificationStatus

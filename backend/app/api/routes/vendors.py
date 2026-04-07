@@ -1,9 +1,15 @@
 from fastapi import APIRouter, Depends, Query
-from backend.app.api import deps
 from backend.app.db.models import User
 from backend.app.services.vendor_service import VendorService
+from sqlalchemy.orm import Session
+from backend.app.db.session import get_db
+from backend.app.api import deps
 
 router = APIRouter(prefix="/vendors", tags=["Vendors"])
+
+@router.get("")
+def get_all_vendors(user: User = Depends(deps.get_current_user), db: Session = Depends(get_db)):
+    return VendorService.get_all_vendors(db)
 
 @router.get("/dashboard/kpis")
 def get_kpis(user: User = Depends(deps.get_current_user), category_id: int = Query(None)):

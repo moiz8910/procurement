@@ -75,13 +75,13 @@ const TransactionModule = () => {
       {/* PR Detail Drawer Overlay */}
       {showDrawer && (
         <div className="fixed inset-0 z-[60] flex justify-end">
-          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setShowDrawer(false)}></div>
+          <div className="absolute inset-0 bg-emerald-900/40 backdrop-blur-sm" onClick={() => setShowDrawer(false)}></div>
           <div className="bg-white w-[500px] max-w-full h-full shadow-2xl relative animate-in slide-in-from-right duration-300 flex flex-col">
             <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
               <div>
                 <h2 className="text-xl font-black text-slate-800 tracking-tight">PR Information</h2>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded uppercase tracking-wider">ID: {prDetail?.id || selectedPrId}</span>
+                  <span className="text-xs font-bold bg-teal-100 text-teal-700 px-2 py-0.5 rounded uppercase tracking-wider">ID: {prDetail?.id || selectedPrId}</span>
                   <span className="text-xs font-bold text-slate-400 capitalize">{prDetail?.status?.toLowerCase()}</span>
                 </div>
               </div>
@@ -129,7 +129,7 @@ const TransactionModule = () => {
 
                   {/* Gantt / Process Stages */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest border-l-4 border-indigo-500 pl-3">Process Stages</h3>
+                    <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest border-l-4 border-teal-500 pl-3">Process Stages</h3>
                     <div className="space-y-0.5 relative pl-4 border-l border-slate-100">
                       {prDetail.stages.map((stage, sidx) => (
                         <div key={sidx} className="relative pb-6 last:pb-0">
@@ -174,7 +174,7 @@ const TransactionModule = () => {
             {/* CTA in Modal */}
             <div className="p-6 border-t border-slate-100 bg-slate-50/50 flex gap-4">
               <button className="flex-1 bg-white border border-slate-200 py-3 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-100 transition-colors">Internal Note</button>
-              <button className="flex-1 bg-indigo-600 py-3 rounded-xl text-sm font-bold text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition-all">Escalate Stage</button>
+              <button className="flex-1 bg-teal-600 py-3 rounded-xl text-sm font-bold text-white hover:bg-teal-700 shadow-lg shadow-teal-200 transition-all">Escalate Stage</button>
             </div>
           </div>
         </div>
@@ -203,30 +203,30 @@ const TransactionModule = () => {
               <div className="flex bg-slate-100 p-1 rounded-lg">
                 <button 
                   onClick={() => setMetricType('value')}
-                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${metricType === 'value' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${metricType === 'value' ? 'bg-white text-teal-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 >By Value</button>
                 <button 
                   onClick={() => setMetricType('count')}
-                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${metricType === 'count' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${metricType === 'count' ? 'bg-white text-teal-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 >By Count</button>
                 <div className="w-px bg-slate-200 mx-2 my-1"></div>
                 <button 
                   onClick={() => setMetricType('route')}
-                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${metricType === 'route' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${metricType === 'route' ? 'bg-white text-teal-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 >
                   Procurement Route
                 </button>
               </div>
               <div className="text-sm font-bold text-slate-600 flex gap-6">
-                <div>Start Date: <span className="text-indigo-600">{startDate}</span></div>
-                <div>End Date: <span className="text-indigo-600">{endDate}</span></div>
+                <div>Start Date: <span className="text-teal-600">{startDate}</span></div>
+                <div>End Date: <span className="text-teal-600">{endDate}</span></div>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
               <div className="border-b border-slate-100 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/50">
                 <div className="flex items-center gap-3">
-                  <div className="bg-indigo-100 p-2 rounded-lg text-indigo-600">
+                  <div className="bg-teal-100 p-2 rounded-lg text-teal-600">
                     <Activity size={20} />
                   </div>
                   <div>
@@ -254,7 +254,7 @@ const TransactionModule = () => {
                       <th className="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Additions</th>
                       <th className="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Drops</th>
                       <th className="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Next Stage</th>
-                      <th className="pb-3 text-xs font-bold text-indigo-500 uppercase tracking-wider text-right bg-indigo-50/50 rounded-t pt-2 px-2">As of {endDate}</th>
+                      <th className="pb-3 text-xs font-bold text-teal-500 uppercase tracking-wider text-right bg-teal-50/50 rounded-t pt-2 px-2">As of {endDate}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
@@ -264,8 +264,8 @@ const TransactionModule = () => {
                         <td className="py-3 text-sm font-bold text-slate-600 text-right">{getPipelineMetric(stage, 'start')}</td>
                         <td className="py-3 text-sm font-medium text-emerald-600 text-right">{metricType !== 'route' ? '+' : ''}{getPipelineMetric(stage, 'additions')}</td>
                         <td className="py-3 text-sm font-medium text-rose-500 text-right">{metricType !== 'route' ? '-' : ''}{getPipelineMetric(stage, 'drops')}</td>
-                        <td className="py-3 text-sm font-medium text-blue-600 text-right">{metricType !== 'route' ? '-' : ''}{getPipelineMetric(stage, 'next_stage')}</td>
-                        <td className={`py-3 text-sm font-black text-indigo-700 text-right bg-indigo-50/30 px-2 ${metricType !== 'route' ? 'font-mono' : ''}`}>{getPipelineMetric(stage, 'end')}</td>
+                        <td className="py-3 text-sm font-medium text-emerald-600 text-right">{metricType !== 'route' ? '-' : ''}{getPipelineMetric(stage, 'next_stage')}</td>
+                        <td className={`py-3 text-sm font-black text-teal-700 text-right bg-teal-50/30 px-2 ${metricType !== 'route' ? 'font-mono' : ''}`}>{getPipelineMetric(stage, 'end')}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -320,7 +320,7 @@ const TransactionModule = () => {
                 </div>
                 <div className="flex gap-2 items-center">
                   <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Select Analysis Period:</span>
-                  <select className="bg-white border border-slate-200 text-sm font-bold text-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm cursor-pointer">
+                  <select className="bg-white border border-slate-200 text-sm font-bold text-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm cursor-pointer">
                     <option>Year to Date</option>
                     <option>Last 30 Days</option>
                     <option>Last Quarter</option>
@@ -374,20 +374,20 @@ const TransactionModule = () => {
 
             {/* Always on Transaction Copilot */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-              <div className="bg-indigo-600 p-5">
+              <div className="bg-teal-600 p-5">
                   <div className="flex items-center gap-3">
                     <BrainCircuit className="text-white" size={24} />
                     <h2 className="text-lg font-bold text-white tracking-wide">Copilot Support</h2>
                   </div>
               </div>
-              <div className="p-5 bg-indigo-50/50">
-                  <div className="bg-white border text-sm border-indigo-100 rounded-xl p-4 mb-4 text-slate-700 shadow-sm relative">
-                    <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500 rounded-l-xl"></div>
-                    I noticed <span className="font-bold text-indigo-700">12 bottlenecks</span> in the Supplier Evaluation stage. Want me to draft an escalation alert?
+              <div className="p-5 bg-teal-50/50">
+                  <div className="bg-white border text-sm border-teal-100 rounded-xl p-4 mb-4 text-slate-700 shadow-sm relative">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-teal-500 rounded-l-xl"></div>
+                    I noticed <span className="font-bold text-teal-700">12 bottlenecks</span> in the Supplier Evaluation stage. Want me to draft an escalation alert?
                   </div>
                   <div className="relative">
-                    <input type="text" placeholder="Message Copilot..." className="w-full pl-5 pr-12 py-3 rounded-xl border border-slate-200 text-sm focus:border-indigo-500 outline-none shadow-inner" />
-                    <button className="absolute right-2 top-2 p-1.5 bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-200 transition-colors">
+                    <input type="text" placeholder="Message Copilot..." className="w-full pl-5 pr-12 py-3 rounded-xl border border-slate-200 text-sm focus:border-teal-500 outline-none shadow-inner" />
+                    <button className="absolute right-2 top-2 p-1.5 bg-teal-100 text-teal-600 rounded-lg hover:bg-teal-200 transition-colors">
                       <Zap size={16} />
                     </button>
                   </div>
@@ -420,11 +420,11 @@ const TransactionModule = () => {
               {prs.map((pr) => (
                 <tr key={pr.id} 
                     onClick={() => handlePrClick(pr.id)}
-                    className="hover:bg-indigo-50/30 transition-colors group cursor-pointer"
+                    className="hover:bg-teal-50/30 transition-colors group cursor-pointer"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <FileText size={16} className="text-indigo-400" />
+                      <FileText size={16} className="text-teal-400" />
                       <span className="text-sm font-black text-slate-700">PR-{pr.id}</span>
                     </div>
                   </td>
@@ -441,7 +441,7 @@ const TransactionModule = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button className="text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity font-bold text-sm bg-indigo-50 px-3 py-1.5 rounded-lg flex items-center gap-1 ml-auto">
+                    <button className="text-teal-600 opacity-0 group-hover:opacity-100 transition-opacity font-bold text-sm bg-teal-50 px-3 py-1.5 rounded-lg flex items-center gap-1 ml-auto">
                       View <ArrowRight size={14}/>
                     </button>
                   </td>

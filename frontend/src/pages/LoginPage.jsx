@@ -203,7 +203,7 @@ const loginStyles = `
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #0f0f1a;
+    background: #f8fafc;
     position: relative;
     overflow: hidden;
     font-family: 'Inter', sans-serif;
@@ -219,19 +219,19 @@ const loginStyles = `
   }
   .blob-1 {
     width: 520px; height: 520px;
-    background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+    background: radial-gradient(circle, #34d399 0%, transparent 70%);
     top: -120px; left: -180px;
     animation-delay: 0s;
   }
   .blob-2 {
     width: 400px; height: 400px;
-    background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+    background: radial-gradient(circle, #6ee7b7 0%, transparent 70%);
     bottom: -80px; right: -100px;
     animation-delay: 3s;
   }
   .blob-3 {
     width: 300px; height: 300px;
-    background: radial-gradient(circle, #0052ff 0%, transparent 70%);
+    background: radial-gradient(circle, #a7f3d0 0%, transparent 70%);
     top: 50%; right: 25%;
     animation-delay: 5s;
   }
@@ -246,12 +246,12 @@ const loginStyles = `
     z-index: 10;
     width: 100%;
     max-width: 480px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
     border-radius: 24px;
     padding: 40px;
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.05);
     animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   @keyframes cardIn {
@@ -269,22 +269,22 @@ const loginStyles = `
   .login-logo-spark {
     width: 16px; height: 16px;
     border-radius: 5px;
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    background: linear-gradient(135deg, #059669, #10b981);
     transform: rotate(45deg);
-    box-shadow: 0 0 16px rgba(79, 70, 229, 0.6);
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
     flex-shrink: 0;
   }
   .login-logo-text {
     font-size: 22px;
     font-weight: 800;
     letter-spacing: -0.5px;
-    color: #fff;
+    color: #1e293b;
   }
   .login-logo-pip {
     font-size: 10px;
     font-weight: 800;
-    color: #818cf8;
-    background: rgba(129, 140, 248, 0.15);
+    color: #059669;
+    background: rgba(5, 150, 105, 0.15);
     padding: 2px 6px;
     border-radius: 4px;
     margin-left: 4px;
@@ -293,13 +293,13 @@ const loginStyles = `
   .login-title {
     font-size: 28px;
     font-weight: 800;
-    color: #fff;
+    color: #1e293b;
     letter-spacing: -0.5px;
     margin: 0 0 6px;
   }
   .login-subtitle {
     font-size: 14px;
-    color: rgba(255,255,255,0.5);
+    color: #64748b;
     margin: 0 0 32px;
   }
 
@@ -311,7 +311,7 @@ const loginStyles = `
   .login-label {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255,255,255,0.7);
+    color: #475569;
     letter-spacing: 0.3px;
   }
 
@@ -327,26 +327,26 @@ const loginStyles = `
     gap: 10px;
     padding: 10px 12px;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.04);
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: left;
     position: relative;
   }
   .role-chip:hover {
-    border-color: rgba(79, 70, 229, 0.5);
-    background: rgba(79, 70, 229, 0.1);
+    border-color: rgba(5, 150, 105, 0.5);
+    background: rgba(5, 150, 105, 0.05);
   }
   .role-chip--active {
-    border-color: #4f46e5;
-    background: rgba(79, 70, 229, 0.18);
-    box-shadow: 0 0 0 1px #4f46e5;
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.1);
+    box-shadow: 0 0 0 1px #059669;
   }
   .role-chip-avatar {
     width: 32px; height: 32px;
     border-radius: 9px;
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    background: linear-gradient(135deg, #059669, #10b981);
     color: #fff;
     font-size: 13px;
     font-weight: 700;
@@ -359,17 +359,17 @@ const loginStyles = `
   }
   .role-chip-name {
     font-size: 13px; font-weight: 700;
-    color: #fff;
+    color: #1e293b;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .role-chip-role {
     font-size: 11px;
-    color: rgba(255,255,255,0.45);
+    color: #64748b;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .role-chip-check {
     position: absolute; top: 6px; right: 8px;
-    font-size: 11px; color: #818cf8; font-weight: 800;
+    font-size: 11px; color: #059669; font-weight: 800;
   }
 
   /* Input */
@@ -379,45 +379,45 @@ const loginStyles = `
   }
   .login-input-icon {
     position: absolute; left: 14px;
-    color: rgba(255,255,255,0.3);
+    color: #94a3b8;
     display: flex; align-items: center;
     pointer-events: none;
   }
   .login-input {
     width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
     border-radius: 12px;
     padding: 12px 44px 12px 42px;
     font-size: 14px;
-    color: #fff;
+    color: #1e293b;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
   }
-  .login-input::placeholder { color: rgba(255,255,255,0.25); }
+  .login-input::placeholder { color: #94a3b8; }
   .login-input:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
-    background: rgba(79, 70, 229, 0.08);
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
+    background: #ffffff;
   }
   .login-eye-btn {
     position: absolute; right: 14px;
     background: none; border: none;
-    color: rgba(255,255,255,0.35);
+    color: #94a3b8;
     cursor: pointer; padding: 0;
     display: flex; align-items: center;
     transition: color 0.2s;
   }
-  .login-eye-btn:hover { color: rgba(255,255,255,0.7); }
+  .login-eye-btn:hover { color: #475569; }
 
   /* Error */
   .login-error {
     display: flex; align-items: center; gap: 6px;
-    font-size: 13px; color: #f87171;
-    background: rgba(248, 113, 113, 0.1);
-    border: 1px solid rgba(248, 113, 113, 0.2);
+    font-size: 13px; color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
     border-radius: 8px;
     padding: 10px 14px;
     animation: shake 0.3s ease;
@@ -434,17 +434,17 @@ const loginStyles = `
   }
   .login-remember {
     display: flex; align-items: center; gap: 8px;
-    font-size: 13px; color: rgba(255,255,255,0.5);
+    font-size: 13px; color: #64748b;
     cursor: pointer;
   }
-  .login-remember input { accent-color: #4f46e5; }
+  .login-remember input { accent-color: #059669; }
   .login-forgot {
     background: none; border: none;
-    font-size: 13px; color: #818cf8;
+    font-size: 13px; color: #059669;
     cursor: pointer; font-weight: 600;
     transition: color 0.2s;
   }
-  .login-forgot:hover { color: #a5b4fc; }
+  .login-forgot:hover { color: #047857; }
 
   /* Submit button */
   .login-btn {
@@ -452,21 +452,21 @@ const loginStyles = `
     width: 100%;
     padding: 14px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
     color: #fff; font-size: 15px; font-weight: 700;
     border: none; cursor: pointer;
-    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.5);
+    box-shadow: 0 8px 24px rgba(5, 150, 105, 0.4);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 0.2px;
     font-family: 'Inter', sans-serif;
   }
   .login-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(79, 70, 229, 0.65);
+    box-shadow: 0 12px 32px rgba(5, 150, 105, 0.5);
   }
   .login-btn:active:not(:disabled) { transform: translateY(0); }
   .login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-  .login-btn--loading { background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%); }
+  .login-btn--loading { background: linear-gradient(135deg, #064e3b 0%, #047857 100%); }
 
   /* Spinner */
   .login-spinner {
@@ -483,7 +483,7 @@ const loginStyles = `
   .login-footer-note {
     text-align: center;
     font-size: 12px;
-    color: rgba(255,255,255,0.3);
+    color: #94a3b8;
     margin-top: 24px;
   }
 `;

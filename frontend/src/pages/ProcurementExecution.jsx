@@ -29,7 +29,7 @@ const ProcurementExecution = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'APPROVED': return <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border-emerald-500/20">Approved</Badge>;
-      case 'PO_CREATED': return <Badge className="bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border-blue-500/20">PO Created</Badge>;
+      case 'PO_CREATED': return <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border-emerald-500/20">PO Created</Badge>;
       case 'REJECTED': return <Badge className="bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 border-rose-500/20">Rejected</Badge>;
       default: return <Badge variant="outline" className="text-slate-500 border-slate-200">Pending</Badge>;
     }
@@ -39,24 +39,24 @@ const ProcurementExecution = () => {
     <div className="p-6 space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-display">Procurement Execution</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-emerald-900 font-display">Procurement Execution</h1>
           <p className="text-sm text-slate-500">Track and manage the lifecycle of Purchase Requisitions to Purchase Orders.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="h-9 gap-2">
             <Filter className="h-4 w-4" /> Filters
           </Button>
-          <Button size="sm" className="h-9 bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/10 shadow-lg">
+          <Button size="sm" className="h-9 bg-teal-600 hover:bg-teal-700 shadow-teal-600/10 shadow-lg">
             Create PR
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border-none bg-indigo-50/50 shadow-none">
+        <Card className="border-none bg-teal-50/50 shadow-none">
           <CardHeader className="pb-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600/60">Total PRs</span>
-            <CardTitle className="text-3xl font-black text-indigo-700">{filteredPrs.length}</CardTitle>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-teal-600/60">Total PRs</span>
+            <CardTitle className="text-3xl font-black text-teal-700">{filteredPrs.length}</CardTitle>
           </CardHeader>
         </Card>
         <Card className="border-none bg-emerald-50/50 shadow-none">
@@ -83,10 +83,10 @@ const ProcurementExecution = () => {
               </thead>
               <tbody className="divide-y divide-slate-100/60">
                 {filteredPrs.slice(0, 10).map((pr) => (
-                  <tr key={pr.id} className="group hover:bg-indigo-50/30 transition-colors">
-                    <td className="p-4 font-bold text-slate-900 first:pl-6">PR_{pr.id.toString().padStart(5, '0')}</td>
+                  <tr key={pr.id} className="group hover:bg-teal-50/30 transition-colors">
+                    <td className="p-4 font-bold text-emerald-900 first:pl-6">PR_{pr.id.toString().padStart(5, '0')}</td>
                     <td className="p-4 text-slate-600 font-medium">User_{pr.requester_id}</td>
-                    <td className="p-4 font-bold text-slate-900">${pr.amount?.toLocaleString()}</td>
+                    <td className="p-4 font-bold text-emerald-900">${pr.amount?.toLocaleString()}</td>
                     <td className="p-4">{getStatusBadge(pr.status)}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ const ProcurementExecution = () => {
                       </div>
                     </td>
                     <td className="p-4 text-right last:pr-6">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-100/50 transition-all">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 group-hover:text-teal-600 group-hover:bg-teal-100/50 transition-all">
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                     </td>

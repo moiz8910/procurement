@@ -85,7 +85,7 @@ const Copilot = () => {
   if (!isCopilotOpen) {
     return (
       <button 
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white shadow-xl shadow-indigo-600/30 flex items-center justify-center hover:scale-110 hover:shadow-2xl transition-all duration-300 z-50 ring-4 ring-white/50 group"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-tr from-teal-600 to-teal-500 text-white shadow-xl shadow-teal-600/30 flex items-center justify-center hover:scale-110 hover:shadow-2xl transition-all duration-300 z-50 ring-4 ring-white/50 group"
         onClick={() => setIsCopilotOpen(true)}
       >
         <Bot size={24} className="group-hover:animate-pulse" />
@@ -104,7 +104,7 @@ const Copilot = () => {
       {/* Header */}
       <div className="px-5 py-4 border-b border-slate-100 bg-white/50 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
+          <div className="h-10 w-10 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600">
             <Bot size={22} />
           </div>
           <div>
@@ -116,7 +116,7 @@ const Copilot = () => {
           </div>
         </div>
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full" onClick={() => setIsFullscreen(!isFullscreen)}>
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-teal-600 hover:bg-teal-50 rounded-full" onClick={() => setIsFullscreen(!isFullscreen)}>
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </Button>
           <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full" onClick={() => setIsCopilotOpen(false)}>
@@ -132,8 +132,8 @@ const Copilot = () => {
             {/* Avatar */}
             <div className={`h-8 w-8 shrink-0 rounded-full flex items-center justify-center shadow-sm ${
               msg.role === 'user' 
-                ? 'bg-gradient-to-tr from-indigo-500 to-blue-500 text-white font-bold text-xs ring-2 ring-white' 
-                : 'bg-white border border-slate-200 text-indigo-600'
+                ? 'bg-gradient-to-tr from-teal-500 to-emerald-500 text-white font-bold text-xs ring-2 ring-white' 
+                : 'bg-white border border-slate-200 text-teal-600'
             }`}>
               {msg.role === 'user' ? currentUser?.name[0] : <Bot size={16} />}
             </div>
@@ -142,7 +142,7 @@ const Copilot = () => {
             <div className={`space-y-3 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
               <div className={`p-3.5 text-sm shadow-sm ${
                 msg.role === 'user' 
-                  ? 'bg-indigo-600 text-white rounded-2xl rounded-tr-sm' 
+                  ? 'bg-teal-600 text-white rounded-2xl rounded-tr-sm' 
                   : 'bg-white border border-slate-100 text-slate-700 rounded-2xl rounded-tl-sm'
               }`}>
                 <p className="leading-relaxed">{msg.content}</p>
@@ -164,7 +164,7 @@ const Copilot = () => {
               {(msg.actions?.length > 0 || msg.deep_links?.length > 0) && (
                 <div className="flex flex-wrap gap-2 mt-2">
                   {msg.actions?.map((action, i) => (
-                    <button key={`act-${i}`} className="text-[11px] font-bold bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-full flex items-center gap-1.5 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all shadow-sm">
+                    <button key={`act-${i}`} className="text-[11px] font-bold bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-full flex items-center gap-1.5 hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200 transition-all shadow-sm">
                       {action.label}
                       <ChevronRight size={12} />
                     </button>
@@ -172,7 +172,7 @@ const Copilot = () => {
                   {msg.deep_links?.map((link, i) => (
                     <button 
                       key={`lnk-${i}`} 
-                      className="text-[11px] font-bold bg-indigo-50 border border-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 hover:bg-indigo-100 transition-all shadow-sm"
+                      className="text-[11px] font-bold bg-teal-50 border border-teal-100 text-teal-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 hover:bg-teal-100 transition-all shadow-sm"
                       onClick={() => {
                         setActiveTab(link.target);
                         setIsCopilotOpen(false);
@@ -191,18 +191,18 @@ const Copilot = () => {
         {/* Loading State logs */}
         {loading && (
           <div className="flex gap-3 max-w-[85%]">
-            <div className="h-8 w-8 shrink-0 rounded-full bg-white border border-slate-200 text-indigo-600 flex items-center justify-center shadow-sm">
+            <div className="h-8 w-8 shrink-0 rounded-full bg-white border border-slate-200 text-teal-600 flex items-center justify-center shadow-sm">
               <Bot size={16} />
             </div>
-            <div className="bg-indigo-50/50 border border-indigo-100/50 rounded-2xl rounded-tl-sm p-4 w-full">
+            <div className="bg-teal-50/50 border border-teal-100/50 rounded-2xl rounded-tl-sm p-4 w-full">
               <div className="space-y-3">
                 {logs.map((log, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs font-semibold text-indigo-700/70">
+                  <div key={i} className="flex items-center gap-2 text-xs font-semibold text-teal-700/70">
                     <CheckCircle2 size={12} className="text-emerald-500" />
                     <span className="animate-in fade-in duration-300">{log}</span>
                   </div>
                 ))}
-                <div className="flex items-center gap-2 text-xs font-bold text-indigo-600 mt-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-teal-600 mt-2">
                   <Loader2 size={14} className="animate-spin" />
                   Synthesizing data...
                 </div>
@@ -217,7 +217,7 @@ const Copilot = () => {
       <div className="p-4 bg-white border-t border-slate-100 shrink-0">
         <div className="relative flex items-center">
           <Input
-            className="pr-12 h-12 bg-slate-50 border-slate-200 rounded-full focus-visible:ring-indigo-100 focus-visible:ring-2 focus-visible:border-indigo-300"
+            className="pr-12 h-12 bg-slate-50 border-slate-200 rounded-full focus-visible:ring-teal-100 focus-visible:ring-2 focus-visible:border-teal-300"
             placeholder={copilotPlaceholder}
             value={copilotInput}
             onChange={(e) => setCopilotInput(e.target.value)}
@@ -226,7 +226,7 @@ const Copilot = () => {
           />
           <Button 
             size="icon" 
-            className="absolute right-1.5 h-9 w-9 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-sm"
+            className="absolute right-1.5 h-9 w-9 rounded-full bg-teal-600 hover:bg-teal-700 shadow-sm"
             onClick={handleSend}
             disabled={loading || !copilotInput.trim()}
           >

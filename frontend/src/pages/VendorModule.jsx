@@ -82,12 +82,12 @@ const VendorModule = () => {
       {/* Header Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Vendor Management Hub</h1>
+           <h1 className="text-3xl font-black text-emerald-900 tracking-tight">Vendor Management Hub</h1>
            <p className="text-sm font-bold text-slate-500">Live performance monitoring & strategic supplier discovery.</p>
         </div>
         <div className="flex gap-3">
            <button className="bg-white border border-slate-200 px-5 py-2.5 hover:bg-slate-50 text-slate-700 text-sm font-black rounded-2xl transition-all shadow-sm">Reporting Console</button>
-           <button className="bg-slate-900 px-5 py-2.5 hover:bg-black text-white text-sm font-black rounded-2xl transition-all shadow-lg">Onboard New Supplier</button>
+           <button className="bg-emerald-900 px-5 py-2.5 hover:bg-black text-white text-sm font-black rounded-2xl transition-all shadow-lg">Onboard New Supplier</button>
         </div>
       </div>
 
@@ -105,7 +105,7 @@ const VendorModule = () => {
                <k.icon size={24} />
              </div>
              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{k.label}</p>
-             <h4 className="text-2xl font-black text-slate-900 tracking-tight">{k.value}</h4>
+             <h4 className="text-2xl font-black text-emerald-900 tracking-tight">{k.value}</h4>
           </div>
         ))}
       </div>
@@ -118,7 +118,7 @@ const VendorModule = () => {
            <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden h-full flex flex-col">
              <div className="border-b border-slate-100 p-6 bg-slate-50/50">
                <h2 className="text-xs font-black text-slate-800 uppercase tracking-[0.2em] flex items-center gap-2">
-                 <div className="w-1.5 h-4 bg-indigo-500 rounded-full"></div>
+                 <div className="w-1.5 h-4 bg-teal-500 rounded-full"></div>
                  Performance Management
                </h2>
              </div>
@@ -147,7 +147,7 @@ const VendorModule = () => {
                    </div>
                  ))}
                </div>
-               <button className="w-full text-center text-xs font-black text-indigo-600 bg-indigo-50/50 py-3.5 rounded-2xl hover:bg-indigo-600 hover:text-white transition-all duration-300">
+               <button className="w-full text-center text-xs font-black text-teal-600 bg-teal-50/50 py-3.5 rounded-2xl hover:bg-teal-600 hover:text-white transition-all duration-300">
                  View Global Scorecards
                </button>
              </div>
@@ -172,7 +172,7 @@ const VendorModule = () => {
                      }`}>{item.impact} Impact</span>
                      <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1"><Clock size={10} /> {item.time}</span>
                    </div>
-                   <h4 className="text-xs font-black text-slate-700 leading-normal group-hover:text-indigo-600 transition-colors uppercase tracking-tight">{item.title}</h4>
+                   <h4 className="text-xs font-black text-slate-700 leading-normal group-hover:text-teal-600 transition-colors uppercase tracking-tight">{item.title}</h4>
                  </div>
                ))}
             </div>
@@ -202,8 +202,8 @@ const VendorModule = () => {
             {/* Calendar & Tasks Block */}
             <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full">
                <div className="p-7 flex gap-7 items-start">
-                  <div className="flex flex-col items-center bg-indigo-600 rounded-3xl p-5 w-24 border border-indigo-700 shadow-xl shadow-indigo-100 shrink-0">
-                     <span className="text-[10px] font-black text-indigo-200 uppercase tracking-widest leading-none mb-1">Wed</span>
+                  <div className="flex flex-col items-center bg-teal-600 rounded-3xl p-5 w-24 border border-teal-700 shadow-xl shadow-teal-100 shrink-0">
+                     <span className="text-[10px] font-black text-teal-200 uppercase tracking-widest leading-none mb-1">Wed</span>
                      <span className="text-4xl font-black text-white leading-none">24</span>
                   </div>
                   <div className="flex-1 pt-1">
@@ -211,10 +211,10 @@ const VendorModule = () => {
                      <div className="space-y-3">
                         {tasks.map((task, i) => (
                           <div key={i} className="flex items-start gap-2.5 group cursor-pointer">
-                             <div className="h-4 w-4 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 transition-colors">
-                                <CheckCircle size={10} className="text-indigo-600 group-hover:text-white" />
+                             <div className="h-4 w-4 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0 group-hover:bg-teal-600 transition-colors">
+                                <CheckCircle size={10} className="text-teal-600 group-hover:text-white" />
                              </div>
-                             <span className="text-[11px] font-bold text-slate-500 group-hover:text-slate-900 transition-colors leading-tight">{task}</span>
+                             <span className="text-[11px] font-bold text-slate-500 group-hover:text-emerald-900 transition-colors leading-tight">{task}</span>
                           </div>
                         ))}
                      </div>
@@ -228,17 +228,17 @@ const VendorModule = () => {
            {/* Proper Vendor Discovery Card */}
            <div className="bg-[#0f172a] rounded-[2rem] p-7 shadow-2xl relative overflow-hidden ring-1 ring-white/10">
               <div className="absolute right-0 top-0 p-4">
-                 <div className="h-10 w-10 bg-indigo-500/10 text-indigo-400 rounded-2xl flex items-center justify-center border border-indigo-500/20">
+                 <div className="h-10 w-10 bg-teal-500/10 text-teal-400 rounded-2xl flex items-center justify-center border border-teal-500/20">
                     <Search size={18} />
                  </div>
               </div>
               <h2 className="text-white text-[10px] font-black uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
-                 <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse shadow-[0_0_10px_#6366f1]"></div>
+                 <div className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-pulse shadow-[0_0_10px_#6366f1]"></div>
                  Vendor Discovery
               </h2>
               <div className="flex flex-col gap-1 mb-8">
                  <span className="text-5xl font-black text-white tracking-tighter">12</span>
-                 <span className="text-indigo-400 text-[10px] font-black uppercase tracking-widest">New matches this week</span>
+                 <span className="text-teal-400 text-[10px] font-black uppercase tracking-widest">New matches this week</span>
               </div>
               
               <div className="space-y-4 mb-8 pt-4 border-t border-white/5">
@@ -246,7 +246,7 @@ const VendorModule = () => {
                     <h5 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Target Categories</h5>
                     <div className="flex flex-wrap gap-2">
                        {(discovery?.categories || ["1", "2", "3"]).map((cat, i) => (
-                         <span key={i} className="text-[9px] font-black text-indigo-200 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">{cat}</span>
+                         <span key={i} className="text-[9px] font-black text-teal-200 bg-teal-500/10 px-3 py-1 rounded-full border border-teal-500/20">{cat}</span>
                        ))}
                     </div>
                  </div>
@@ -262,7 +262,7 @@ const VendorModule = () => {
               
               <button 
                 onClick={handleShortlist}
-                className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-indigo-900 transition-all active:scale-95 shadow-xl shadow-indigo-900/10 border border-indigo-500"
+                className="w-full flex items-center justify-center gap-2 bg-teal-600 text-white py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-teal-900 transition-all active:scale-95 shadow-xl shadow-teal-900/10 border border-teal-500"
               >
                  Shortlist Candidates <ChevronRight size={14} />
               </button>
@@ -292,7 +292,7 @@ const VendorModule = () => {
            <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden pt-7">
               <div className="px-7 flex justify-between items-center mb-2">
                  <h2 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">SLA Aging</h2>
-                 <button className="text-indigo-600 text-[10px] font-black uppercase border-b border-indigo-600">View All</button>
+                 <button className="text-teal-600 text-[10px] font-black uppercase border-b border-teal-600">View All</button>
               </div>
               <div className="h-28 px-4 pb-2">
                   <ResponsiveContainer width="100%" height="100%">
@@ -309,7 +309,7 @@ const VendorModule = () => {
       {/* Integrated Copilot Footer */}
       <div className="mt-8 bg-[#0f172a] rounded-[2rem] p-4 flex flex-col md:flex-row items-center gap-6 shadow-2xl relative border border-white/5">
          <div className="flex items-center gap-4 pl-4 shrink-0">
-            <div className="h-10 w-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-[0_0_20px_rgba(79,70,229,0.4)] border border-indigo-400/50">
+            <div className="h-10 w-10 bg-teal-600 rounded-2xl flex items-center justify-center text-white shadow-[0_0_20px_rgba(79,70,229,0.4)] border border-teal-400/50">
                <BrainCircuit size={20} />
             </div>
             <div>
@@ -318,8 +318,8 @@ const VendorModule = () => {
             </div>
          </div>
          <div className="flex-1 w-full max-w-4xl relative">
-            <input type="text" placeholder="Simulate SLA bottleneck risk for Category 1..." className="w-full pl-6 pr-14 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white text-sm font-medium focus:bg-white/10 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none" />
-            <button className="absolute right-2 top-2 p-1.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors shadow-lg">
+            <input type="text" placeholder="Simulate SLA bottleneck risk for Category 1..." className="w-full pl-6 pr-14 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white text-sm font-medium focus:bg-white/10 focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all outline-none" />
+            <button className="absolute right-2 top-2 p-1.5 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition-colors shadow-lg">
                <Zap size={18} />
             </button>
          </div>
