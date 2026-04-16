@@ -13,20 +13,20 @@ const Filters = () => {
   const { categories, vendors, currentUser } = useApp();
 
   return (
-    <div className="flex flex-wrap items-center gap-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm mb-6">
-      <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest pl-2">
+    <div className="flex flex-wrap items-center gap-4 bg-white p-3 rounded-xl border border-neutral-100 shadow-sm mb-6">
+      <div className="flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase tracking-widest pl-2">
         <Filter className="h-3 w-3" />
         Context
       </div>
 
-      <div className="h-6 w-px bg-slate-100 mx-2 hidden md:block" />
+      <div className="h-6 w-px bg-neutral-100 mx-2 hidden md:block" />
 
       {/* Category Filter */}
       {currentUser.role !== 'SRM' && (
         <div className="flex items-center gap-2 min-w-[160px]">
-          <Tag className="h-3.5 w-3.5 text-slate-400" />
+          <Tag className="h-3.5 w-3.5 text-neutral-400" />
           <Select>
-            <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-teal-200">
+            <SelectTrigger className="h-9 bg-neutral-50 border-none focus:ring-1 focus:ring-teal-200">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -41,9 +41,9 @@ const Filters = () => {
 
       {/* Vendor Filter */}
       <div className="flex items-center gap-2 min-w-[160px]">
-        <Users className="h-3.5 w-3.5 text-slate-400" />
+        <Users className="h-3.5 w-3.5 text-neutral-400" />
         <Select>
-          <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-teal-200">
+          <SelectTrigger className="h-9 bg-neutral-50 border-none focus:ring-1 focus:ring-teal-200">
             <SelectValue placeholder="All Suppliers" />
           </SelectTrigger>
           <SelectContent>
@@ -57,9 +57,9 @@ const Filters = () => {
 
       {/* Time Range Filter */}
       <div className="flex items-center gap-2 min-w-[160px]">
-        <Calendar className="h-3.5 w-3.5 text-slate-400" />
+        <Calendar className="h-3.5 w-3.5 text-neutral-400" />
         <Select defaultValue="ytd">
-          <SelectTrigger className="h-9 bg-slate-50 border-none focus:ring-1 focus:ring-teal-200">
+          <SelectTrigger className="h-9 bg-neutral-50 border-none focus:ring-1 focus:ring-teal-200">
             <SelectValue placeholder="Time Period" />
           </SelectTrigger>
           <SelectContent>

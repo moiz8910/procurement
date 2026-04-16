@@ -38,15 +38,15 @@ const CategoryIntelligence = () => {
             Market Intelligence Engine
           </div>
           <h1 className="text-3xl font-black tracking-tight text-emerald-900">Category Strategy</h1>
-          <p className="text-sm text-slate-500 font-medium">Global commodity benchmarks and strategic sourcing outlooks.</p>
+          <p className="text-sm text-neutral-500 font-medium">Global commodity benchmarks and strategic sourcing outlooks.</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative w-64 transition-all focus-within:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -tranneutral-y-1/2 h-4 w-4 text-neutral-400" />
             <input 
               type="text"
               placeholder="Search Categories..."
-              className="h-10 w-full pl-9 pr-4 rounded-md border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-100 hover:border-slate-300 transition-all bg-white shadow-sm"
+              className="h-10 w-full pl-9 pr-4 rounded-md border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-100 hover:border-neutral-300 transition-all bg-white shadow-sm"
               value={localSearch}
               onChange={e => setLocalSearch(e.target.value)}
             />
@@ -61,7 +61,7 @@ const CategoryIntelligence = () => {
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="bg-slate-100/50 p-1 border border-slate-200/60 mb-6">
+        <TabsList className="bg-neutral-100/50 p-1 border border-neutral-200/60 mb-6">
           <TabsTrigger value="overview" className="data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 font-bold text-xs uppercase tracking-tight">Overview</TabsTrigger>
           <TabsTrigger value="benchmarks" className="data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 font-bold text-xs uppercase tracking-tight">Benchmarks</TabsTrigger>
           <TabsTrigger value="risk" className="data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 font-bold text-xs uppercase tracking-tight">Risk Matrix</TabsTrigger>
@@ -71,7 +71,7 @@ const CategoryIntelligence = () => {
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {filteredCategories.map((cat) => (
-              <Card key={cat.id} className="border-none shadow-xl shadow-slate-200/40 bg-white group hover:-translate-y-1 transition-all duration-300">
+              <Card key={cat.id} className="border-none shadow-xl shadow-neutral-200/40 bg-white group hover:-tranneutral-y-1 transition-all duration-300">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-2">
                     <Badge variant="secondary" className="bg-teal-50 text-teal-600 font-bold border-none uppercase text-[9px] tracking-tight">
@@ -82,17 +82,17 @@ const CategoryIntelligence = () => {
                   <CardTitle className="text-xl font-black text-emerald-900">{cat.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between text-sm py-2 border-b border-slate-50">
-                    <span className="text-slate-500 font-medium">YTD Spend</span>
+                  <div className="flex items-center justify-between text-sm py-2 border-b border-neutral-50">
+                    <span className="text-neutral-500 font-medium">YTD Spend</span>
                     <span className="font-black text-emerald-900">$2.4M</span>
                   </div>
-                  <div className="flex items-center justify-between text-sm py-2 border-b border-slate-50">
-                    <span className="text-slate-500 font-medium">Target Savings</span>
+                  <div className="flex items-center justify-between text-sm py-2 border-b border-neutral-50">
+                    <span className="text-neutral-500 font-medium">Target Savings</span>
                     <span className="font-black text-emerald-600">12.5%</span>
                   </div>
                   <Button variant="ghost" className="w-full justify-between group-hover:bg-teal-50 transition-colors mt-2 font-bold text-xs text-teal-600">
                     View Strategy Docs
-                    <ArrowRight className="h-4 w-4 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all" />
+                    <ArrowRight className="h-4 w-4 -tranneutral-x-2 opacity-0 group-hover:tranneutral-x-0 group-hover:opacity-100 transition-all" />
                   </Button>
                 </CardContent>
               </Card>
@@ -101,13 +101,13 @@ const CategoryIntelligence = () => {
         </TabsContent>
         
         <TabsContent value="benchmarks">
-          <Card className="border-none shadow-2xl shadow-slate-200/50">
+          <Card className="border-none shadow-2xl shadow-neutral-200/50">
             <CardHeader>
               <CardTitle>Commodity Benchmarks</CardTitle>
               <CardDescription>Live pricing from LME and specialty indices.</CardDescription>
             </CardHeader>
-            <CardContent className="h-64 flex items-center justify-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-              <div className="flex flex-col items-center gap-2 text-slate-400">
+            <CardContent className="h-64 flex items-center justify-center bg-neutral-50 rounded-2xl border border-dashed border-neutral-200">
+              <div className="flex flex-col items-center gap-2 text-neutral-400">
                 <BarChart3 className="h-8 w-8 opacity-20" />
                 <span className="text-[10px] font-bold uppercase tracking-widest">Interactive Benchmark Visualization</span>
               </div>

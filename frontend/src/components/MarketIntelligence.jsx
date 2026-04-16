@@ -18,7 +18,7 @@ const MarketIntelligence = ({ onItemClick }) => {
   }, [filters.categoryId]);
 
   if (loading) return (
-    <div className="card p-6 text-slate-400 flex justify-center items-center h-48 animate-pulse text-sm font-bold">
+    <div className="card p-6 text-neutral-400 flex justify-center items-center h-48 animate-pulse text-sm font-bold">
       Loading intelligence...
     </div>
   );
@@ -28,7 +28,7 @@ const MarketIntelligence = ({ onItemClick }) => {
       {data.map((item, idx) => (
         <div 
           key={idx} 
-          className="group p-5 bg-white border border-slate-200 rounded-2xl hover:shadow-lg transition-all cursor-pointer relative overflow-hidden"
+          className="group p-5 bg-white border border-neutral-200 rounded-2xl hover:shadow-lg transition-all cursor-pointer relative overflow-hidden"
           onClick={() => onItemClick && onItemClick(item)}
         >
           <div className="absolute top-0 right-0 w-1.5 h-full" style={{
@@ -42,14 +42,14 @@ const MarketIntelligence = ({ onItemClick }) => {
               {item.impact === 'High' ? <AlertTriangle size={14} /> : item.impact === 'Medium' ? <Activity size={14} /> : <TrendingUp size={14} />}
               {item.title}
             </h4>
-            <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-md">{item.time}</span>
+            <span className="text-[10px] font-bold text-neutral-400 bg-neutral-100 px-2 py-1 rounded-md">{item.time}</span>
           </div>
-          <p className="text-sm text-slate-600 font-medium leading-relaxed pr-4">{item.desc}</p>
+          <p className="text-sm text-neutral-600 font-medium leading-relaxed pr-4">{item.desc}</p>
         </div>
       ))}
       {data.length === 0 && (
-        <div className="p-8 text-center text-slate-500 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-          <Globe size={32} className="mx-auto mb-3 text-slate-300" />
+        <div className="p-8 text-center text-neutral-500 bg-neutral-50 rounded-2xl border border-dashed border-neutral-200">
+          <Globe size={32} className="mx-auto mb-3 text-neutral-300" />
           <p className="text-sm font-bold">No recent market intelligence available for this category.</p>
         </div>
       )}

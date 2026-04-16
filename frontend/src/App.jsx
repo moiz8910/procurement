@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
+import { LanguageProvider } from './context/LanguageContext';
 import MainLayout from './layout/MainLayout';
 import Dashboard from './pages/Dashboard';
 import TasksPage from './pages/TasksPage';
@@ -11,6 +12,7 @@ import TransactionModule from './pages/TransactionModule';
 import VendorModule from './pages/VendorModule';
 import LoginPage from './pages/LoginPage';
 import StrategyDefinitionModule from './pages/StrategyDefinitionModule';
+import RequesterMarketplace from './pages/RequesterMarketplace';
 
 // ─── Role-Based Permission Map ───────────────────────────────────────────────
 // Defines which tabs each roleType may access, and their landing page.
@@ -55,7 +57,9 @@ const AppContent = () => {
     switch (resolvedTab) {
       case 'dashboard':    return <Dashboard />;
       case 'categories':   return <CategoryModule />;
-      case 'transactions': return <TransactionModule />;
+      case 'transactions':
+        // REQUESTER users see the Amazon-style procurement marketplace
+        return roleType === 'REQUESTER' ? <RequesterMarketplace /> : <TransactionModule />;
       case 'vendors':      return <VendorModule />;
       case 'strategy_definition': return <StrategyDefinitionModule />;
       default:             return <TransactionModule />;
@@ -83,9 +87,11 @@ const App = () => {
   }
 
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <LanguageProvider>
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </LanguageProvider>
   );
 };
 

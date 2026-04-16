@@ -135,7 +135,7 @@ const StrategyDefinitionModule = () => {
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <h1 className="text-lg font-black text-slate-800 flex items-center gap-2 tracking-tight">
+            <h1 className="text-lg font-black text-blue-800 flex items-center gap-2 tracking-tight">
               <FileSignature className="text-emerald-600 w-4 h-4" />
               Strategy Builder
             </h1>
@@ -181,7 +181,7 @@ const StrategyDefinitionModule = () => {
               <BrainCircuit className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-xs font-bold text-slate-800">Strategy Copilot</h2>
+              <h2 className="text-xs font-bold text-blue-800">Strategy Copilot</h2>
               <p className="text-[10px] font-medium text-emerald-600 hover:text-emerald-800 cursor-pointer">View Instructions</p>
             </div>
           </div>
@@ -191,7 +191,7 @@ const StrategyDefinitionModule = () => {
               <div key={idx} className={`flex ${msg.role === 'ai' ? 'justify-start' : 'justify-end'}`}>
                 <div className={`max-w-[90%] rounded-xl p-2.5 flex gap-2.5 ${
                   msg.role === 'ai' 
-                    ? 'bg-emerald-50 border border-emerald-100 text-slate-800 rounded-tl-none shadow-sm' 
+                    ? 'bg-emerald-50 border border-emerald-100 text-blue-800 rounded-tl-none shadow-sm' 
                     : 'bg-emerald-600 text-white rounded-tr-none shadow-sm'
                 }`}>
                   {msg.role === 'ai' && <div className="mt-0.5"><Zap className="w-3 h-3 text-emerald-500" /></div>}
@@ -214,7 +214,7 @@ const StrategyDefinitionModule = () => {
           <div className="p-3 bg-white border-t border-emerald-100">
             <div className="relative flex items-center">
               <textarea
-                className="w-full bg-slate-50 border border-emerald-200 rounded-lg pl-3 pr-10 py-2.5 text-xs focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-100 transition-all resize-none h-[42px]"
+                className="w-full bg-neutral-50 border border-emerald-200 rounded-lg pl-3 pr-10 py-2.5 text-xs focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-100 transition-all resize-none h-[42px]"
                 placeholder="Instruct Copilot..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
@@ -243,7 +243,7 @@ const StrategyDefinitionModule = () => {
         </div>
 
         {/* Right Pane - Strict Clean Document Viewer (Light Theme) */}
-        <div className="flex-1 bg-slate-50 overflow-y-auto p-4 md:p-8 flex justify-center custom-scrollbar shadow-inner relative relative">
+        <div className="flex-1 bg-neutral-50 overflow-y-auto p-4 md:p-8 flex justify-center custom-scrollbar shadow-inner relative relative">
            
            <div className={`bg-white w-full max-w-[700px] shadow-sm border border-emerald-100 min-h-[1000px] mb-12 overflow-hidden transition-opacity ${loadingStrategy ? 'opacity-50' : 'opacity-100'}`}>
               
@@ -254,16 +254,16 @@ const StrategyDefinitionModule = () => {
                  
                  <div className="grid grid-cols-4 gap-4 text-xs">
                     <div>
-                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Target Category</p>
-                      <p className="font-bold text-slate-800">{selectedCategory?.name || 'Loading...'}</p>
+                      <p className="text-neutral-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Target Category</p>
+                      <p className="font-bold text-blue-800">{selectedCategory?.name || 'Loading...'}</p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Prepared By</p>
-                      <p className="font-bold text-slate-800">{currentUser?.name}</p>
+                      <p className="text-neutral-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Prepared By</p>
+                      <p className="font-bold text-blue-800">{currentUser?.name}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-slate-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Date Configured</p>
-                      <p className="font-bold text-slate-800">{new Date().toLocaleDateString()}</p>
+                      <p className="text-neutral-400 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Date Configured</p>
+                      <p className="font-bold text-blue-800">{new Date().toLocaleDateString()}</p>
                     </div>
                  </div>
               </div>
@@ -274,11 +274,11 @@ const StrategyDefinitionModule = () => {
                  
                  {!loadingStrategy && documentSections.map((sec, index) => (
                     <div key={sec.id} className="group relative">
-                       <h2 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-1.5 mb-3 flex items-center gap-2">
+                       <h2 className="text-sm font-bold text-blue-800 border-b border-neutral-100 pb-1.5 mb-3 flex items-center gap-2">
                          <span className="text-emerald-500/40 font-black text-lg">{String(index + 1).padStart(2, '0')}</span> 
                          {sec.title}
                        </h2>
-                       <div className="text-slate-600 text-xs leading-relaxed whitespace-pre-wrap pl-6 border-l-2 border-transparent group-hover:border-emerald-200 transition-colors">
+                       <div className="text-neutral-600 text-xs leading-relaxed whitespace-pre-wrap pl-6 border-l-2 border-transparent group-hover:border-emerald-200 transition-colors">
                           {sec.content.split('\n').map((para, i) => (
                              <p key={i} className={i !== 0 ? 'mt-2' : ''}>
                                 {para.includes('[Copilot Update]') ? (
@@ -292,7 +292,7 @@ const StrategyDefinitionModule = () => {
                     </div>
                  ))}
                  
-                 <div className="mt-12 pt-6 border-t border-slate-100 text-center text-slate-400 flex flex-col items-center">
+                 <div className="mt-12 pt-6 border-t border-neutral-100 text-center text-neutral-400 flex flex-col items-center">
                     <Layers className="mb-1.5 w-4 h-4 opacity-30 text-emerald-600" />
                     <p className="uppercase tracking-widest text-[9px] font-bold">End of Document - Page 1 of 15</p>
                  </div>

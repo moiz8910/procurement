@@ -65,23 +65,23 @@ const VendorCalendar = ({ onMeetingClick }) => {
   const blanks = Array.from({ length: startDay }, (_, i) => i);
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-full">
-      <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-        <h3 className="font-black text-slate-800 flex items-center gap-2 text-sm uppercase tracking-tight">
+    <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm overflow-hidden flex flex-col h-full">
+      <div className="p-5 border-b border-neutral-100 flex items-center justify-between bg-neutral-50/50">
+        <h3 className="font-black text-blue-800 flex items-center gap-2 text-sm uppercase tracking-tight">
           <Calendar className="text-emerald-600" size={18} /> 
           System Engagement Calendar
         </h3>
         <div className="flex items-center gap-2">
-          <button className="p-1 hover:bg-white rounded-lg transition-all border border-transparent hover:border-slate-200"><ChevronLeft size={18} /></button>
-          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">April 2024</span>
-          <button className="p-1 hover:bg-white rounded-lg transition-all border border-transparent hover:border-slate-200"><ChevronRight size={18} /></button>
+          <button className="p-1 hover:bg-white rounded-lg transition-all border border-transparent hover:border-neutral-200"><ChevronLeft size={18} /></button>
+          <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 px-2">April 2024</span>
+          <button className="p-1 hover:bg-white rounded-lg transition-all border border-transparent hover:border-neutral-200"><ChevronRight size={18} /></button>
         </div>
       </div>
       
       <div className="flex-1 p-4">
         <div className="grid grid-cols-7 gap-1 mb-2">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-            <div key={d} className="text-center text-[9px] font-black uppercase tracking-widest text-slate-300 py-1">{d}</div>
+            <div key={d} className="text-center text-[9px] font-black uppercase tracking-widest text-neutral-300 py-1">{d}</div>
           ))}
         </div>
         <div className="grid grid-cols-7 gap-1">
@@ -90,8 +90,8 @@ const VendorCalendar = ({ onMeetingClick }) => {
             const dateStr = `2024-04-${String(d).padStart(2,'0')}`;
             const mtg = MOCK_MEETINGS.find(m => m.date === dateStr);
             return (
-              <div key={d} className="aspect-square border border-slate-50 rounded-xl p-1 relative hover:bg-slate-50 transition-all group">
-                <span className="text-[10px] font-bold text-slate-300">{d}</span>
+              <div key={d} className="aspect-square border border-neutral-50 rounded-xl p-1 relative hover:bg-neutral-50 transition-all group">
+                <span className="text-[10px] font-bold text-neutral-300">{d}</span>
                 {mtg && (
                   <div 
                     onClick={() => onMeetingClick(mtg)}
@@ -138,21 +138,21 @@ const Dashboard = () => {
           <div className="flex items-center gap-2 text-emerald-600 font-black text-[10px] uppercase tracking-[0.2em] mb-2">
             <LayoutDashboard size={14} /> Enterprise Strategic Control Room
           </div>
-          <h1 className="text-4xl font-black tracking-tighter text-slate-900 leading-none">
+          <h1 className="text-4xl font-black tracking-tighter text-blue-900 leading-none">
             Welcome back, {currentUser.name.split(' ')[0]}
           </h1>
-          <p className="text-sm text-slate-500 font-bold mt-2">Executive oversight & strategic decision support center.</p>
+          <p className="text-sm text-neutral-500 font-bold mt-2">Executive oversight & strategic decision support center.</p>
         </div>
 
         {/* Global Date Filters */}
-        <div className="flex items-center gap-2 bg-white p-2 rounded-2xl border border-slate-100 shadow-sm">
-          <div className="flex flex-col px-3 border-r border-slate-100">
-            <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Start Date</label>
-            <input type="date" className="bg-transparent font-bold text-slate-800 outline-none text-xs" value={sd} onChange={e => setSd(e.target.value)} />
+        <div className="flex items-center gap-2 bg-white p-2 rounded-2xl border border-neutral-100 shadow-sm">
+          <div className="flex flex-col px-3 border-r border-neutral-100">
+            <label className="text-[8px] font-black text-neutral-400 uppercase tracking-widest">Start Date</label>
+            <input type="date" className="bg-transparent font-bold text-blue-800 outline-none text-xs" value={sd} onChange={e => setSd(e.target.value)} />
           </div>
-          <div className="flex flex-col px-3 border-r border-slate-100">
-            <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest">End Date</label>
-            <input type="date" className="bg-transparent font-bold text-slate-800 outline-none text-xs" value={ed} onChange={e => setEd(e.target.value)} />
+          <div className="flex flex-col px-3 border-r border-neutral-100">
+            <label className="text-[8px] font-black text-neutral-400 uppercase tracking-widest">End Date</label>
+            <input type="date" className="bg-transparent font-bold text-blue-800 outline-none text-xs" value={ed} onChange={e => setEd(e.target.value)} />
           </div>
           <div className="p-2"><CalendarDays className="text-emerald-400" size={20} /></div>
         </div>
@@ -192,22 +192,22 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm space-y-6">
-            <h3 className="font-black text-slate-800 flex items-center gap-2 uppercase tracking-tight text-sm"><Award size={18} className="text-emerald-500" /> System Critical Tasks</h3>
+          <div className="bg-white rounded-[2.5rem] border border-neutral-100 p-8 shadow-sm space-y-6">
+            <h3 className="font-black text-blue-800 flex items-center gap-2 uppercase tracking-tight text-sm"><Award size={18} className="text-emerald-500" /> System Critical Tasks</h3>
              {[
                { id: 'PR_1025', desc: 'High Value PO Approval', sub: 'Coal Logistics · Q2', urgency: 'High', pr: 'PR_1025', amt: '4.2', req: 'S. Sharma' },
                { id: 'SR_108', desc: 'Supplier Risk Mitigation', sub: 'Vendor Audit · Vedanta', urgency: 'Medium', pr: 'SR_108', amt: '0.0', req: 'Audit Team' },
                { id: 'CN_92', desc: 'Contract Renewal: Belts', sub: 'Strategic Sourcing', urgency: 'High', pr: 'CN_92', amt: '2.1', req: 'Y. Kumar' }
              ].map((t, i) => (
               <div key={i} onClick={() => setSelectedTask(t)} className="flex gap-4 p-4 rounded-2xl hover:bg-emerald-50/50 transition-all border border-transparent hover:border-emerald-100 cursor-pointer group">
-                <div className={`h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:shadow-md transition-all ${t.urgency === 'High' ? 'text-rose-500' : 'text-emerald-500'}`}>
+                <div className={`h-12 w-12 rounded-2xl bg-neutral-50 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:shadow-md transition-all ${t.urgency === 'High' ? 'text-rose-500' : 'text-emerald-500'}`}>
                   {t.urgency === 'High' ? <AlertTriangle size={20} /> : <FileText size={20} />}
                 </div>
                 <div className="flex-1">
-                  <div className="text-sm font-black text-slate-800 group-hover:text-emerald-700 transition-colors uppercase tracking-tight">{t.desc}</div>
-                  <p className="text-[10px] uppercase font-black text-slate-400 tracking-widest mt-0.5">{t.sub} · {t.id}</p>
+                  <div className="text-sm font-black text-blue-800 group-hover:text-emerald-700 transition-colors uppercase tracking-tight">{t.desc}</div>
+                  <p className="text-[10px] uppercase font-black text-neutral-400 tracking-widest mt-0.5">{t.sub} · {t.id}</p>
                 </div>
-                <ArrowUpRight size={14} className="text-slate-300 group-hover:text-emerald-600" />
+                <ArrowUpRight size={14} className="text-neutral-300 group-hover:text-emerald-600" />
               </div>
             ))}
             <button className="w-full py-4 text-[10px] font-black text-emerald-600 uppercase tracking-widest hover:bg-emerald-50 rounded-2xl transition-all border border-transparent hover:border-emerald-100">View All Enterprise Tasks</button>
@@ -223,32 +223,32 @@ const Dashboard = () => {
 
       {/* ── 4. MARKET MONITOR ─────────────────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm">
+        <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-neutral-100 p-8 shadow-sm">
            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-xl font-black text-slate-900 tracking-tight">Market Intelligence & Risks</h3>
+              <h3 className="text-xl font-black text-blue-900 tracking-tight">Market Intelligence & Risks</h3>
               <div className="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-widest">3 New Trend Alerts</div>
            </div>
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-6 rounded-3xl bg-slate-50 border border-slate-100 space-y-4 group hover:border-rose-200 transition-all cursor-pointer">
+              <div className="p-6 rounded-3xl bg-neutral-50 border border-neutral-100 space-y-4 group hover:border-rose-200 transition-all cursor-pointer">
                  <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">LME Aluminum Spot</span>
+                    <span className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">LME Aluminum Spot</span>
                     <span className="text-[10px] font-black text-rose-500 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">+12.4% Hike</span>
                  </div>
-                 <div className="text-3xl font-black text-slate-900">$2,450 <span className="text-xs font-bold text-slate-400">/ton</span></div>
-                 <p className="text-xs font-medium text-slate-500 leading-relaxed italic border-l-4 border-rose-400 pl-3">"Suez disruption impact projected – review active long-term framework hedges."</p>
+                 <div className="text-3xl font-black text-blue-900">$2,450 <span className="text-xs font-bold text-neutral-400">/ton</span></div>
+                 <p className="text-xs font-medium text-neutral-500 leading-relaxed italic border-l-4 border-rose-400 pl-3">"Suez disruption impact projected – review active long-term framework hedges."</p>
               </div>
-              <div className="p-6 rounded-3xl bg-slate-50 border border-slate-100 space-y-4 group hover:border-emerald-200 transition-all cursor-pointer">
+              <div className="p-6 rounded-3xl bg-neutral-50 border border-neutral-100 space-y-4 group hover:border-emerald-200 transition-all cursor-pointer">
                  <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Thermal Coal Index</span>
+                    <span className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">Thermal Coal Index</span>
                     <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">-5.1% Drop</span>
                  </div>
-                 <div className="text-3xl font-black text-slate-900">$380 <span className="text-xs font-bold text-slate-400">/t</span></div>
-                 <p className="text-xs font-medium text-slate-500 leading-relaxed italic border-l-4 border-emerald-400 pl-3">"Market surplus detected – initiate spot RFQ for buffer replenishment."</p>
+                 <div className="text-3xl font-black text-blue-900">$380 <span className="text-xs font-bold text-neutral-400">/t</span></div>
+                 <p className="text-xs font-medium text-neutral-500 leading-relaxed italic border-l-4 border-emerald-400 pl-3">"Market surplus detected – initiate spot RFQ for buffer replenishment."</p>
               </div>
            </div>
         </div>
 
-        <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
+        <div className="bg-blue-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
            <MapPin className="absolute -top-6 -right-6 text-white/5" size={120} />
            <h5 className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-6 flex items-center gap-2"><Globe size={14}/> Geopolitical Exposure Index</h5>
@@ -260,7 +260,7 @@ const Dashboard = () => {
               ].map((l, i) => (
                 <div key={i} className="space-y-2">
                    <div className="flex justify-between items-center text-[10px] uppercase font-black tracking-tight">
-                      <span className="text-slate-400">{l.name}</span>
+                      <span className="text-neutral-400">{l.name}</span>
                       <span className={`text-${l.col}`}>{l.status}</span>
                    </div>
                    <div className="h-1 bg-white/10 rounded-full overflow-hidden">
@@ -277,30 +277,30 @@ const Dashboard = () => {
       {selectedMtg && (
         <Modal onClose={() => setSelectedMtg(null)} maxWidth="max-w-4xl">
            <div className="flex flex-col h-full">
-              <div className="p-8 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+              <div className="p-8 border-b border-neutral-100 bg-neutral-50/50 flex justify-between items-center">
                  <div className="flex gap-4 items-center">
                     <div className="w-14 h-14 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-100"><Users size={28}/></div>
                     <div>
-                       <h3 className="text-2xl font-black text-slate-800 leading-none">{selectedMtg.title}</h3>
-                       <p className="text-sm font-bold text-slate-400 mt-2 uppercase tracking-widest">{selectedMtg.date} · {selectedMtg.time}</p>
+                       <h3 className="text-2xl font-black text-blue-800 leading-none">{selectedMtg.title}</h3>
+                       <p className="text-sm font-bold text-neutral-400 mt-2 uppercase tracking-widest">{selectedMtg.date} · {selectedMtg.time}</p>
                     </div>
                  </div>
-                 <button onClick={() => setSelectedMtg(null)} className="p-2 hover:bg-white hover:shadow-sm rounded-full transition-all text-slate-400"><X size={24}/></button>
+                 <button onClick={() => setSelectedMtg(null)} className="p-2 hover:bg-white hover:shadow-sm rounded-full transition-all text-neutral-400"><X size={24}/></button>
               </div>
 
               <div className="flex-1 overflow-y-auto p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                  {/* Left: Meeting Info */}
                  <div className="space-y-6">
                     <div className="space-y-2">
-                       <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5"><FileText size={12}/> Meeting Agenda</h5>
-                       <p className="text-sm font-medium text-slate-700 leading-relaxed bg-slate-50 p-5 rounded-3xl border border-slate-100 italic">{selectedMtg.agenda}</p>
+                       <h5 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest flex items-center gap-1.5"><FileText size={12}/> Meeting Agenda</h5>
+                       <p className="text-sm font-medium text-neutral-700 leading-relaxed bg-neutral-50 p-5 rounded-3xl border border-neutral-100 italic">{selectedMtg.agenda}</p>
                     </div>
 
                     <div className="space-y-3">
-                       <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Expected Attendees</h5>
+                       <h5 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Expected Attendees</h5>
                        <div className="flex gap-2">
                           {[1,2,3,4].map(i => (
-                            <div key={i} className="w-10 h-10 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[10px] font-black text-slate-400 -ml-2 first:ml-0">U{i}</div>
+                            <div key={i} className="w-10 h-10 rounded-full bg-neutral-100 border-2 border-white flex items-center justify-center text-[10px] font-black text-neutral-400 -ml-2 first:ml-0">U{i}</div>
                           ))}
                           <div className="w-10 h-10 rounded-full bg-emerald-50 border-2 border-white flex items-center justify-center text-[10px] font-black text-emerald-500">+{selectedMtg.attendees - 4}</div>
                        </div>
@@ -308,12 +308,12 @@ const Dashboard = () => {
                  </div>
 
                  {/* Right: Vendor Profile */}
-                 <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-6 shadow-sm space-y-6">
+                 <div className="bg-white border-2 border-neutral-100 rounded-[2.5rem] p-6 shadow-sm space-y-6">
                     <div className="flex items-center gap-4">
-                       <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100"><Star className="text-amber-500" size={24}/></div>
+                       <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center border border-neutral-100"><Star className="text-amber-500" size={24}/></div>
                        <div>
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Vendor Partner Profile</p>
-                          <h4 className="text-lg font-black text-slate-800">{selectedMtg.vendor}</h4>
+                          <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest leading-none mb-1">Vendor Partner Profile</p>
+                          <h4 className="text-lg font-black text-blue-800">{selectedMtg.vendor}</h4>
                        </div>
                        <div className="ml-auto flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100">
                           <div className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
@@ -322,21 +322,21 @@ const Dashboard = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
-                       <div className="bg-slate-50 rounded-2xl p-4">
-                          <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Annual Spend</p>
+                       <div className="bg-neutral-50 rounded-2xl p-4">
+                          <p className="text-[8px] font-black text-neutral-400 uppercase tracking-widest mb-1">Total Annual Spend</p>
                           <p className="text-xl font-black text-emerald-600">{vendorDetail?.spend}</p>
                        </div>
-                       <div className="bg-slate-50 rounded-2xl p-4">
-                          <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Performance Score</p>
-                          <p className="text-xl font-black text-slate-900">{vendorDetail?.perf}<span className="text-xs">/100</span></p>
+                       <div className="bg-neutral-50 rounded-2xl p-4">
+                          <p className="text-[8px] font-black text-neutral-400 uppercase tracking-widest mb-1">Performance Score</p>
+                          <p className="text-xl font-black text-blue-900">{vendorDetail?.perf}<span className="text-xs">/100</span></p>
                        </div>
-                       <div className="bg-slate-50 rounded-2xl p-4">
-                          <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Composite Risk</p>
+                       <div className="bg-neutral-50 rounded-2xl p-4">
+                          <p className="text-[8px] font-black text-neutral-400 uppercase tracking-widest mb-1">Composite Risk</p>
                           <p className={`text-xl font-black ${vendorDetail?.risk === 'High' ? 'text-rose-600' : 'text-emerald-600'}`}>{vendorDetail?.risk}</p>
                        </div>
-                       <div className="bg-slate-50 rounded-2xl p-4">
-                          <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Base Location</p>
-                          <p className="text-sm font-black text-slate-500 flex items-center gap-1 mt-1"><MapPin size={12}/>{vendorDetail?.location}</p>
+                       <div className="bg-neutral-50 rounded-2xl p-4">
+                          <p className="text-[8px] font-black text-neutral-400 uppercase tracking-widest mb-1">Base Location</p>
+                          <p className="text-sm font-black text-neutral-500 flex items-center gap-1 mt-1"><MapPin size={12}/>{vendorDetail?.location}</p>
                        </div>
                     </div>
                     <div className="p-4 bg-emerald-50/50 rounded-3xl border border-emerald-100 flex items-start gap-3">
@@ -352,38 +352,38 @@ const Dashboard = () => {
       {/* ── MODAL: PENDING TASK WORKFLOW ────────────────────────────────── */}
       {selectedTask && (
         <Modal onClose={() => setSelectedTask(null)} maxWidth="max-w-2xl">
-           <div className="border-b border-slate-200 px-8 py-6 flex items-center gap-4 bg-slate-50/50">
+           <div className="border-b border-neutral-200 px-8 py-6 flex items-center gap-4 bg-neutral-50/50">
              <div className={`p-4 rounded-2xl shadow-sm ${selectedTask.urgency === 'High' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600'}`}>
                 {selectedTask.urgency === 'High' ? <AlertTriangle size={24}/> : <FileText size={24}/>}
              </div>
              <div className="flex-1">
-                <h3 className="text-2xl font-black text-slate-800 tracking-tight leading-none uppercase">{selectedTask.desc}</h3>
+                <h3 className="text-2xl font-black text-blue-800 tracking-tight leading-none uppercase">{selectedTask.desc}</h3>
                 <div className="flex items-center gap-2 mt-2">
                    <span className={`text-[9px] font-black px-2 py-0.5 rounded border ${selectedTask.urgency === 'High' ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-emerald-50 text-emerald-600 border-emerald-200'}`}>{selectedTask.urgency} URGENCY</span>
-                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{selectedTask.id} · {selectedTask.req}</span>
+                   <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">{selectedTask.id} · {selectedTask.req}</span>
                 </div>
              </div>
-             <button onClick={() => setSelectedTask(null)} className="text-slate-400 hover:text-slate-600 p-2"><X size={24}/></button>
+             <button onClick={() => setSelectedTask(null)} className="text-neutral-400 hover:text-neutral-600 p-2"><X size={24}/></button>
            </div>
            
            <div className="p-8 space-y-8">
-              <div className="bg-slate-50 border border-slate-200 rounded-[2rem] p-6 space-y-6">
-                 <div className="flex justify-between items-center bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+              <div className="bg-neutral-50 border border-neutral-200 rounded-[2rem] p-6 space-y-6">
+                 <div className="flex justify-between items-center bg-white rounded-2xl p-5 shadow-sm border border-neutral-100">
                     <div>
-                       <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Strategic Justification</p>
-                       <p className="text-sm font-bold text-slate-800 leading-snug">
+                       <p className="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-1">Strategic Justification</p>
+                       <p className="text-sm font-bold text-blue-800 leading-snug">
                           {selectedTask.id.startsWith('PR') ? "Critical replenishment for Q2 operational buffer. Aligned with fiscal inventory optimization strategy." : "Periodic strategic audit to verify master service agreement compliance and performance levels."}
                        </p>
                     </div>
                  </div>
                  
                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white rounded-2xl p-4 border border-slate-100">
-                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Decision Value</p>
-                       <p className="text-2xl font-black text-slate-900">₹{selectedTask.amt || '0.0'} Cr</p>
+                    <div className="bg-white rounded-2xl p-4 border border-neutral-100">
+                       <p className="text-[9px] font-black text-neutral-400 uppercase tracking-widest mb-1">Decision Value</p>
+                       <p className="text-2xl font-black text-blue-900">₹{selectedTask.amt || '0.0'} Cr</p>
                     </div>
-                    <div className="bg-white rounded-2xl p-4 border border-slate-100">
-                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Compliance Status</p>
+                    <div className="bg-white rounded-2xl p-4 border border-neutral-100">
+                       <p className="text-[9px] font-black text-neutral-400 uppercase tracking-widest mb-1">Compliance Status</p>
                        <p className="text-lg font-black text-emerald-600 flex items-center gap-1.5"><Check size={16}/> VERIFIED</p>
                     </div>
                  </div>
@@ -391,15 +391,15 @@ const Dashboard = () => {
 
               <div className="space-y-4">
                  <div className="flex items-center justify-between">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2"><MessageSquare size={14}/> Executive Decision Comments</label>
-                    <span className="text-[9px] font-black text-slate-300">MAX 500 CHARS</span>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400 flex items-center gap-2"><MessageSquare size={14}/> Executive Decision Comments</label>
+                    <span className="text-[9px] font-black text-neutral-300">MAX 500 CHARS</span>
                  </div>
                  <textarea 
                     rows={4} 
                     value={decisionNote} 
                     onChange={e => setDecisionNote(e.target.value)} 
                     placeholder="Enter formal decision notes for the audit trail..." 
-                    className="w-full text-sm font-medium p-5 border-2 border-slate-100 rounded-3xl outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 transition-all bg-slate-50/50" 
+                    className="w-full text-sm font-medium p-5 border-2 border-neutral-100 rounded-3xl outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 transition-all bg-neutral-50/50" 
                  />
                  
                  <div className="flex gap-4 pt-4">

@@ -212,7 +212,7 @@ const loginStyles = `
   /* animated gradient blobs */
   .blob {
     position: absolute;
-    border-radius: 50%;
+    border-radius: 0;
     filter: blur(80px);
     opacity: 0.35;
     animation: blobFloat 8s ease-in-out infinite;
@@ -249,7 +249,7 @@ const loginStyles = `
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(24px);
     border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: 24px;
+    border-radius: 0;
     padding: 40px;
     box-shadow: 0 32px 80px rgba(0, 0, 0, 0.05);
     animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -268,7 +268,7 @@ const loginStyles = `
   }
   .login-logo-spark {
     width: 16px; height: 16px;
-    border-radius: 5px;
+    border-radius: 0;
     background: linear-gradient(135deg, #059669, #10b981);
     transform: rotate(45deg);
     box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
@@ -286,7 +286,7 @@ const loginStyles = `
     color: #059669;
     background: rgba(5, 150, 105, 0.15);
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: 0;
     margin-left: 4px;
   }
 
@@ -326,7 +326,7 @@ const loginStyles = `
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
-    border-radius: 12px;
+    border-radius: 0;
     border: 1px solid #cbd5e1;
     background: #f8fafc;
     cursor: pointer;
@@ -345,7 +345,7 @@ const loginStyles = `
   }
   .role-chip-avatar {
     width: 32px; height: 32px;
-    border-radius: 9px;
+    border-radius: 0;
     background: linear-gradient(135deg, #059669, #10b981);
     color: #fff;
     font-size: 13px;
@@ -387,7 +387,7 @@ const loginStyles = `
     width: 100%;
     background: #ffffff;
     border: 1px solid #cbd5e1;
-    border-radius: 12px;
+    border-radius: 0;
     padding: 12px 44px 12px 42px;
     font-size: 14px;
     color: #1e293b;
@@ -418,7 +418,7 @@ const loginStyles = `
     font-size: 13px; color: #ef4444;
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: 8px;
+    border-radius: 0;
     padding: 10px 14px;
     animation: shake 0.3s ease;
   }
@@ -451,7 +451,7 @@ const loginStyles = `
     display: flex; align-items: center; justify-content: center; gap: 10px;
     width: 100%;
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 0;
     background: linear-gradient(135deg, #059669 0%, #10b981 100%);
     color: #fff; font-size: 15px; font-weight: 700;
     border: none; cursor: pointer;
@@ -473,7 +473,7 @@ const loginStyles = `
     width: 18px; height: 18px;
     border: 2px solid rgba(255,255,255,0.3);
     border-top-color: #fff;
-    border-radius: 50%;
+    border-radius: 0;
     animation: spin 0.7s linear infinite;
     flex-shrink: 0;
   }

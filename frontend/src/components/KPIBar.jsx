@@ -29,15 +29,15 @@ const KPIBar = () => {
   return (
     <div className="px-6 py-3 flex items-center justify-between gap-6 overflow-x-auto custom-scrollbar no-scrollbar">
       {kpis.map((kpi, idx) => (
-        <div key={idx} className="flex items-center gap-4 shrink-0 px-4 py-1.5 rounded-full hover:bg-slate-50 transition-colors group">
-          <div className={`p-2 rounded-full bg-slate-100 group-hover:bg-white group-hover:shadow-sm transition-all ${kpi.color}`}>
+        <div key={idx} className="flex items-center gap-4 shrink-0 px-4 py-1.5 rounded-full hover:bg-neutral-50 transition-colors group">
+          <div className={`p-2 rounded-full bg-neutral-100 group-hover:bg-white group-hover:shadow-sm transition-all ${kpi.color}`}>
             <kpi.icon className="h-3.5 w-3.5" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold uppercase tracking-tight text-slate-500">{kpi.label}</span>
+            <span className="text-[10px] font-bold uppercase tracking-tight text-neutral-500">{kpi.label}</span>
             <div className="flex items-center gap-2">
               <span className="text-sm font-black text-emerald-900">{kpi.value}</span>
-              <span className={`text-[10px] font-bold ${kpi.trend.startsWith('+') ? 'text-emerald-600' : 'text-slate-400'}`}>
+              <span className={`text-[10px] font-bold ${kpi.trend.startsWith('+') ? 'text-emerald-600' : 'text-neutral-400'}`}>
                 {kpi.trend}
               </span>
             </div>

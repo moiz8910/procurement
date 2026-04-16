@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import PRGanttModal from '../components/PRGanttModal';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
@@ -14,6 +15,7 @@ import {
 
 const ProcurementExecution = () => {
   const { prs, filters } = useApp();
+  const [selectedPr, setSelectedPr] = useState(null);
 
   const filteredPrs = prs.filter(pr => {
     if (!filters?.searchQuery) return true;
@@ -31,7 +33,7 @@ const ProcurementExecution = () => {
       case 'APPROVED': return <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border-emerald-500/20">Approved</Badge>;
       case 'PO_CREATED': return <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border-emerald-500/20">PO Created</Badge>;
       case 'REJECTED': return <Badge className="bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 border-rose-500/20">Rejected</Badge>;
-      default: return <Badge variant="outline" className="text-slate-500 border-slate-200">Pending</Badge>;
+      default: return <Badge variant="outline" className="text-neutral-500 border-neutral-200">Pending</Badge>;
     }
   };
 
@@ -40,7 +42,7 @@ const ProcurementExecution = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-bold tracking-tight text-emerald-900 font-display">Procurement Execution</h1>
-          <p className="text-sm text-slate-500">Track and manage the lifecycle of Purchase Requisitions to Purchase Orders.</p>
+          <p className="text-sm text-neutral-500">Track and manage the lifecycle of Purchase Requisitions to Purchase Orders.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="h-9 gap-2">
@@ -67,37 +69,41 @@ const ProcurementExecution = () => {
         </Card>
       </div>
 
-      <Card className="border-slate-200/60 shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
+      <Card className="border-neutral-200/60 shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200/60">
-                  <th className="text-left p-4 font-semibold text-slate-600 first:pl-6">ID</th>
-                  <th className="text-left p-4 font-semibold text-slate-600">Requester</th>
-                  <th className="text-left p-4 font-semibold text-slate-600">Amount</th>
-                  <th className="text-left p-4 font-semibold text-slate-600">Status</th>
-                  <th className="text-left p-4 font-semibold text-slate-600">Owner</th>
-                  <th className="text-right p-4 font-semibold text-slate-600 last:pr-6">Action</th>
+                <tr className="bg-neutral-50 border-b border-neutral-200/60">
+                  <th className="text-left p-4 font-semibold text-neutral-600 first:pl-6">ID</th>
+                  <th className="text-left p-4 font-semibold text-neutral-600">Requester</th>
+                  <th className="text-left p-4 font-semibold text-neutral-600">Amount</th>
+                  <th className="text-left p-4 font-semibold text-neutral-600">Status</th>
+                  <th className="text-left p-4 font-semibold text-neutral-600">Owner</th>
+                  <th className="text-right p-4 font-semibold text-neutral-600 last:pr-6">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100/60">
+              <tbody className="divide-y divide-neutral-100/60">
                 {filteredPrs.slice(0, 10).map((pr) => (
-                  <tr key={pr.id} className="group hover:bg-teal-50/30 transition-colors">
+                  <tr 
+                    key={pr.id} 
+                    className="group hover:bg-teal-50/30 transition-colors cursor-pointer"
+                    onClick={() => setSelectedPr(pr)}
+                  >
                     <td className="p-4 font-bold text-emerald-900 first:pl-6">PR_{pr.id.toString().padStart(5, '0')}</td>
-                    <td className="p-4 text-slate-600 font-medium">User_{pr.requester_id}</td>
+                    <td className="p-4 text-neutral-600 font-medium">User_{pr.requester_id}</td>
                     <td className="p-4 font-bold text-emerald-900">${pr.amount?.toLocaleString()}</td>
                     <td className="p-4">{getStatusBadge(pr.status)}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <div className="h-6 w-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 ring-1 ring-slate-200">
+                        <div className="h-6 w-6 rounded-full bg-neutral-100 flex items-center justify-center text-[10px] font-bold text-neutral-500 ring-1 ring-neutral-200">
                           {pr.current_owner?.[0]}
                         </div>
-                        <span className="text-xs font-semibold text-slate-600">{pr.current_owner}</span>
+                        <span className="text-xs font-semibold text-neutral-600">{pr.current_owner}</span>
                       </div>
                     </td>
                     <td className="p-4 text-right last:pr-6">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 group-hover:text-teal-600 group-hover:bg-teal-100/50 transition-all">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-neutral-400 group-hover:text-teal-600 group-hover:bg-teal-100/50 transition-all">
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                     </td>
@@ -108,6 +114,8 @@ const ProcurementExecution = () => {
           </div>
         </CardContent>
       </Card>
+      
+      {selectedPr && <PRGanttModal pr={selectedPr} onClose={() => setSelectedPr(null)} />}
     </div>
   );
 };

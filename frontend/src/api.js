@@ -16,7 +16,7 @@ export const getKpis = (params) => api.get('/kpis', { params });
 export const getCategories = () => api.get('/categories');
 export const getCategoryMetaFilters = () => api.get('/categories/meta/filters');
 export const getCategorySpend = (id) => api.get(`/categories/${id}/spend`);
-export const getCategoryKpis = (id) => api.get(`/categories/${id}/kpis`);
+export const getCategoryKpis = (id, params = {}) => api.get(`/categories/${id}/kpis`, { params });
 export const getCategoryStrategy = (id) => api.get(`/categories/${id}/strategy`);
 export const getCategoryStrategyChanges = (id, days = 7) => api.get(`/categories/${id}/strategy/changes?days=${days}`);
 export const updateCategoryStrategy = (id, contentBlocks) => api.post(`/categories/${id}/strategy`, { content_blocks: contentBlocks });

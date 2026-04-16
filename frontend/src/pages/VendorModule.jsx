@@ -74,19 +74,19 @@ const VendorModule = () => {
     );
   }
 
-  if (loading) return <div className="p-10 text-center font-bold text-slate-400 animate-pulse text-lg tracking-widest uppercase">Initializing Supplier Intelligence...</div>;
+  if (loading) return <div className="p-10 text-center font-bold text-neutral-400 animate-pulse text-lg tracking-widest uppercase">Initializing Supplier Intelligence...</div>;
 
   return (
-    <div className="space-y-6 px-4 py-6 max-w-[1700px] mx-auto min-h-screen bg-slate-50/20">
+    <div className="space-y-6 px-4 py-6 max-w-[1700px] mx-auto min-h-screen bg-neutral-50/20">
       
       {/* Header Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
            <h1 className="text-3xl font-black text-emerald-900 tracking-tight">Vendor Management Hub</h1>
-           <p className="text-sm font-bold text-slate-500">Live performance monitoring & strategic supplier discovery.</p>
+           <p className="text-sm font-bold text-neutral-500">Live performance monitoring & strategic supplier discovery.</p>
         </div>
         <div className="flex gap-3">
-           <button className="bg-white border border-slate-200 px-5 py-2.5 hover:bg-slate-50 text-slate-700 text-sm font-black rounded-2xl transition-all shadow-sm">Reporting Console</button>
+           <button className="bg-white border border-neutral-200 px-5 py-2.5 hover:bg-neutral-50 text-neutral-700 text-sm font-black rounded-2xl transition-all shadow-sm">Reporting Console</button>
            <button className="bg-emerald-900 px-5 py-2.5 hover:bg-black text-white text-sm font-black rounded-2xl transition-all shadow-lg">Onboard New Supplier</button>
         </div>
       </div>
@@ -100,11 +100,11 @@ const VendorModule = () => {
           { label: "Cost Savings", value: kpis?.costSavings || "₹4.2 Cr", icon: Zap, color: "amber" },
           { label: "Invoice Accuracy", value: kpis?.invoiceAccuracy || "96%", icon: FileText, color: "rose" }
         ].map((k, i) => (
-          <div key={i} className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 group">
+          <div key={i} className="bg-white border border-neutral-100 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:tranneutral-y-[-4px] transition-all duration-300 group">
              <div className={`h-12 w-12 shrink-0 bg-${k.color}-50 rounded-2xl flex items-center justify-center text-${k.color}-600 mb-4 group-hover:scale-110 transition-transform`}>
                <k.icon size={24} />
              </div>
-             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{k.label}</p>
+             <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-1">{k.label}</p>
              <h4 className="text-2xl font-black text-emerald-900 tracking-tight">{k.value}</h4>
           </div>
         ))}
@@ -115,9 +115,9 @@ const VendorModule = () => {
         
         {/* Col 1: Performance Management */}
         <div className="space-y-6">
-           <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden h-full flex flex-col">
-             <div className="border-b border-slate-100 p-6 bg-slate-50/50">
-               <h2 className="text-xs font-black text-slate-800 uppercase tracking-[0.2em] flex items-center gap-2">
+           <div className="bg-white rounded-[2rem] shadow-sm border border-neutral-100 overflow-hidden h-full flex flex-col">
+             <div className="border-b border-neutral-100 p-6 bg-neutral-50/50">
+               <h2 className="text-xs font-black text-blue-800 uppercase tracking-[0.2em] flex items-center gap-2">
                  <div className="w-1.5 h-4 bg-teal-500 rounded-full"></div>
                  Performance Management
                </h2>
@@ -128,7 +128,7 @@ const VendorModule = () => {
                </h3>
                <div className="space-y-2 mb-8">
                  {(perf?.top_issues || ["Missed OTIF targets", "High reject rates", "Frequent delays"]).map((issue, idx) => (
-                   <div key={idx} className="flex items-center gap-3 text-xs font-bold text-slate-600 bg-rose-50/30 p-3 rounded-2xl border border-rose-100/30">
+                   <div key={idx} className="flex items-center gap-3 text-xs font-bold text-neutral-600 bg-rose-50/30 p-3 rounded-2xl border border-rose-100/30">
                      <div className="h-1.5 w-1.5 rounded-full bg-rose-400 shrink-0"></div> {issue}
                    </div>
                  ))}
@@ -139,8 +139,8 @@ const VendorModule = () => {
                </h3>
                <div className="space-y-3 mb-8">
                  {(perf?.top_vendors || ["Vendor A", "Vendor B", "Vendor C"]).map((vendor, idx) => (
-                   <div key={idx} className="flex items-center justify-between p-3.5 rounded-2xl border border-slate-50 bg-slate-50/50 hover:border-emerald-200 transition-colors cursor-default">
-                     <span className="text-xs font-black text-slate-700">{vendor}</span>
+                   <div key={idx} className="flex items-center justify-between p-3.5 rounded-2xl border border-neutral-50 bg-neutral-50/50 hover:border-emerald-200 transition-colors cursor-default">
+                     <span className="text-xs font-black text-neutral-700">{vendor}</span>
                      <div className="flex gap-1 text-amber-400">
                         {[1,2,3,4,5].map(s => <Star key={s} size={10} fill={s <= 4 ? "currentColor" : "none"} />)}
                      </div>
@@ -155,24 +155,24 @@ const VendorModule = () => {
         </div>
 
         {/* Col 2: Vendor Intelligence (Perfect) */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col pt-7">
+        <div className="bg-white rounded-[2rem] shadow-sm border border-neutral-100 overflow-hidden flex flex-col pt-7">
             <div className="px-6 mb-6">
-              <h2 className="text-xs font-black text-slate-800 uppercase tracking-[0.2em] flex items-center gap-2 outline-none">
+              <h2 className="text-xs font-black text-blue-800 uppercase tracking-[0.2em] flex items-center gap-2 outline-none">
                  <div className="w-1.5 h-4 bg-amber-500 rounded-full"></div>
                  Market Intelligence
               </h2>
             </div>
             <div className="flex-1 overflow-y-auto px-7 pb-6 space-y-4">
                {intel.map((item, idx) => (
-                 <div key={idx} className="group cursor-pointer border-b border-slate-50 pb-4 last:border-0">
+                 <div key={idx} className="group cursor-pointer border-b border-neutral-50 pb-4 last:border-0">
                    <div className="flex justify-between items-center mb-2">
                      <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${
                        item.impact === 'High' ? 'bg-rose-100 text-rose-600' : 
                        item.impact === 'Medium' ? 'bg-amber-100 text-amber-600' : 'bg-sky-100 text-sky-600'
                      }`}>{item.impact} Impact</span>
-                     <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1"><Clock size={10} /> {item.time}</span>
+                     <span className="text-[10px] font-bold text-neutral-400 flex items-center gap-1"><Clock size={10} /> {item.time}</span>
                    </div>
-                   <h4 className="text-xs font-black text-slate-700 leading-normal group-hover:text-teal-600 transition-colors uppercase tracking-tight">{item.title}</h4>
+                   <h4 className="text-xs font-black text-neutral-700 leading-normal group-hover:text-teal-600 transition-colors uppercase tracking-tight">{item.title}</h4>
                  </div>
                ))}
             </div>
@@ -200,21 +200,21 @@ const VendorModule = () => {
             </div>
 
             {/* Calendar & Tasks Block */}
-            <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full">
+            <div className="bg-white rounded-[2rem] shadow-sm border border-neutral-100 overflow-hidden flex flex-col h-full">
                <div className="p-7 flex gap-7 items-start">
                   <div className="flex flex-col items-center bg-teal-600 rounded-3xl p-5 w-24 border border-teal-700 shadow-xl shadow-teal-100 shrink-0">
                      <span className="text-[10px] font-black text-teal-200 uppercase tracking-widest leading-none mb-1">Wed</span>
                      <span className="text-4xl font-black text-white leading-none">24</span>
                   </div>
                   <div className="flex-1 pt-1">
-                     <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-4">Pending Tasks</h3>
+                     <h3 className="text-xs font-black text-blue-800 uppercase tracking-widest mb-4">Pending Tasks</h3>
                      <div className="space-y-3">
                         {tasks.map((task, i) => (
                           <div key={i} className="flex items-start gap-2.5 group cursor-pointer">
                              <div className="h-4 w-4 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0 group-hover:bg-teal-600 transition-colors">
                                 <CheckCircle size={10} className="text-teal-600 group-hover:text-white" />
                              </div>
-                             <span className="text-[11px] font-bold text-slate-500 group-hover:text-emerald-900 transition-colors leading-tight">{task}</span>
+                             <span className="text-[11px] font-bold text-neutral-500 group-hover:text-emerald-900 transition-colors leading-tight">{task}</span>
                           </div>
                         ))}
                      </div>
@@ -243,7 +243,7 @@ const VendorModule = () => {
               
               <div className="space-y-4 mb-8 pt-4 border-t border-white/5">
                  <div>
-                    <h5 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Target Categories</h5>
+                    <h5 className="text-[10px] font-black text-neutral-500 uppercase tracking-widest mb-2">Target Categories</h5>
                     <div className="flex flex-wrap gap-2">
                        {(discovery?.categories || ["1", "2", "3"]).map((cat, i) => (
                          <span key={i} className="text-[9px] font-black text-teal-200 bg-teal-500/10 px-3 py-1 rounded-full border border-teal-500/20">{cat}</span>
@@ -251,7 +251,7 @@ const VendorModule = () => {
                     </div>
                  </div>
                  <div>
-                    <h5 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Top Geographies</h5>
+                    <h5 className="text-[10px] font-black text-neutral-500 uppercase tracking-widest mb-2">Top Geographies</h5>
                     <div className="flex flex-wrap gap-2">
                        {(discovery?.geographies || ["1", "2", "3"]).map((geo, i) => (
                          <span key={i} className="text-[9px] font-black text-emerald-200 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{geo}</span>
@@ -269,9 +269,9 @@ const VendorModule = () => {
            </div>
 
            {/* Registration Pipeline (Proper) */}
-           <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+           <div className="bg-white rounded-[2rem] shadow-sm border border-neutral-100 overflow-hidden">
               <div className="p-7">
-                 <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-5">Onboarding Pipeline</h2>
+                 <h2 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-5">Onboarding Pipeline</h2>
                  <div className="grid grid-cols-2 gap-3">
                     {[
                       { l: "Initial", v: registration?.started || 42, c: "slate" },
@@ -289,9 +289,9 @@ const VendorModule = () => {
            </div>
 
            {/* SLA Aging (Proper) */}
-           <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden pt-7">
+           <div className="bg-white rounded-[2rem] shadow-sm border border-neutral-100 overflow-hidden pt-7">
               <div className="px-7 flex justify-between items-center mb-2">
-                 <h2 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">SLA Aging</h2>
+                 <h2 className="text-[10px] font-black text-blue-800 uppercase tracking-widest">SLA Aging</h2>
                  <button className="text-teal-600 text-[10px] font-black uppercase border-b border-teal-600">View All</button>
               </div>
               <div className="h-28 px-4 pb-2">
@@ -314,7 +314,7 @@ const VendorModule = () => {
             </div>
             <div>
                <h3 className="text-white text-sm font-black tracking-tight">Always-on Copilot support</h3>
-               <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Supplier Analytics Active</p>
+               <p className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest">Supplier Analytics Active</p>
             </div>
          </div>
          <div className="flex-1 w-full max-w-4xl relative">
@@ -325,7 +325,7 @@ const VendorModule = () => {
          </div>
          <div className="flex gap-4 pr-4">
            <div className="flex -space-x-3">
-              {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-slate-800 border-2 border-[#0f172a] flex items-center justify-center text-[10px] text-slate-500 font-bold uppercase">{i}</div>)}
+              {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-blue-800 border-2 border-[#0f172a] flex items-center justify-center text-[10px] text-neutral-500 font-bold uppercase">{i}</div>)}
            </div>
          </div>
       </div>
