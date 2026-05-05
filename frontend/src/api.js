@@ -44,10 +44,81 @@ export const getMarketIntelligence = (id) => api.get(`/categories/${id}/market-i
 export const getTransactionPipeline = (params) => api.get('/pr/pipeline', { params });
 export const getTransactionAging = (params) => api.get('/pr/aging', { params });
 export const getTransactionSlas = (params) => api.get('/pr/slas', { params });
-export const getPrList = (params) => api.get('/pr/list', { params });
+export const getPrList = async (params) => {
+  let serverData = [];
+  try {
+    const res = await api.get('/pr/list', { params });
+    serverData = res.data || [];
+  } catch (err) {
+    console.error("Backend PR list fetch failed, using local storage fallback", err);
+  }
+  const localPRs = JSON.parse(localStorage.getItem('mock_raised_prs') || '[]');
+  return { data: [...localPRs, ...serverData] };
+};
 export const getPRs = () => api.get('/pr/list'); // Alias to resolve import in AppContext
 export const getPrDetail = (id) => api.get(`/pr/${id}`);
-export const getPrGantt = (id) => api.get(`/pr/${id}/gantt`);
+export const getPrGantt = async (id) => {
+  const localPRs = JSON.parse(localStorage.getItem('mock_raised_prs') || '[]');
+  const localPr = localPRs.find(pr => String(pr.id) === String(id) || `PR-${pr.id}` === String(id));
+  if (localPr) {
+     const status_order = ["REJECTED", "CREATED", "APPROVED", "SOURCING", "PO_CREATED", "CLOSED"];
+     const raw_idx = status_order.indexOf(localPr.status?.toUpperCase() || "CREATED");
+     let current_idx = 0;
+     if (raw_idx === 4) current_idx = 4;
+     else if (raw_idx === 5) current_idx = 5;
+     else current_idx = Math.max(0, raw_idx - 1);
+
+     const stages_meta = [
+         {"name": "Purchase Requisition", "sla": 3},
+         {"name": "RFx Release", "sla": 7},
+         {"name": "Supplier Evaluation", "sla": 14},
+         {"name": "Negotiations", "sla": 10},
+         {"name": "PO Approval", "sla": 5},
+     ];
+
+     const stages = stages_meta.map((meta, i) => {
+         const status = current_idx > i ? "completed" : (current_idx === i ? "in_progress" : "pending");
+         const planned = meta.sla;
+         let current = planned;
+         if (status === "completed") {
+            const variance = (i % 3) - 1; // Simplistic variation
+            current = planned + variance;
+         } else if (status === "in_progress") {
+            current = planned + 2;
+         }
+         return {
+             name: meta.name,
+             status: status,
+             owner: i === 0 ? localPr.requester : "Sourcing Lead",
+             date: status === "completed" ? localPr.date : null,
+             planned_days: planned,
+             current_days: current
+         };
+     });
+
+     return {
+        data: {
+          id: localPr.id,
+          description: localPr.description,
+          requester: localPr.requester,
+          department: "Operations",
+          date: localPr.date,
+          status: localPr.status || "CREATED",
+          amount: localPr.amount,
+          currency: "INR",
+          category: "General",
+          pending_with: current_idx < 5 ? stages[current_idx].owner : null,
+          stages: stages
+        }
+     };
+  }
+  try {
+    return await api.get(`/pr/${id}/gantt`);
+  } catch (err) {
+    console.error("Backend PR Gantt fetch failed", err);
+    throw err;
+  }
+};
 
 // Vendors
 export const getVendors = () => api.get('/vendors');

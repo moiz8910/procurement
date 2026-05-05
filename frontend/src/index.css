@@ -4,52 +4,64 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* neutral-50 */
-    --foreground: 226 58% 10%; /* blue-950 */
+    --background: 0 0% 100%; /* #ffffff */
+    --foreground: 215 25% 27%; /* Slate-800 */
 
     --card: 0 0% 100%;
-    --card-foreground: 226 58% 10%;
+    --card-foreground: 215 25% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 226 58% 10%;
+    --popover-foreground: 215 25% 27%;
 
-    --primary: 160 84% 39%; /* emerald-600 */
-    --primary-foreground: 0 0% 98%;
+    /* Sky Blue & White - Minimalist Design System */
+    --primary: 199 89% 48%; /* #0ea5e9 - Sky Blue */
+    --primary-foreground: 0 0% 100%;
+    --mck-cyan: 199 89% 48%; 
+    --mck-blue: 199 89% 60%; 
 
-    --secondary: 0 0% 96.1%; /* neutral-100 */
-    --secondary-foreground: 226 58% 10%;
+    --secondary: 199 100% 97%; /* #f0f9ff - Light Sky */
+    --secondary-foreground: 199 89% 48%;
 
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%; /* neutral-500 */
+    --muted: 210 20% 98%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 152 81% 96%; /* emerald-50 */
-    --accent-foreground: 226 58% 10%;
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%; /* neutral-200 */
-    --input: 0 0% 89.8%;
-    --ring: 160 84% 39%;
+    --border: 199 89% 92%; /* Sky-100/200 area */
+    --input: 199 89% 92%;
+    --ring: 199 89% 48%;
 
     --radius: 0;
     --radius-md: 0;
     --radius-lg: 0;
   }
 
+  /* Utility for Source.AI aesthetic: Clean edges and no scrollers */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
 
   .dark {
-    --background: 226 58% 10%;
+    --background: 206 79% 10%;
     --foreground: 0 0% 98%;
 
-    --card: 226 58% 10%;
+    --card: 206 79% 10%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 226 58% 10%;
+    --popover: 206 79% 10%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 160 84% 39%;
-    --primary-foreground: 226 58% 10%;
+    --primary: 171 100% 37%;
+    --primary-foreground: 206 79% 10%;
 
     --secondary: 220 65% 15%;
     --secondary-foreground: 0 0% 98%;

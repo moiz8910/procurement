@@ -55,8 +55,6 @@ const Sidebar = () => {
     m.allowedRoles.includes(currentUser?.roleType)
   );
 
-  const badge = ROLE_BADGE[currentUser?.roleType] || ROLE_BADGE['REQUESTER'];
-
   const handleSignOut = () => {
     localStorage.removeItem('procura_logged_in');
     localStorage.removeItem('procura_user_id');
@@ -64,68 +62,71 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-neutral-50 border-r border-neutral-200 h-screen flex flex-col fixed left-0 top-0 z-40">
+    <aside className="w-64 bg-white text-slate-800 h-screen flex flex-col fixed left-0 top-0 z-40 border-r border-sky-100">
       {/* Brand Header */}
-      <div className="h-16 flex items-center gap-3 px-6 border-b border-neutral-200 bg-white">
-        <div className="bg-emerald-600 text-white p-1.5 rounded flex items-center justify-center">
-          <Building2 size={20} />
+      <div className="h-16 flex items-center gap-3 px-6 border-b border-sky-50 bg-white">
+        <div className="bg-sky-500 text-white p-1.5 flex items-center justify-center">
+          <Building2 size={18} />
         </div>
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-blue-800 uppercase mt-0.5">PROCURA</h1>
+          <h1 className="text-lg font-black tracking-[0.2em] text-primary mt-0.5">SOURCE</h1>
+        </div>
+        <div className="ml-auto">
+          <span className="text-[8px] font-black border border-primary text-primary px-1.5 py-0.5">AI</span>
         </div>
       </div>
 
       {/* Nav */}
-      <div className="flex-1 overflow-y-auto py-6 px-4 no-scrollbar">
-        {/* Role context pill */}
-        <div className={`mb-5 px-3 py-2 rounded-lg ${badge.bg} flex items-center gap-2`}>
-          <div className={`w-2 h-2 rounded-full ${badge.text.replace('text-', 'bg-')}`} />
-          <span className={`text-xs font-bold ${badge.text}`}>Logged in as: {badge.label}</span>
+      <div className="flex-1 overflow-y-auto py-8 px-0 no-scrollbar">
+        {/* Role label */}
+        <div className="px-6 mb-8 uppercase">
+          <p className="text-[9px] font-black text-slate-300 tracking-[0.2em] mb-1">Authenticated As</p>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 bg-primary" />
+            <p className="text-[10px] font-black text-slate-400 tracking-widest">{currentUser?.role}</p>
+          </div>
         </div>
 
-        <nav className="space-y-1">
+        <nav className="space-y-0.5">
           {visibleModules.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               title={item.description}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`w-full flex items-center gap-4 px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-l-2 ${
                 activeTab === item.id
-                  ? 'bg-emerald-50 text-emerald-700'
-                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-emerald-900'
+                  ? 'bg-sky-50 text-primary border-primary font-black'
+                  : 'text-slate-400 border-transparent hover:text-primary hover:bg-sky-50/50'
               }`}
             >
               <item.icon
-                size={18}
-                className={activeTab === item.id ? 'text-emerald-600' : 'text-neutral-400'}
+                size={16}
+                className={activeTab === item.id ? 'text-primary' : 'text-slate-300'}
               />
               <span className="flex-1 text-left">{item.label}</span>
-              {activeTab === item.id && (
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              )}
             </button>
           ))}
         </nav>
       </div>
 
       {/* User footer + Sign Out */}
-      <div className="p-4 border-t border-neutral-200 bg-white">
-        <div className="flex items-center gap-3 px-2 py-1.5 mb-2">
-          <div className="h-8 w-8 rounded-full bg-blue-800 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
+      <div className="p-4 border-t border-sky-50 bg-slate-50/50">
+        <div className="flex items-center gap-3 px-2 py-3 mb-4">
+          <div className="h-8 w-8 bg-sky-50 border border-sky-100 flex items-center justify-center text-primary font-black text-[11px] flex-shrink-0">
             {currentUser?.name?.[0]}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-emerald-900 truncate">{currentUser?.name}</p>
-            <p className="text-[10px] font-bold text-teal-600 uppercase tracking-widest truncate">{currentUser?.role}</p>
+            <p className="text-[11px] font-black text-slate-800 truncate uppercase tracking-tight">{currentUser?.name}</p>
+            <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest truncate">{currentUser?.role}</p>
           </div>
         </div>
         <button
           id="sidebar-signout-btn"
           onClick={handleSignOut}
-          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-red-50 rounded-lg transition-colors text-neutral-500 hover:text-red-600 group"
+          className="w-full flex items-center gap-3 px-3 py-3 hover:bg-red-50 text-slate-400 hover:text-red-500 group border border-sky-50 transition-all"
         >
-          <LogOut size={16} className="text-neutral-400 group-hover:text-red-500 transition-colors" />
-          <span className="text-sm font-medium">Sign Out</span>
+          <LogOut size={14} className="text-slate-300 group-hover:text-red-500 transition-colors" />
+          <span className="text-[10px] font-black uppercase tracking-widest">Terminate Session</span>
         </button>
       </div>
     </aside>

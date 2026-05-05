@@ -178,8 +178,18 @@ class TransactionService:
 
             # Build Gantt stages based on status progression
             # CREATED -> APPROVED -> SOURCING -> PO_CREATED -> CLOSED
-            status_order = ["CREATED", "APPROVED", "SOURCING", "PO_CREATED", "CLOSED", "REJECTED"]
-            current_idx = status_order.index(raw_status) if raw_status in status_order else 0
+            status_order = ["REJECTED", "CREATED", "APPROVED", "SOURCING", "PO_CREATED", "CLOSED"]
+            raw_idx = status_order.index(raw_status) if raw_status in status_order else 1
+            
+            # Map raw_idx to current_stage_idx
+            # 1 (CREATED) -> Stage 0
+            # 2 (APPROVED) -> Stage 1
+            # 3 (SOURCING) -> Stage 2
+            # 4 (PO_CREATED) -> Stage 4 (Negotiations done, Approval in progress)
+            # 5 (CLOSED) -> Stage 5 (All done)
+            if raw_idx == 4: current_idx = 4
+            elif raw_idx == 5: current_idx = 5
+            else: current_idx = max(0, raw_idx - 1)
 
             def _fmt_date(val):
                 if val is None or (hasattr(val, '__class__') and 'NaT' in str(type(val))): return None
@@ -187,63 +197,45 @@ class TransactionService:
                 s = str(val)[:10]
                 return s if s != "None" else None
 
-            rfx_date = pr_row.get("PR_Date", None)  # Mark RFx as starting at PR date
+            rfx_date = pr_row.get("PR_Date", None)
 
-            # Determine pending_with based on current stage
-            pending_with_map = {
-                "CREATED": pr_row.get("Employee_Name", "Requestor"),
-                "APPROVED": "Sourcing Manager",
-                "SOURCING": "Category Lead",
-                "PO_CREATED": "Finance / Approver",
-                "CLOSED": None,
-                "REJECTED": None,
-            }
-            pending_with = pending_with_map.get(raw_status)
-            if po_row is not None and po_row.get("Status") in ["Issued", "Partial"]:
-                pending_with = "Vendor / Logistics"
-
-            stages = [
-                {
-                    "name": "Purchase Requisition",
-                    "status": "completed" if current_idx >= 0 else "pending",
-                    "date": _fmt_date(pr_row.get("PR_Date")),
-                    "owner": str(pr_row.get("Employee_Name", "Requester")),
-                    "sla_days": 3,
-                    "duration_days": 2,
-                },
-                {
-                    "name": "RFx Release",
-                    "status": "completed" if current_idx >= 2 else ("in_progress" if current_idx == 1 else "pending"),
-                    "date": _fmt_date(approval_date),
-                    "owner": "Sourcing Manager",
-                    "sla_days": 7,
-                    "duration_days": 5 if current_idx >= 2 else 0,
-                },
-                {
-                    "name": "Supplier Evaluation",
-                    "status": "completed" if current_idx >= 3 else ("in_progress" if current_idx == 2 else "pending"),
-                    "date": None,
-                    "owner": "Category Lead",
-                    "sla_days": 14,
-                    "duration_days": 8 if current_idx >= 3 else 0,
-                },
-                {
-                    "name": "Negotiations",
-                    "status": "completed" if current_idx >= 4 else ("in_progress" if current_idx == 3 else "pending"),
-                    "date": None,
-                    "owner": "Sourcing Analyst",
-                    "sla_days": 10,
-                    "duration_days": 4 if current_idx >= 4 else 0,
-                },
-                {
-                    "name": "PO Approval",
-                    "status": "completed" if current_idx >= 4 else ("in_progress" if current_idx == 3 else "pending"),
-                    "date": _fmt_date(closed_on),
-                    "owner": "Finance / Approver",
-                    "sla_days": 5,
-                    "duration_days": 3 if current_idx >= 4 else 0,
-                },
+            # Determine actual/forecast days based on current progress
+            stages_meta = [
+                {"name": "Purchase Requisition", "sla": 3, "owner_field": "Employee_Name", "default_owner": "Requester"},
+                {"name": "RFx Release", "sla": 7, "owner_field": None, "default_owner": "Sourcing Manager"},
+                {"name": "Supplier Evaluation", "sla": 14, "owner_field": None, "default_owner": "Category Lead"},
+                {"name": "Negotiations", "sla": 10, "owner_field": None, "default_owner": "Sourcing Analyst"},
+                {"name": "PO Approval", "sla": 5, "owner_field": None, "default_owner": "Finance / Approver"},
             ]
+
+            stages = []
+            for i, meta in enumerate(stages_meta):
+                status = "completed" if current_idx > i else ("in_progress" if current_idx == i else "pending")
+                
+                planned = meta["sla"]
+                
+                if status == "completed":
+                    # Added more distinct variation: some are under SLA, some are over
+                    seed = hash(str(pr_id) + meta["name"])
+                    variance = (seed % 7) - 3 # Range -3 to +3
+                    actual = max(1, planned + variance)
+                    current_days = actual
+                elif status == "in_progress":
+                    # Forecasting logic based on some "random" factor of the PR
+                    seed = hash(str(pr_id))
+                    forecast_delay = (seed % 5) - 1 # -1 to +3
+                    current_days = planned + forecast_delay
+                else:
+                    current_days = planned
+
+                stages.append({
+                    "name": meta["name"],
+                    "status": status,
+                    "date": _fmt_date(pr_row.get("PR_Date")) if i == 0 else (_fmt_date(approval_date) if i == 1 and current_idx >= 1 else None),
+                    "owner": str(pr_row.get(meta["owner_field"], meta["default_owner"]) if meta["owner_field"] else meta["default_owner"]),
+                    "planned_days": planned,
+                    "current_days": current_days,
+                })
 
             return {
                 "id": str(pr_row.get("PR_ID", pr_id)),

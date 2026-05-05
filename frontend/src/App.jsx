@@ -14,6 +14,11 @@ import LoginPage from './pages/LoginPage';
 import StrategyDefinitionModule from './pages/StrategyDefinitionModule';
 import RequesterMarketplace from './pages/RequesterMarketplace';
 
+import ControlCenterModule from './pages/ControlCenterModule';
+import CategoryMasterModule from './pages/CategoryMasterModule';
+import TransactionMasterModule from './pages/TransactionMasterModule';
+import VendorMasterModule from './pages/VendorMasterModule';
+
 // ─── Role-Based Permission Map ───────────────────────────────────────────────
 // Defines which tabs each roleType may access, and their landing page.
 const ROLE_PERMISSIONS = {
@@ -55,14 +60,12 @@ const AppContent = () => {
 
   const renderContent = () => {
     switch (resolvedTab) {
-      case 'dashboard':    return <Dashboard />;
-      case 'categories':   return <CategoryModule />;
-      case 'transactions':
-        // REQUESTER users see the Amazon-style procurement marketplace
-        return roleType === 'REQUESTER' ? <RequesterMarketplace /> : <TransactionModule />;
-      case 'vendors':      return <VendorModule />;
-      case 'strategy_definition': return <StrategyDefinitionModule />;
-      default:             return <TransactionModule />;
+      case 'dashboard':    return <ControlCenterModule />;
+      case 'categories':   return <CategoryMasterModule />;
+      case 'transactions': return <TransactionMasterModule />;
+      case 'vendors':      return <VendorMasterModule />;
+      case 'strategy_definition': return <CategoryMasterModule />; // Fallback wrapper
+      default:             return <TransactionMasterModule />;
     }
   };
 

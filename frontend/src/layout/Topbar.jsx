@@ -50,26 +50,26 @@ const Topbar = () => {
   const currentLang = LANGUAGES.find(l => l.code === language);
 
   return (
-    <header className="h-16 border-b border-neutral-200 bg-white/95 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-30">
+    <header className="h-16 border-b border-neutral-200 bg-white px-6 flex items-center justify-between sticky top-0 z-30">
       {/* Left: breadcrumb */}
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu className="h-5 w-5" />
+          <Menu className="h-4 w-4" />
         </Button>
-        <div className="flex items-center gap-2 text-sm font-medium text-neutral-500">
-          <span className="font-bold tracking-tight">{t('appName')}</span>
-          <ChevronRight className="h-4 w-4 text-neutral-300" />
-          <span className="text-emerald-900 font-bold">{getBreadcrumb()}</span>
+        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-neutral-400">
+          <span className="text-primary">{t('appName')}</span>
+          <ChevronRight className="h-3 w-3 text-neutral-300" />
+          <span className="text-primary opacity-60">{getBreadcrumb()}</span>
         </div>
       </div>
 
       {/* Centre: search */}
       <div className="flex items-center gap-4 flex-1 max-w-xl mx-8">
         <div className="relative w-full group">
-          <Search className="absolute left-3 top-1/2 -tranneutral-y-1/2 h-4 w-4 text-neutral-400 group-focus-within:text-teal-600 transition-colors" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400 group-focus-within:text-primary transition-colors" />
           <Input
             placeholder={t('searchPlaceholder')}
-            className="pl-10 h-10 bg-neutral-50 border-neutral-200 focus:bg-white focus:ring-2 focus:ring-teal-100 transition-all rounded-full text-sm"
+            className="pl-9 h-9 bg-neutral-50 border-neutral-100 focus:bg-white focus:border-primary focus:ring-0 transition-all rounded-none text-xs font-medium"
             value={filters.searchQuery || ''}
             onChange={(e) => updateFilters({ searchQuery: e.target.value })}
           />
@@ -78,8 +78,8 @@ const Topbar = () => {
 
       {/* Right: actions + user */}
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="text-neutral-500 hover:text-teal-600" title={t('help')}>
-          <HelpCircle className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="text-neutral-400 hover:text-primary" title={t('help')}>
+          <HelpCircle className="h-4 w-4" />
         </Button>
 
         {/* ── Language Switcher ── */}
@@ -88,25 +88,25 @@ const Topbar = () => {
             id="topbar-language-btn"
             onClick={() => setLangMenuOpen(prev => !prev)}
             title={t('selectLanguage')}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-500 hover:text-teal-700 hover:bg-teal-50 transition-colors text-sm font-medium border border-transparent hover:border-teal-100"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-neutral-500 hover:text-primary hover:bg-neutral-50 transition-colors text-[10px] font-black uppercase tracking-widest border border-transparent"
           >
-            <Languages size={16} />
-            <span className="hidden sm:inline text-xs font-bold">{currentLang?.flag} {currentLang?.code.toUpperCase()}</span>
+            <Languages size={14} />
+            <span className="hidden sm:inline">{currentLang?.code.toUpperCase()}</span>
           </button>
 
           {langMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-neutral-200 shadow-xl rounded-xl overflow-hidden z-50 animate-fadeIn">
-              <div className="px-3 py-2 border-b border-neutral-100">
-                <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">{t('selectLanguage')}</p>
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-neutral-200 shadow-xl rounded-none overflow-hidden z-50 animate-fadeIn">
+              <div className="px-3 py-2 border-b border-neutral-50 bg-neutral-50">
+                <p className="text-[9px] font-black text-neutral-400 uppercase tracking-widest">{t('selectLanguage')}</p>
               </div>
               {LANGUAGES.map(lang => (
                 <button
                   key={lang.code}
                   id={`lang-option-${lang.code}`}
                   onClick={() => { changeLanguage(lang.code); setLangMenuOpen(false); }}
-                  className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-colors
+                  className={`w-full flex items-center justify-between px-4 py-2.5 text-[11px] font-bold uppercase tracking-wide transition-colors
                     ${language === lang.code
-                      ? 'bg-teal-50 text-teal-700 font-bold'
+                      ? 'bg-primary/5 text-primary'
                       : 'text-neutral-700 hover:bg-neutral-50'
                     }`}
                 >
@@ -114,7 +114,7 @@ const Topbar = () => {
                     <span className="text-base">{lang.flag}</span>
                     <span>{lang.label}</span>
                   </span>
-                  {language === lang.code && <Check size={13} className="text-teal-600" />}
+                  {language === lang.code && <Check size={12} />}
                 </button>
               ))}
             </div>
@@ -122,14 +122,14 @@ const Topbar = () => {
         </div>
 
         <NotificationBell />
-        <div className="h-8 w-px bg-neutral-200 mx-1" />
+        <div className="h-6 w-px bg-neutral-200 mx-1" />
 
         {/* User info */}
         <div className="hidden sm:flex flex-col items-end">
-          <span className="text-xs font-bold text-emerald-900">{currentUser?.name}</span>
-          <span className="text-[10px] font-bold text-teal-600 uppercase tracking-widest">{currentUser?.role}</span>
+          <span className="text-[11px] font-black text-slate-800 uppercase tracking-tight">{currentUser?.name}</span>
+          <span className="text-[9px] font-black text-primary uppercase tracking-widest">{currentUser?.role}</span>
         </div>
-        <div className="h-9 w-9 rounded-full bg-blue-800 flex items-center justify-center text-white font-black text-sm shadow-sm ring-2 ring-neutral-100">
+        <div className="h-8 w-8 bg-sky-50 border border-sky-100 flex items-center justify-center text-primary font-black text-[11px] shadow-sm">
           {currentUser?.name?.[0]}
         </div>
 
@@ -138,9 +138,9 @@ const Topbar = () => {
           id="topbar-signout-btn"
           onClick={handleSignOut}
           title={t('signOut')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-neutral-500 hover:text-red-600 hover:bg-red-50 transition-colors text-sm font-medium"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-slate-300 hover:text-red-500 transition-colors text-[10px] font-black uppercase tracking-widest"
         >
-          <LogOut size={15} />
+          <LogOut size={14} />
           <span className="hidden sm:inline">{t('signOut')}</span>
         </button>
       </div>

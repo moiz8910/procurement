@@ -284,23 +284,7 @@ const CategoryModule = () => {
       </div>
 
       {/* ── 3. TABS ───────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-neutral-100 w-fit shadow-sm">
-        {[
-          { id: 'spend',    label: 'Spend Intelligence',  icon: PieChartIcon },
-          { id: 'market',   label: 'Market & Risk',      icon: Globe },
-          { id: 'strategy', label: 'Category Strategy',   icon: FileSignature },
-        ].map(t => (
-          <button
-            key={t.id}
-            onClick={() => setActiveModTab(t.id)}
-            className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-black text-xs transition-md ${
-              activeModTab === t.id ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200' : 'text-neutral-400 hover:bg-neutral-50 hover:text-emerald-700'
-            }`}
-          >
-            <t.icon size={13} /> {t.label}
-          </button>
-        ))}
-      </div>
+      {/* TABS MOVED TO CategoryMasterModule.jsx */}
 
       {/* ── 4. CONTENT ────────────────────────────────────────────────── */}
       <div className="min-h-[600px]">
